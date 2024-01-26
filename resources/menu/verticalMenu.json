@@ -1,0 +1,52 @@
+{
+  "menu": [
+    {
+      "url": "/dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard"
+    },
+    {
+      "url": "/qrcode-scanner",
+      "name": "QR Code Scanner",
+      "icon": "menu-icon tf-icons bx bx-qr-scan",
+      "slug": "visitlogs.index"
+    },
+    {
+      "url": "/visitor-registration",
+      "name": "Visitor Registration",
+      "icon": "menu-icon tf-icons bx bx-user-plus",
+      "slug": "visitors.index"
+    },
+    {
+      "menuHeader": "Records"
+    },
+    {
+      "url": "/visitors",
+      "name": "Visitors",
+      "icon": "menu-icon tf-icons bx bx-user-check",
+      "slug": "visitors-records"
+    },
+    {
+      "url": "/visitlogs",
+      "name": "Visit Logs",
+      "icon": "menu-icon tf-icons bx bx-time",
+      "slug": "visit-logs-records"
+    },
+    {
+      "menuHeader": "Others"
+    },
+    {
+      "url": "/reports",
+      "name": "Reports",
+      "icon": "menu-icon tf-icons bx bx-file",
+      "slug": "reports"
+    },
+    {
+      "url": "/settings",
+      "icon": "menu-icon tf-icons bx bx-cog",
+      "name": "Settings",
+      "slug": "settings"
+    }
+  ]
+}
