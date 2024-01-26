@@ -2,7 +2,7 @@
 
 ## Installation ⚒️
 
-Follow the steps below steps below to install and run the QR-Generated VMS.
+Follow the steps below to install and run the QR-Generated VMS.
 
 1. Open the terminal in your root directory of the Laravel application.
 2. Use the following command to install the composer
@@ -35,4 +35,4 @@ yarn dev
 php artisan serve
 ```
 
-7. Now navigate to the given address, and you will see your application is running.🥳
+7. Now navigate to the given address, and you will see your application is running.
