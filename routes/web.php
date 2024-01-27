@@ -29,37 +29,29 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
 
 // All Users Route List - Accessible to all users
 Route::middleware(['auth'])->group(function () {
-  Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
-  //Route::get('/qrcode-scanner', [QRCodeScanner::class, 'index'])->name('qrcode-scanner');
-  //Route::get('/visitor-registration', [VisitorRegistration::class, 'index'])->name('visitor-registration');
-  //Route::post('/visitor-registration', [VisitorRegistration::class, 'store'])->name('visitor-registration');
-  //Route::get('/visitors', [VisitorsRecords::class, 'index'])->name('visitors-records');
-  //Route::get('/visitlogs', [VisitLogsRecords::class, 'index'])->name('visit-logs-records');
-
   Route::get('/login', [LoginController::class, 'index'])->name('login');
   Route::get('/register', [RegisterController::class, 'index'])->name('register');
+  Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
 
-  // returns the home page with all visitors
+  /* Routes for Visitors */
+  // returns the page for visitor registration
   Route::get('/visitor-registration', VisitorController::class . '@index')->name('visitors.index');
   // adds a visitor to the database
   Route::post('/visitors', VisitorController::class . '@store')->name('visitors.store');
-  // returns a page that shows a full visitors
-  Route::get('/visitors/{visitor}', VisitorController::class . '@show')->name('visitors.show');
   // returns the form for editing a visitor
   Route::get('/visitors/{visitor}/edit', VisitorController::class . '@edit')->name('visitors.edit');
   // updates a visitor
   Route::put('/visitors/{visitor}', VisitorController::class . '@update')->name('visitors.update');
   // deletes a visitor
   Route::delete('/visitors/{visitor}', VisitorController::class . '@destroy')->name('visitors.destroy');
+  // all visitors records
+  Route::get('/visitors', [VisitorsRecords::class, 'index'])->name('visitors-records');
 
-  // returns the home page with the qr code scanner
+  /* Routes for Visit Logs */
+  // returns the page with the qr code scanner
   Route::get('/qrcode-scanner', VisitLogController::class . '@index')->name('visitlogs.index');
   // adds a visitlog to the database
   Route::post('/visitlogs', VisitLogController::class . '@store')->name('visitlogs.store');
-  // returns a page that shows a full visitlogs
-  Route::get('/visitlogs/{visitlog}', VisitLogController::class . '@show')->name('visitlogs.show');
-  // returns the form for editing a visitlog
-  Route::get('/visitlogs/{visitlog}/edit', VisitLogController::class . '@edit')->name('visitlogs.edit');
-  // updates a visitlog
-  Route::put('/visitlogs/{visitlog}', VisitLogController::class . '@update')->name('visitlogs.update');
+  // all visit logs records
+  Route::get('/visitlogs', [VisitLogsRecords::class, 'index'])->name('visit-logs-records');
 });
