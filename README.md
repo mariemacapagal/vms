@@ -1,10 +1,16 @@
 <h1 align="center">QR-Generated Visitor Management System</h1>
 
-## Installation ⚒️
+## Application/System Environment
+
+1. Laravel Version : 10.39.0
+2. PHP Version : 8.2.12
+3. Composer Version : 2.6.6
+
+## Installation (TBF, chakamanyo)
 
 Follow the steps below to install and run the QR-Generated VMS.
 
-1. Open the terminal in your root directory of the Laravel application.
+1. Open the terminal in your root directory (folder) of the Laravel application.
 2. Use the following command to install the composer
 
 ```bash
