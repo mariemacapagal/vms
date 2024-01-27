@@ -35,16 +35,32 @@ class VisitLogController extends Controller
       $visitor = Visitor::where('visitor_qrcode', $visitor_qrcode)->first();
 
       if ($visitor->visit_date == $date) {
-        // Create a new visit log entry
-        VisitLog::create([
-          'visitor_id' => $visitor->id,
-          'check_in' => $datetime,
-          'log_date' => $date,
-          'status' => 'IN',
-        ]);
-        return redirect()
-          ->route('visitlogs.index')
-          ->with('success', 'Visitor is successfully timed in.');
+        // Find visit log by the visitor ID
+        $visitlog = VisitLog::where('visitor_id', $visitor->id)->first();
+        if ($visitlog) {
+          if ($visitlog->status == 'OUT') {
+            return redirect()
+              ->route('visitlogs.index')
+              ->with('error', 'QR Code has already been used and is now invalid.');
+          } else {
+            $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
+            return redirect()
+              ->route('visitlogs.index')
+              ->with('success', 'Checked out successfully!');
+          }
+        } else {
+          // Create a new visit log entry
+          VisitLog::create([
+            'visitor_id' => $visitor->id,
+            'check_in' => $datetime,
+            'log_date' => $date,
+            'status' => 'IN',
+          ]);
+
+          return redirect()
+            ->route('visitlogs.index')
+            ->with('success', 'Checked in successfully!');
+        }
       } else {
         return redirect()
           ->route('visitlogs.index')
