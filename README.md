@@ -47,7 +47,7 @@ php artisan serve
 
 1. Open the folder in VS Code and open the terminal.
 2. Use the following command to create a database (vmsdb) and migrate the tables.
-   Type 'yes' if it returns database 'vmsdb' does not exist on the 'mysql' connection.
+   Type `'yes'` if it returns database 'vmsdb' does not exist on the 'mysql' connection.
 
 ```bash
 php artisan migrate
@@ -59,9 +59,9 @@ php artisan migrate
 php artisan db:seed --class=CreateUsersSeeder
 ```
 
-4.1 [OPTIONAL & ONLY FOR TESTING] Seed the visitors seeder by running the following command. Visitors seeder is used to generate random visitors.
+4. [OPTIONAL & ONLY FOR TESTING] Seed the visitors seeder by running the following command. Visitors seeder is used to generate random visitors.
 
-- You can change the dates to your desire in the file (database\seeders\DatabaseSeeder.php) and just make sure to run the command. \*
+- You can change the dates to your desire in the file `database\seeders\DatabaseSeeder.php` and just make sure to run the command below.
 
 ```bash
 php artisan db:seed --class=DatabaseSeeder
