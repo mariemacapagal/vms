@@ -6,6 +6,11 @@
 2. PHP Version : 8.2.12
 3. Composer Version : 2.6.6
 
+To check your app environment, run the command:
+```bash
+php artisan about
+```
+
 ## 📌 Installation (TBF, chakamanyo)
 
 Follow the steps below to install and run the QR-Generated VMS.
