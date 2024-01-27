@@ -60,7 +60,8 @@ php artisan db:seed --class=CreateUsersSeeder
 ```
 
 4.1 [OPTIONAL & ONLY FOR TESTING] Seed the visitors seeder by running the following command. Visitors seeder is used to generate random visitors.
-**_ You can change the dates to your desire in the file (database\seeders\DatabaseSeeder.php) and just make sure to run the command. _**
+
+- You can change the dates to your desire in the file (database\seeders\DatabaseSeeder.php) and just make sure to run the command. \*
 
 ```bash
 php artisan db:seed --class=DatabaseSeeder
