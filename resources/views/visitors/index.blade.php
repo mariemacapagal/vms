@@ -102,6 +102,9 @@
 <div class="card">
   <h5 class="card-header">Registered Visitors</h5>
   <div class="table-responsive text-nowrap">
+    @if ($message)
+    <p class="text-center">{{ $message }}</p>
+    @else
     <table class="table table-striped" id="table_visitors">
       <thead>
         <tr>
@@ -259,9 +262,10 @@
         @endforeach
       </tbody>
     </table>
-    <div class="pt-3 px-3">
-      {{ $visitors->links() }}
-    </div>
+    @endif
+  </div>
+  <div class="pt-3 px-3">
+    {{ $visitors->links() }}
   </div>
 </div>
 

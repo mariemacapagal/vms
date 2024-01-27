@@ -17,7 +17,14 @@ class VisitorController extends Controller
     $visitors = Visitor::orderBy('id', 'desc')
       ->simplePaginate(5)
       ->fragment('table_visitors');
-    return view('visitors.index', compact('visitors'));
+
+    if ($visitors->isEmpty()) {
+      $message = 'No data yet!';
+    } else {
+      $message = null;
+    }
+
+    return view('visitors.index', compact('visitors', 'message'));
   }
 
   /**

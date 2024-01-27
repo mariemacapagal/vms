@@ -17,7 +17,13 @@ class VisitLogController extends Controller
     $visitlogs = VisitLog::orderBy('id', 'desc')
       ->simplePaginate(5)
       ->fragment('table_visitlogs');
-    return view('visitlogs.index', compact('visitlogs', 'visitors'));
+
+    if ($visitlogs->isEmpty()) {
+      $message = 'No data yet!';
+    } else {
+      $message = null;
+    }
+    return view('visitlogs.index', compact('visitlogs', 'visitors', 'message'));
   }
 
   /**
