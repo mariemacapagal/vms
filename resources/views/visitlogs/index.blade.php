@@ -56,15 +56,15 @@
     </div>
 </div>
 
-<!-- Table and modals -->
+<!-- Table and modal -->
 <div class="card">
     <h5 class="card-header">Visit Logs</h5>
     <div class="table-responsive text-nowrap">
-      <table class="table table-striped">
+      <table class="table table-striped" id="table_visitlogs">
         <thead>
           <tr>
-            <th>Log ID</th>
-            <th>Visitor ID</th>
+            <th>#</th>
+            <th>Visitor #</th>
             <th>Check In</th>
             <th>Check Out</th>
             <th>Log Date</th>
@@ -73,23 +73,24 @@
         </thead>
         <tbody class="table-border-bottom-0">
           @foreach ($visitlogs as $visitlog)
-          @foreach ($visitors as $visitor)
             <tr><td>{{ $visitlog->id }}</td>
-            <td><span class="fw-medium">{{ $visitlog->visitor_id }}</span> <a href="/" data-bs-toggle="modal" data-bs-target="#view{{ $visitlog->visitor_id }}"><i class='bx bx-qr'></i></a></td>
+            <td><span class="fw-medium">{{ $visitlog->visitor_id }}</span> <a href="#" data-bs-toggle="modal" data-bs-target="#view{{ $visitlog->visitor_id }}"><i class='bx bx-qr'></i></a></td>
             <td>{{ $visitlog->check_in }}</td>
             <td>{{ $visitlog->check_out }}</td>
             <td>{{ $visitlog->log_date }}</td>
             <td>{{ $visitlog->status }}</td>
           </tr>
-          <!-- VIEW Modal -->
-          <div class="col-lg-4 col-md-6">
+
+          @foreach ($visitors as $visitor)
+           <!-- VIEW Modal -->
+           <div class="col-lg-4 col-md-6">
             <div>
               <!-- Modal -->
               <div class="modal fade" id="view{{ $visitor->id }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="modalCenterTitle">Visitor Details | Visitor ID: {{ $visitor->id }}</h5>
+                      <h5 class="modal-title" id="modalCenterTitle">Visitor Details | Visitor # {{ $visitor->id }}</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -119,7 +120,7 @@
                         </div>
                       </div>
                     </div>
-        
+
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                     </div>
@@ -132,6 +133,9 @@
           @endforeach
         </tbody>
       </table>
+      <div class="pt-3 px-3">
+        {{ $visitlogs->links() }}
+      </div>
     </div>
   </div>
 @endsection

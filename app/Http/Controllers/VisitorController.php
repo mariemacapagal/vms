@@ -12,7 +12,11 @@ class VisitorController extends Controller
    */
   public function index()
   {
-    $visitors = Visitor::all();
+    //$visitors = Visitor::all();
+    //return view('visitors.index', compact('visitors'));
+    $visitors = Visitor::orderBy('id', 'desc')
+      ->simplePaginate(5)
+      ->fragment('table_visitors');
     return view('visitors.index', compact('visitors'));
   }
 
@@ -39,9 +43,12 @@ class VisitorController extends Controller
       'registered_date' => $datetime,
     ]);
 
+    // Retrieve the last created visitor
+    $lastVisitor = Visitor::latest()->first();
+
     return redirect()
       ->route('visitors.index')
-      ->with('success', 'Visitor created successfully.');
+      ->with(['success' => 'Visitor added successfully.', 'lastVisitor' => $lastVisitor]);
   }
 
   /**
