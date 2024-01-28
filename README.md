@@ -70,7 +70,7 @@ php artisan db:seed --class=CreateUsersSeeder
 
 - You can see the credentials on `database\seeders\CreateUsersSeeder.php`.
 
-4. [OPTIONAL & ONLY FOR TESTING] Seed the visitors seeder by running the following command. Visitors seeder is used to generate random visitors.
+4. **[OPTIONAL & ONLY FOR TESTING]** Seed the visitors seeder by running the following command. Visitors seeder is used to generate random visitors.
 
 - You can change the dates to your desire in the file `database\seeders\DatabaseSeeder.php` and just make sure to run the command below.
 
@@ -78,7 +78,7 @@ php artisan db:seed --class=CreateUsersSeeder
 php artisan db:seed --class=DatabaseSeeder
 ```
 
-5. [OPTIONAL] If you want to restart the database, run the command:
+5. **[OPTIONAL]** If you want to restart the database, run the command:
 
 ```bash
 php artisan db:wipe
