@@ -20,7 +20,7 @@ Follow the steps below to install and run the QR-Generated VMS.
 
 1. Open the folder in VS Code and open the terminal in your root directory (folder).
 
-- Path on the terminal should be `\xampp\htdocs\vms>` or `\xampp\htdocs\[the downloaded folder name]> `
+- Path on the terminal should end with `\xampp\htdocs\vms>` or `\xampp\htdocs\[the downloaded folder name]> `
 
 2. Use the following command to install the composer.
 
