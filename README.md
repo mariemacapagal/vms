@@ -7,6 +7,7 @@
 3. Composer Version : 2.6.6
 
 To check your app environment, run the command:
+
 ```bash
 php artisan about
 ```
@@ -15,14 +16,17 @@ php artisan about
 
 Follow the steps below to install and run the QR-Generated VMS.
 
-1. Open the terminal in your root directory (folder) of the Laravel application.
-2. Use the following command to install the composer
+1. Open the folder in VS Code and open the terminal in your root directory (folder).
+
+- Path on the terminal should be `\xampp\htdocs\vms>` or `\xampp\htdocs\[the downloaded folder name]> `
+
+2. Use the following command to install the composer.
 
 ```bash
 composer install
 ```
 
-3. Run the following command to generate the key
+3. Run the following command to generate the key.
 
 ```bash
 php artisan key:generate
@@ -40,7 +44,7 @@ yarn
 yarn dev
 ```
 
-6. To serve the application, you need to run the following command in the project directory
+6. To serve the application, you need to run the following command in the project directory.
 
 ```bash
 php artisan serve
@@ -63,6 +67,8 @@ php artisan migrate
 ```bash
 php artisan db:seed --class=CreateUsersSeeder
 ```
+
+- You can see the credentials on `database\seeders\CreateUsersSeeder.php`.
 
 4. [OPTIONAL & ONLY FOR TESTING] Seed the visitors seeder by running the following command. Visitors seeder is used to generate random visitors.
 
