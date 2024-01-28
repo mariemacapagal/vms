@@ -13,8 +13,6 @@ class VisitorController extends Controller
 {
   public function index()
   {
-    //$visitors = Visitor::all();
-    //return view('visitors.index', compact('visitors'));
     $visitors = Visitor::orderBy('id', 'desc')
       ->simplePaginate(5)
       ->fragment('table_visitors');
