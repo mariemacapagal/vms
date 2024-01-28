@@ -41,8 +41,11 @@ Route::middleware(['auth'])->group(function () {
   Route::put('/visitors/{visitor}', VisitorController::class . '@update')->name('visitors.update');
   // deletes a visitor
   Route::delete('/visitors/{visitor}', VisitorController::class . '@destroy')->name('visitors.destroy');
-  // all visitors records
-  Route::get('/visitors', [VisitorsRecords::class, 'index'])->name('visitors-records');
+  //records for visitors
+  Route::get('/visitors-records', [VisitorController::class, 'records'])->name('visitors.records');
+
+  Route::get('/search', [VisitorController::class, 'search'])->name('visitors.search');
+  Route::get('/export', [VisitorController::class, 'export'])->name('visitors.export');
 
   /* Routes for Visit Logs */
   // returns the page with the qr code scanner

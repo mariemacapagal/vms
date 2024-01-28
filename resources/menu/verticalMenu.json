@@ -22,10 +22,10 @@
       "menuHeader": "Records"
     },
     {
-      "url": "/visitors",
+      "url": "/visitors-records",
       "name": "Visitors",
       "icon": "menu-icon tf-icons bx bx-user-check",
-      "slug": "visitors-records"
+      "slug": "visitors.records"
     },
     {
       "url": "/visitlogs",

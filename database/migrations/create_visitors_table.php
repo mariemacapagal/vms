@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
   /**
    * Run the migrations.
    */
@@ -17,7 +18,7 @@ return new class extends Migration {
       $table->string('visit_purpose', 50);
       $table->date('visit_date');
       $table->string('visitor_qrcode')->nullable();
-      $table->string('registered_date');
+      $table->datetime('registered_date', 22);
       $table->timestamps();
     });
   }

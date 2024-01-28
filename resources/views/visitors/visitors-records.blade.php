@@ -1,14 +1,72 @@
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'Records: Visitors')
+@section('page-script')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $('#search').on('keyup',function() {
+        $value = $(this).val();
+
+        if($value){
+          $('.visitors_data').hide();
+          $('.search_visitors_data').show();
+        }
+        else {
+          $('.visitors_data').show();
+          $('.search_visitors_data').hide();
+        }
+
+        $.ajax({
+            url:"{{URL::to('search')}}",
+            type:"GET",
+            data:{'search':$value},
+
+            success:function (data) {
+                $('#content').html(data);
+            }
+        })
+    });
+</script>
+@endsection
 
 @section('content')
 <!-- Table and modals -->
 <div class="card">
-  <h5 class="card-header">Registered Visitors</h5>
+  <div class="card-header pb-3">
+    <h5 class="card-title">Registered Visitors</h5>
+    <div class="row">
+      <div class="col-auto mt-3">
+        <!-- Search bar -->
+        <div class="search">
+          <input type="search" name="search" id="search" placeholder="Search..." class="form-control">
+        </div>
+      </div>
+      <div class="col mt-3 d-flex justify-content-sm-between justify-content-md-end">
+        <!-- Filter dropdown -->
+        <form action="{{ route('visitors.records') }}" method="GET">
+          <select name="filter" class="form-select" onchange="this.form.submit()">
+            <option value="today" {{ request('filter') === 'today' ? 'selected' : '' }}>Today</option>
+            <option value="this_week" {{ request('filter') === 'this_week' ? 'selected' : '' }}>This Week</option>
+            <option value="this_month" {{ request('filter') === 'this_month' ? 'selected' : '' }}>This Month</option>
+            <option value="all" {{ (request('filter') === 'all' || !request()->has('filter')) ? 'selected' : '' }}>All</option>
+          </select>
+        </form>
+        <!-- Export button -->
+        <a class="btn btn-secondary ms-3" href="{{ route('visitors.export') }}?filter={{ request('filter') }}">
+          <span>
+            <i class='bx bx-export'></i>
+            <span class="d-none d-sm-inline-block">Export to CSV</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="m-0">
+
   <div class="table-responsive text-nowrap">
     @if ($message)
-    <p class="text-center">{{ $message }}</p>
+    <p class="text-center mt-3">{{ $message }}</p>
     @else
     <table class="table table-striped" id="table_visitors">
       <thead>
@@ -23,7 +81,7 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody class="table-border-bottom-0">
+      <tbody class="table-border-bottom-0 visitors_data">
         @foreach ($visitors as $visitor)
         <tr>
           <td>
@@ -166,6 +224,7 @@
         </div>
         @endforeach
       </tbody>
+      <tbody id="content" class="search_visitors_data"></tbody>
     </table>
     @endif
   </div>

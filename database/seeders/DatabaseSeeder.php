@@ -15,15 +15,15 @@ class DatabaseSeeder extends Seeder
    */
   public function run(): void
   {
-    $numberOfVisitors = 10;
+    $numberOfVisitors = 5;
     for ($i = 0; $i < $numberOfVisitors; $i++) {
       DB::table('visitors')->insert([
         'visitor_name' => 'Visitor Name',
         'license_plate' => Str::random(8),
         'visit_purpose' => 'Visit Purpose',
-        'visit_date' => Carbon::create('2024', '01', '27'),
+        'visit_date' => Carbon::create('2024', '01', '14'),
         'visitor_qrcode' => Str::random(16),
-        'registered_date' => Carbon::create('2024', '01', '26'),
+        'registered_date' => Carbon::create('2024', '01', '14'),
       ]);
     }
   }
