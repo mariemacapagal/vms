@@ -49,7 +49,7 @@ class VisitorController extends Controller
         break;
     }
 
-    $visitors = $visitors->orderBy('id', 'asc')->simplePaginate(10);
+    $visitors = $visitors->orderBy('id', 'asc')->paginate(10)->appends(['filter' => $filter]);
 
     if ($visitors->isEmpty()) {
       $message = 'No data found.';
