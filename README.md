@@ -12,6 +12,8 @@ To check your app environment, run the command:
 php artisan about
 ```
 
+##
+
 ## 📌 Installation
 
 Follow the steps below to install and run the QR-Generated VMS.
@@ -51,6 +53,8 @@ php artisan serve
 ```
 
 7. Now navigate to the given address, and you will see your application is running.
+
+##
 
 ## 📌 Seed Database
 
