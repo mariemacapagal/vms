@@ -12,7 +12,7 @@ To check your app environment, run the command:
 php artisan about
 ```
 
-## 📌 Installation (TBF, chakamanyo)
+## 📌 Installation
 
 Follow the steps below to install and run the QR-Generated VMS.
 
@@ -76,4 +76,16 @@ php artisan db:seed --class=CreateUsersSeeder
 
 ```bash
 php artisan db:seed --class=DatabaseSeeder
+```
+
+5. [OPTIONAL] If you want to restart the database, run the command:
+
+```bash
+php artisan db:wipe
+```
+
+And migrate the tables again with the command:
+
+```bash
+php artisan migrate
 ```
