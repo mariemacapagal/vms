@@ -129,7 +129,7 @@
           <td>{{ $visitor->license_plate }}</td>
           <td>{{ $visitor->visit_purpose }}</td>
           <td>{{ $visitor->visit_date }}</td>
-          <td>{{ $visitor->visitor_qrcode }}</td>
+          <td class="col-wrap">{{ $visitor->visitor_qrcode }}</td>
           <td>{{ $visitor->registered_date }}</td>
           <td>
             <div class="dropdown">

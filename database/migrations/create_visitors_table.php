@@ -17,8 +17,8 @@ return new class extends Migration
       $table->string('license_plate', 8);
       $table->string('visit_purpose', 50);
       $table->date('visit_date');
-      $table->string('visitor_qrcode')->nullable();
-      $table->datetime('registered_date', 22);
+      $table->string('visitor_qrcode', 64);
+      $table->string('registered_date');
       $table->timestamps();
     });
   }

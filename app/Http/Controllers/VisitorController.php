@@ -189,7 +189,7 @@ class VisitorController extends Controller
     $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $visit_date = $request->input('visit_date');
-    $visitor_qrcode = $visitor_name . '_' . $visit_date;
+    $visitor_qrcode = hash('md5', $visitor_name . '_' . $license_plate . '_' . $datetime);
 
     Visitor::create([
       'visitor_name' => $visitor_name,
