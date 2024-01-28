@@ -180,7 +180,6 @@ class VisitorController extends Controller
    */
   public function store(Request $request)
   {
-    $date = date('Y-m-d');
     $datetime = date('Y-m-d h:i:s A');
 
     $visitor_name = $request->input('visitor_name');
@@ -211,11 +210,13 @@ class VisitorController extends Controller
    */
   public function update(Request $request, string $id)
   {
+    $datetime = date('Y-m-d h:i:s A');
+
     $visitor_name = $request->input('visitor_name');
     $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $visit_date = $request->input('visit_date');
-    $visitor_qrcode = $visitor_name . '_' . $visit_date;
+    $visitor_qrcode = hash('md5', $visitor_name . '_' . $license_plate . '_' . $datetime);
 
     $visitor = Visitor::find($id);
     $visitor->update([
