@@ -24,13 +24,10 @@ Auth::routes();
 Route::middleware(['auth', 'user-access:Admin'])->group(function () {
   Route::get('/reports', [Reports::class, 'index'])->name('reports');
   Route::get('/settings', [Settings::class, 'index'])->name('settings');
-  Route::get('/register', [RegisterController::class, 'index'])->name('register');
 });
 
 // All Users Route List - Accessible to all users
 Route::middleware(['auth'])->group(function () {
-  Route::get('/login', [LoginController::class, 'index'])->name('login');
-  Route::get('/register', [RegisterController::class, 'index'])->name('register');
   Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
 
   /* Routes for Visitors */
@@ -55,3 +52,6 @@ Route::middleware(['auth'])->group(function () {
   // all visit logs records
   Route::get('/visitlogs', [VisitLogsRecords::class, 'index'])->name('visit-logs-records');
 });
+
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
