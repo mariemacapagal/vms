@@ -1,4 +1,4 @@
-d@extends('layouts/contentNavbarLayout')
+@extends('layouts/contentNavbarLayout')
 
 @section('title', 'QR Code Scanner')
 
