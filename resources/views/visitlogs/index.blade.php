@@ -29,7 +29,7 @@
 @endsection
 
 @section('content')
-<h4 class="py-2">QR Code Scanner</h4>
+<h4 class="py-2">Scan the Visitor's QR Code</h4>
 <div class="row">
   <div class="col-md-6 mb-3">
       <video id="preview" width="100%"></video>
@@ -81,44 +81,64 @@
           <td>{{ $visitlog->check_in }}</td>
           <td>{{ $visitlog->check_out }}</td>
           <td>{{ $visitlog->log_date }}</td>
-          <td>{{ $visitlog->status }}</td>
+          <td><span class="badge me-1 {{ $visitlog->status == 'OUT' ? 'bg-label-info' : 'bg-label-success'}}">{{ $visitlog->status }}</span></td>
         </tr>
         @foreach ($visitors as $visitor)
           <!-- VIEW Modal -->
-          <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6">
           <div>
             <!-- Modal -->
             <div class="modal fade" id="view{{ $visitor->id }}" tabindex="-1" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="modalCenterTitle">Visitor Details | Visitor # {{ $visitor->id }}</h5>
+                    <h5 class="modal-title" id="modalCenterTitle">Visitor Details | # {{ $visitor->id }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <div class="text-center">
-                      <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}" alt="QRCode{{ $visitor->id }}">
+                      <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
+                        alt="QRCode{{ $visitor->id }}" />
+                        <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                     </div>
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label for="visitor_name" class="form-label">Visitor Name</label>
-                        <input type="text" id="visitor_name" class="form-control" name="visitor_name" value="{{ $visitor->visitor_name }}" readonly>
+
+                    <div class="row">
+                      <div class="col mb-3">
+                        <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
+                        <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
+                          value="{{ $visitor->visitor_first_name }}" readonly/>
+                      </div>
+                      <div class="col mb-3">
+                        <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
+                        <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
+                          value="{{ $visitor->visitor_last_name }}" readonly/>
                       </div>
                     </div>
+
                     <div class="row mb-3">
                       <div class="col">
                         <label for="visit_purpose" class="form-label">Purpose of Visit</label>
-                        <input type="text" id="visit_purpose" class="form-control" name="visit_purpose" value="{{ $visitor->visit_purpose }}" readonly>
+                        <input type="text" id="visit_purpose" class="form-control" name="visit_purpose"
+                          value="{{ $visitor->visit_purpose }}" readonly />
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col">
+                        <label for="resident_name" class="form-label">Resident's Name</label>
+                        <input type="text" id="resident_name" class="form-control" name="resident_name"
+                          value="{{ $visitor->resident_name }}" readonly />
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col">
+                      <div class="col mb-3">
                         <label for="license_plate" class="form-label">License Plate</label>
-                        <input type="text" id="license_plate" class="form-control" name="license_plate" value="{{ $visitor->license_plate }}" readonly>
+                        <input type="text" id="license_plate" class="form-control" name="license_plate"
+                          value="{{ $visitor->license_plate }}" readonly />
                       </div>
                       <div class="col">
                         <label for="visit_date" class="form-label">Date of Visit</label>
-                        <input type="text" id="visit_date" class="form-control" name="visit_date" value="{{ $visitor->visit_date }}" readonly>
+                        <input type="text" id="visit_date" class="form-control" name="visit_date"
+                          value="{{ $visitor->visit_date }}" readonly />
                       </div>
                     </div>
                   </div>
@@ -130,6 +150,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
         @endforeach
         @endforeach

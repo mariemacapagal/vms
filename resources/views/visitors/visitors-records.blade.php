@@ -1,33 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
 @section('title', 'Records: Visitors')
-@section('page-script')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="text/javascript">
-    $('#search').on('keyup',function() {
-        $value = $(this).val();
-
-        if($value){
-          $('.visitors_data').hide();
-          $('.search_visitors_data').show();
-        }
-        else {
-          $('.visitors_data').show();
-          $('.search_visitors_data').hide();
-        }
-
-        $.ajax({
-            url:"{{URL::to('search')}}",
-            type:"GET",
-            data:{'search':$value},
-
-            success:function (data) {
-                $('#content').html(data);
-            }
-        })
-    });
-</script>
-@endsection
 
 @section('content')
 <!-- Table and modals -->
@@ -35,30 +8,48 @@
   <div class="card-header pb-3">
     <h5 class="card-title">Registered Visitors</h5>
     <div class="row">
-      <div class="col-auto mt-3">
-        <!-- Search bar -->
-        <div class="search">
-          <input type="search" name="search" id="search" placeholder="Search..." class="form-control">
+      <form action="{{ route('visitors.records') }}" method="GET" id="searchForm">
+        <div class="row">
+          <div class="col-auto mt-3">
+            <div class="input-group">
+              <!-- Search -->
+              <input type="search" name="search" id="search" placeholder="Search Visitor..." class="form-control" value="{{ request('search') }}" oninput="this.form.submit()" aria-label="Search Visitor" aria-describedby="button-addon2">
+              <button class="btn btn-outline-primary" type="button" id="button-addon2"><i class='bx bx-search'></i></button>
+            </div>
+          </div>
+          <div class="col mt-3 d-flex justify-content-sm-between justify-content-md-end">
+            <!-- Dropdowns -->
+            <div class="dropdown">
+              <select name="purpose" class="form-select" onchange="this.form.submit()">
+                <option value="" selected>Select Status</option>
+                <option value="Visiting" {{ request('purpose') === 'Visiting' ? 'selected' : '' }}>Visiting</option>
+                <option value="Delivery" {{ request('purpose') === 'Delivery' ? 'selected' : '' }}>Delivery</option>
+                <option value="Home Inspection" {{ request('purpose') === 'Home Inspection' ? 'selected' : '' }}>Home Inspection</option>
+                <option value="Utilities and Services" {{ request('purpose') === 'Utilities and Services' ? 'selected' : '' }}>Utilities and Services</option>
+              </select>
+            </div>
+            <div class="dropdown ms-3">
+              <select name="filter" class="form-select" onchange="this.form.submit()">
+                <option value="" selected>Select Date Range</option>
+                <option value="today" {{ request('filter') === 'today' ? 'selected' : '' }}>Today</option>
+                <option value="this_week" {{ request('filter') === 'this_week' ? 'selected' : '' }}>This Week</option>
+                <option value="this_month" {{ request('filter') === 'this_month' ? 'selected' : '' }}>This Month</option>
+              </select>
+            </div>
+
+            <div class="export">
+              <!-- Export button -->
+              <a class="btn btn-secondary ms-3" href="{{ route('visitors.export', ['filter' => request('filter'), 'purpose' => request('purpose'), 'search' => request('search')]) }}">
+                <span>
+                  <i class='bx bx-export'></i>
+                  <span class="d-none d-sm-inline-block">Save CSV</span>
+                </span>
+              </a>
+            </div>
+
+          </div>
         </div>
-      </div>
-      <div class="col mt-3 d-flex justify-content-sm-between justify-content-md-end">
-        <!-- Filter dropdown -->
-        <form action="{{ route('visitors.records') }}" method="GET">
-          <select name="filter" class="form-select" onchange="this.form.submit()">
-            <option value="today" {{ request('filter') === 'today' ? 'selected' : '' }}>Today</option>
-            <option value="this_week" {{ request('filter') === 'this_week' ? 'selected' : '' }}>This Week</option>
-            <option value="this_month" {{ request('filter') === 'this_month' ? 'selected' : '' }}>This Month</option>
-            <option value="all" {{ (request('filter') === 'all' || !request()->has('filter')) ? 'selected' : '' }}>All</option>
-          </select>
-        </form>
-        <!-- Export button -->
-        <a class="btn btn-secondary ms-3" href="{{ route('visitors.export') }}?filter={{ request('filter') }}">
-          <span>
-            <i class='bx bx-export'></i>
-            <span class="d-none d-sm-inline-block">Export to CSV</span>
-          </span>
-        </a>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -72,27 +63,27 @@
       <thead>
         <tr>
           <th>Visitor #</th>
-          <th>Visitor Name</th>
+          <th>Visitor's Name</th>
           <th>License Plate</th>
           <th>Purpose of Visit</th>
+          <th>Resident's Name</th>
           <th>Date of Visit</th>
-          <th>QR Code</th>
           <th>Registered Date</th>
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody class="table-border-bottom-0 visitors_data">
+      <tbody class="table-border-bottom-0 visitors-data">
         @foreach ($visitors as $visitor)
         <tr>
           <td>
             <span class="fw-medium">{{ $visitor->id }}</span>
             <a href="#" data-bs-toggle="modal" data-bs-target="#view{{ $visitor->id }}"><i class="bx bx-qr"></i></a>
           </td>
-          <td>{{ $visitor->visitor_name }}</td>
+          <td>{{ $visitor->visitor_first_name }} {{ $visitor->visitor_last_name }}</td>
           <td>{{ $visitor->license_plate }}</td>
           <td>{{ $visitor->visit_purpose }}</td>
+          <td>{{ $visitor->resident_name }}</td>
           <td>{{ $visitor->visit_date }}</td>
-          <td>{{ $visitor->visitor_qrcode }}</td>
           <td>{{ $visitor->registered_date }}</td>
           <td>
             <div class="dropdown">
@@ -224,7 +215,7 @@
         </div>
         @endforeach
       </tbody>
-      <tbody id="content" class="search_visitors_data"></tbody>
+      <tbody id="content-visitors" class="search-visitors-data"></tbody>
     </table>
     @endif
   </div>

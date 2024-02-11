@@ -28,10 +28,10 @@
       "slug": "visitors.records"
     },
     {
-      "url": "/visitlogs",
+      "url": "/visitlogs-records",
       "name": "Visit Logs",
       "icon": "menu-icon tf-icons bx bx-time",
-      "slug": "visit-logs-records"
+      "slug": "visitlogs.records"
     },
     {
       "menuHeader": "Others"
