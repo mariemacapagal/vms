@@ -418,7 +418,7 @@
     profileReportChart.render();
   }
 
-  // Order Statistics Chart
+  // Purpose Statistics Chart
   // --------------------------------------------------------------------
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
     orderChartConfig = {
@@ -427,7 +427,7 @@
         width: 130,
         type: 'donut'
       },
-      labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
+      labels: ['Visiting', 'Delivery', 'Amenities', 'Services'],
       series: [85, 15, 50, 50],
       colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
       stroke: {

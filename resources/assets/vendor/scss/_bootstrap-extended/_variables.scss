@@ -14,7 +14,7 @@
 
 // scss-docs-start gray-color-variables
 $white: #fff !default;
-$black: #435971 !default;
+$black: #0a0a0a !default;
 $gray-25: rgba($black, 0.025) !default; // (C)
 $gray-50: rgba($black, 0.05) !default; // (C)
 $gray-100: rgba($black, 0.1) !default;
@@ -37,7 +37,7 @@ $grays: (
 
 // scss-docs-start color-variables
 $blue: #007bff !default;
-$indigo: #22475f !default;
+$indigo: #4170d4 !default;
 $purple: #696cff !default;
 $pink: #e83e8c !default;
 $red: #dc3545 !default;
@@ -50,14 +50,15 @@ $cyan: #03c3ec !default;
 
 // scss-docs-start theme-color-variables
 $primary: $indigo !default;
-$secondary: #8592a3 !default;
+$secondary: #6a99f0 !default;
 $success: $green !default;
 $info: $blue !default;
 $warning: $yellow !default;
 $danger: $red !default;
 $light: #fcfdfd !default;
 $dark: #233446 !default;
-$gray: $gray-100 !default; // (C)
+$gray: $gray-100 !default;
+// (C)
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map

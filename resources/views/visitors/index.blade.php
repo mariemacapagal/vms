@@ -40,8 +40,8 @@
                 <option value="" disabled selected hidden>Select a visit purpose</option>
                 <option value="Visiting">Visiting</option>
                 <option value="Delivery">Delivery</option>
-                <option value="Home Inspection">Home Inspection</option>
-                <option value="Utilities and Services">Utilities and Services</option>
+                <option value="Amenities">Amenities</option>
+                <option value="Services">Services</option>
               </select>
             </div>
           </div>
@@ -268,8 +268,8 @@
                               <option value="" disabled selected hidden>Select a visit purpose</option>
                               <option value="Visiting" {{ $visitor->visit_purpose === "Visiting" ? "selected" : "" }}>Visiting</option>
                               <option value="Delivery" {{ $visitor->visit_purpose === "Delivery" ? "selected" : "" }}>Delivery</option>
-                              <option value="Home Inspection" {{ $visitor->visit_purpose === "Home Inspection" ? "selected" : "" }}>Home Inspection</option>
-                              <option value="Utilities and Services" {{ $visitor->visit_purpose === "Utilities and Services" ? "selected" : "" }}>Utilities and Services</option>
+                              <option value="Amenities" {{ $visitor->visit_purpose === "Amenities" ? "selected" : "" }}>Amenities</option>
+                              <option value="Services" {{ $visitor->visit_purpose === "Services" ? "selected" : "" }}>Services</option>
                             </select>
                         </div>
                       </div>
@@ -313,8 +313,6 @@
     {{ $visitors->links() }}
   </div>
 </div>
-
-
 <script>
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
