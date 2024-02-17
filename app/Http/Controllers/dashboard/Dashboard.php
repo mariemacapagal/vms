@@ -19,14 +19,24 @@ class Dashboard extends Controller
 
     $totalVisitors =  $visitors->count();
     $totalVisitLogs = $visitLogs->count();
-    $totalCheckIns = $visitLogs->where('check_in')->count();
-    $totalCheckOuts = $visitLogs->where('check_out')->count();
-    $totalAmenities = $visitors->where('visit_purpose', 'Amenities')->count();
-    $data = Visitor::select('visit_purpose', Visitor::raw('count(*) as count'))
+
+    $visitPurpose = Visitor::select('visit_purpose', Visitor::raw('count(*) as count'))
       ->groupBy('visit_purpose')
       ->get();
 
+    // Fetch visitor count for each day of the current week
+    $visitorCount = Visitor::whereBetween('visit_date', [
+      now()->startOfWeek(),
+      now()->endOfWeek(),
+    ])->orderBy('visit_date')
+      ->get()
+      ->groupBy(function ($date) {
+        return Carbon::parse($date->visit_date)->format('D'); // Group by day name
+      })
+      ->map(function ($day) {
+        return $day->count();
+      });
 
-    return view('content.dashboard.dashboard', compact('visitors', 'visitLogs', 'totalVisitors', 'totalVisitLogs', 'totalCheckIns', 'totalCheckOuts', 'totalAmenities', 'data'));
+    return view('content.dashboard.dashboard', compact('visitors', 'visitLogs', 'totalVisitors', 'totalVisitLogs', 'visitPurpose', 'visitorCount'));
   }
 }

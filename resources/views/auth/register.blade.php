@@ -27,7 +27,7 @@
 
           <form id="formAuthentication" class="mb-3" action="{{ route('register') }}" method="POST">
             @csrf
-            
+
             <div class="mb-3">
               <label for="name" class="form-label">{{ __('Name') }}</label>
               <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -52,10 +52,11 @@
 
             <div class="mb-3 form-password-toggle">
               <label for="password" class="form-label">{{ __('Password') }}</label>
+              <small class="text-muted"> (must contain lowercase and uppercase letters, a special character, and a digit)</small>
               <div class="input-group input-group-merge">
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-              
+
                 @error('password')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

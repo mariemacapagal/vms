@@ -13,7 +13,15 @@ class RegisterController extends Controller
 {
   public function index()
   {
-    return view('auth.register');
+    $users = User::simplePaginate(5);
+
+    if ($users->isEmpty()) {
+      $message = 'No data found.';
+    } else {
+      $message = null;
+    }
+    //return view('auth.register');
+    return view('content.menu.settings', compact('users', 'message'));
   }
   /*
     |--------------------------------------------------------------------------
@@ -42,7 +50,7 @@ class RegisterController extends Controller
    */
   public function __construct()
   {
-    $this->middleware('guest');
+    $this->middleware('auth');
   }
 
   /**

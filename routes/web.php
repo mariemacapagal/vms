@@ -25,8 +25,8 @@ Auth::routes();
 // All Admins Route List
 Route::middleware(['auth', 'user-access:Admin'])->group(function () {
   Route::get('/reports', [Reports::class, 'index'])->name('reports');
-  Route::get('/settings', [Settings::class, 'index'])->name('settings');
-  Route::get('/register', [RegisterController::class, 'index'])->name('register');
+  Route::get('/settings', [RegisterController::class, 'index'])->name('register');
+  Route::get('/export-to-csv', [Reports::class, 'exportToCsv'])->name('exportToCsv');
 });
 
 // All Users Route List - Accessible to all users

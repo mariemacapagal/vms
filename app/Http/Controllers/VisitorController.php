@@ -44,7 +44,7 @@ class VisitorController extends Controller
         return $query->where('visit_purpose', $purpose);
       })
       ->when(!empty($search), function ($query) use ($search) {
-        return $query->where('visitor_first_name', 'Like', $search . '%');
+        return $query->where('visitor_name', 'Like', $search . '%');
       });
 
     return $visitors;
@@ -84,9 +84,9 @@ class VisitorController extends Controller
     // Add headers
     $sheet->setCellValue('A1', 'ID');
     $sheet->setCellValue('B1', 'Visitor\'s First Name');
-    $sheet->setCellValue('C1', 'Visitor\'s Last Name');
-    $sheet->setCellValue('D1', 'License Plate');
-    $sheet->setCellValue('E1', 'Visit Purpose');
+    $sheet->setCellValue('C1', 'License Plate');
+    $sheet->setCellValue('D1', 'Visit Purpose');
+    $sheet->setCellValue('E1', 'Resident\'s Name');
     $sheet->setCellValue('F1', 'Visit Date');
     $sheet->setCellValue('G1', 'Visitor QR Code');
     $sheet->setCellValue('H1', 'Registered Date');
@@ -95,10 +95,10 @@ class VisitorController extends Controller
     $row = 2;
     foreach ($visitors as $visitor) {
       $sheet->setCellValue('A' . $row, $visitor->id);
-      $sheet->setCellValue('B' . $row, $visitor->visitor_first_name);
-      $sheet->setCellValue('C' . $row, $visitor->visitor_last_name);
-      $sheet->setCellValue('D' . $row, $visitor->license_plate);
-      $sheet->setCellValue('E' . $row, $visitor->visit_purpose);
+      $sheet->setCellValue('B' . $row, $visitor->visitor_name);
+      $sheet->setCellValue('C' . $row, $visitor->license_plate);
+      $sheet->setCellValue('D' . $row, $visitor->visit_purpose);
+      $sheet->setCellValue('E' . $row, $visitor->resident_name);
       $sheet->setCellValue('F' . $row, $visitor->visit_date);
       $sheet->setCellValue('G' . $row, $visitor->visitor_qrcode);
       $sheet->setCellValue('H' . $row, $visitor->registered_date);
@@ -125,17 +125,15 @@ class VisitorController extends Controller
   {
     $datetime = date('Y-m-d h:i:s A');
 
-    $visitor_first_name = $request->input('visitor_first_name');
-    $visitor_last_name = $request->input('visitor_last_name');
+    $visitor_name = $request->input('visitor_name');
     $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
     $visit_date = $request->input('visit_date');
-    $visitor_qrcode = hash('md5', $visitor_first_name . ' ' . $visitor_last_name . '_' . $license_plate . '_' . $datetime);
+    $visitor_qrcode = hash('md5', $visitor_name . ' ' . $datetime);
 
     Visitor::create([
-      'visitor_first_name' => $visitor_first_name,
-      'visitor_last_name' => $visitor_last_name,
+      'visitor_name' => $visitor_name,
       'license_plate' => $license_plate,
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
@@ -157,18 +155,16 @@ class VisitorController extends Controller
   {
     $datetime = date('Y-m-d h:i:s A');
 
-    $visitor_first_name = $request->input('visitor_first_name');
-    $visitor_last_name = $request->input('visitor_last_name');
+    $visitor_name = $request->input('visitor_name');
     $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
     $visit_date = $request->input('visit_date');
-    $visitor_qrcode = hash('md5', $visitor_first_name . ' ' . $visitor_last_name . '_' . $license_plate . '_' . $datetime);
+    $visitor_qrcode = hash('md5', $visitor_name . ' ' . '_' . $datetime);
 
     $visitor = Visitor::find($id);
     $visitor->update([
-      'visitor_first_name' => $visitor_first_name,
-      'visitor_last_name' => $visitor_last_name,
+      'visitor_name' => $visitor_name,
       'license_plate' => $license_plate,
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,

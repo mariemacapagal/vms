@@ -8,7 +8,8 @@
   <div class="card-header pb-3">
     <h5 class="card-title">Registered Visitors</h5>
     <div class="row">
-      <form action="{{ route('visitors.records') }}" method="GET" id="searchForm">
+      <form action="{{ route('visitors.records') }}" method="GET">
+        @csrf
         <div class="row">
           <div class="col-auto mt-3">
             <div class="input-group">
@@ -79,7 +80,7 @@
             <span class="fw-medium">{{ $visitor->id }}</span>
             <a href="#" data-bs-toggle="modal" data-bs-target="#view{{ $visitor->id }}"><i class="bx bx-qr"></i></a>
           </td>
-          <td>{{ $visitor->visitor_first_name }} {{ $visitor->visitor_last_name }}</td>
+          <td>{{ $visitor->visitor_name }}</td>
           <td>{{ $visitor->license_plate }}</td>
           <td>{{ $visitor->visit_purpose }}</td>
           <td>{{ $visitor->resident_name }}</td>
@@ -121,19 +122,13 @@
                         <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                     </div>
 
-                    <div class="row">
-                      <div class="col mb-3">
-                        <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
-                        <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
-                          value="{{ $visitor->visitor_first_name }}" readonly/>
-                      </div>
-                      <div class="col mb-3">
-                        <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
-                        <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
-                          value="{{ $visitor->visitor_last_name }}" readonly/>
+                    <div class="row mb-3">
+                      <div class="col">
+                        <label for="visitor_name" class="form-label">Visitor's Name</label>
+                        <input type="text" id="visitor_name" class="form-control" name="visitor_name"
+                          value="{{ $visitor->visitor_name }}" readonly />
                       </div>
                     </div>
-
                     <div class="row mb-3">
                       <div class="col">
                         <label for="visit_purpose" class="form-label">Purpose of Visit</label>
@@ -190,20 +185,13 @@
                         <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                       </div>
 
-                      <div class="row">
-                        <div class="col mb-3">
-                          <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
-                          <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
-                            value="{{ $visitor->visitor_first_name }}" maxlength="30" required/>
-                        </div>
-                        <div class="col mb-3">
-                          <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
-                          <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
-                            value="{{ $visitor->visitor_last_name }}" maxlength="30" required/>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="visitor_name" class="form-label">Visitor's Name</label>
+                          <input type="text" id="visitor_name" class="form-control capitalize-words"
+                            name="visitor_name" value="{{ $visitor->visitor_name }}" maxlength="60" />
                         </div>
                       </div>
-
-
                       <div class="row mb-3">
                         <div class="col">
                           <label for="visit_purpose" class="form-label">Purpose of Visit</label>
@@ -249,7 +237,6 @@
         </div>
         @endforeach
       </tbody>
-      <tbody id="content-visitors" class="search-visitors-data"></tbody>
     </table>
     @endif
   </div>

@@ -8,9 +8,9 @@
   <div class="card-header pb-3">
     <h5 class="card-title">Visit Logs</h5>
     <div class="row">
-      <form action="{{ route('visitlogs.records') }}" method="GET" id="searchForm">
+      <form action="{{ route('visitlogs.records') }}" method="GET">
+        @csrf
         <div class="row">
-
           <div class="col mt-3 d-flex justify-content-sm-between justify-content-md-end">
             <!-- Dropdowns -->
             <div class="dropdown">
@@ -61,7 +61,7 @@
           <th>Status</th>
         </tr>
       </thead>
-      <tbody class="table-border-bottom-0 visitlogs-data">
+      <tbody class="table-border-bottom-0">
         @foreach ($visitlogs as $visitlog)
           <tr>
             <td>{{ $visitlog->id }}</td>
@@ -69,7 +69,7 @@
             <td>{{ $visitlog->check_in }}</td>
             <td>{{ $visitlog->check_out }}</td>
             <td>{{ $visitlog->log_date }}</td>
-            <td><span class="badge me-1 {{ $visitlog->status == 'OUT' ? 'bg-label-info' : 'bg-label-success'}}">{{ $visitlog->status }}</span></td>
+            <td><span class="badge me-1 {{ $visitlog->status == 'OUT' ? 'bg-label-success' : 'bg-label-info'}}">{{ $visitlog->status }}</span></td>
           </tr>
         @foreach ($visitors as $visitor)
           <!-- VIEW Modal -->
@@ -90,19 +90,13 @@
                           <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                       </div>
 
-                      <div class="row">
-                        <div class="col mb-3">
-                          <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
-                          <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
-                            value="{{ $visitor->visitor_first_name }}" readonly/>
-                        </div>
-                        <div class="col mb-3">
-                          <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
-                          <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
-                            value="{{ $visitor->visitor_last_name }}" readonly/>
+                      <div class="row mb-3">
+                        <div class="col">
+                          <label for="visitor_name" class="form-label">Visitor's Name</label>
+                          <input type="text" id="visitor_name" class="form-control capitalize-words" name="visitor_name"
+                            value="{{ $visitor->visitor_name }}" readonly/>
                         </div>
                       </div>
-
                       <div class="row mb-3">
                         <div class="col">
                           <label for="visit_purpose" class="form-label">Purpose of Visit</label>
@@ -143,7 +137,6 @@
         @endforeach
         @endforeach
       </tbody>
-      <tbody id="content-visitlogs" class="search-visitlogs-data"></tbody>
     </table>
     @endif
   </div>

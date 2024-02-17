@@ -9,8 +9,7 @@ class Visitor extends Model
 {
   use HasFactory;
   protected $fillable = [
-    'visitor_first_name',
-    'visitor_last_name',
+    'visitor_name',
     'license_plate',
     'visit_purpose',
     'resident_name',
