@@ -102,7 +102,7 @@
       </tbody>
     </table>
   </div>
-  <div class="pt-3 px-3">
+  <div class="pt-3 px-3 d-flex justify-content-end">
     {{ $fetchedData->links() }}
   </div>
 </div>

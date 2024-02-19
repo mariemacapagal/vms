@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Visitor;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use App\Models\Visitor;
+use App\Models\DeletedVisitor;
 
 class VisitorController extends Controller
 {
@@ -177,19 +178,32 @@ class VisitorController extends Controller
       ->with('success', 'Visitor updated successfully.');
   }
 
-  // Remove the specified resource from storage.
-  public function destroy($id)
-  {
-    $visitor = Visitor::find($id);
-    $visitor->delete();
-    return redirect()
-      ->back()
-      ->with('success', 'Visitor deleted successfully.');
-  }
-
   public function edit($id)
   {
     $visitor = Visitor::find($id);
     return view('visitors.edit', compact('visitor'));
+  }
+
+  public function deleteVisitors($id)
+  {
+    $visitor = Visitor::find($id);
+
+    // Create a new record in the deleted_visitors table
+    DeletedVisitor::create([
+      'visitor_name' => $visitor->visitor_name,
+      'license_plate' => $visitor->license_plate,
+      'visit_purpose' => $visitor->visit_purpose,
+      'resident_name' => $visitor->resident_name,
+      'visit_date' => $visitor->visit_date,
+      'visitor_qrcode' => $visitor->visitor_qrcode,
+      'registered_date' => $visitor->registered_date,
+    ]);
+
+    // Delete the record from the visitors table
+    $visitor->delete();
+
+    return redirect()
+      ->back()
+      ->with('success', 'Visitor deleted successfully.');
   }
 }

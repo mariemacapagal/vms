@@ -24,31 +24,38 @@ Auth::routes();
 
 // All Admins Route List
 Route::middleware(['auth', 'user-access:Admin'])->group(function () {
-  Route::get('/reports', [Reports::class, 'index'])->name('reports');
-  Route::get('/settings', [RegisterController::class, 'index'])->name('register');
-  Route::get('/export-to-csv', [Reports::class, 'exportToCsv'])->name('exportToCsv');
+  Route::get('/reports', Reports::class . '@index')->name('reports');
+  Route::get('/export-to-csv', Reports::class . '@exportToCsv')->name('exportToCsv');
+
+  Route::get('/settings', RegisterController::class . '@index')->name('settings');
+  Route::put('/settings/{user}', RegisterController::class . '@update')->name('settings.update');
+  Route::get('/settings/{user}/edit', RegisterController::class . '@edit')->name('settings.edit');
+  Route::put('/settings/{user}', RegisterController::class . '@update')->name('settings.update');
+  Route::delete('/settings/{user}', RegisterController::class . '@destroy')->name('settings.destroy');
 });
 
 // All Users Route List - Accessible to all users
 Route::middleware(['auth'])->group(function () {
-  Route::get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
+  Route::get('/dashboard', Dashboard::class . '@index')->name('dashboard');
 
   /* Routes for Visitors */
   Route::get('/visitor-registration', VisitorController::class . '@index')->name('visitors.index');
   Route::post('/visitors', VisitorController::class . '@store')->name('visitors.store');
   Route::get('/visitors/{visitor}/edit', VisitorController::class . '@edit')->name('visitors.edit');
   Route::put('/visitors/{visitor}', VisitorController::class . '@update')->name('visitors.update');
-  Route::delete('/visitors/{visitor}', VisitorController::class . '@destroy')->name('visitors.destroy');
+  Route::match(['post', 'delete'], '/visitors/{visitor}', VisitorController::class . '@deleteVisitors')->name('visitors.delete');
 
-  Route::get('/visitors-records', [VisitorController::class, 'records'])->name('visitors.records');
-  Route::get('/visitors-records/search', [VisitorController::class, 'search'])->name('visitors.search');
-  Route::get('/visitors-records/export', [VisitorController::class, 'export'])->name('visitors.export');
+  Route::get('/visitors-records', VisitorController::class . '@records')->name('visitors.records');
+  Route::get('/visitors-records/search', VisitorController::class . '@search')->name('visitors.search');
+  Route::get('/visitors-records/export', VisitorController::class . '@export')->name('visitors.export');
+
+
 
   /* Routes for Visit Logs */
   Route::get('/qrcode-scanner', VisitLogController::class . '@index')->name('visitlogs.index');
   Route::post('/visitlogs', VisitLogController::class . '@store')->name('visitlogs.store');
 
-  Route::get('/visitlogs-records', [VisitLogController::class, 'records'])->name('visitlogs.records');
-  Route::get('/visitlogs-records/search', [VisitLogController::class, 'search'])->name('visitlogs.search');
-  Route::get('/visitlogs-records/export', [VisitLogController::class, 'export'])->name('visitlogs.export');
+  Route::get('/visitlogs-records', VisitLogController::class . '@records')->name('visitlogs.records');
+  Route::get('/visitlogs-records/search', VisitLogController::class .  '@search')->name('visitlogs.search');
+  Route::get('/visitlogs-records/export', VisitLogController::class . '@export')->name('visitlogs.export');
 });

@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -15,13 +17,8 @@ class RegisterController extends Controller
   {
     $users = User::simplePaginate(5);
 
-    if ($users->isEmpty()) {
-      $message = 'No data found.';
-    } else {
-      $message = null;
-    }
     //return view('auth.register');
-    return view('content.menu.settings', compact('users', 'message'));
+    return view('content.menu.settings', compact('users'));
   }
   /*
     |--------------------------------------------------------------------------
@@ -41,7 +38,7 @@ class RegisterController extends Controller
    *
    * @var string
    */
-  protected $redirectTo = RouteServiceProvider::HOME;
+  protected $redirectTo = RouteServiceProvider::LOGIN;
 
   /**
    * Create a new controller instance.
@@ -63,14 +60,16 @@ class RegisterController extends Controller
   {
     return Validator::make($data, [
       'name' => ['required', 'string', 'max:50'],
-      'username' => ['required', 'string', 'max:50', 'unique:users'],
+      'username' => ['required', 'string', 'max:15', 'unique:users'],
       'password' => [
         'required', 'string', 'min:8', 'confirmed',
         'regex:/[a-z]/',      // must contain at least one lowercase letter
         'regex:/[A-Z]/',      // must contain at least one uppercase letter
         'regex:/[0-9]/',      // must contain at least one digit
         'regex:/[@$!%*#?&]/', // must contain a special character
+        'regex:/^\S*$/u',     // cannot contain spaces
       ],
+      'type' => ['required'],
     ]);
   }
 
@@ -86,6 +85,68 @@ class RegisterController extends Controller
       'name' => $data['name'],
       'username' => $data['username'],
       'password' => Hash::make($data['password']),
+      'type' => $data['type'],
     ]);
+  }
+
+  public function register(Request $request)
+  {
+    $this->validator($request->all())->validate();
+
+    event(new Registered($user = $this->create($request->all())));
+
+    $response = $this->registered($request, $user);
+
+    if ($response) {
+      return $response;
+    } else {
+      return redirect()->route('settings')->with('success', 'New User is successfully added!');
+    }
+  }
+
+  // Update the specified resource in storage.
+  public function update(Request $request, string $id)
+  {
+    $request->validate([
+      'name' => ['required', 'string', 'max:50'],
+      'username' => ['required', 'string', 'max:15',],
+      'password' => [
+        'nullable', 'string', 'min:8', 'confirmed',
+        'regex:/[a-z]/',      // must contain at least one lowercase letter
+        'regex:/[A-Z]/',      // must contain at least one uppercase letter
+        'regex:/[0-9]/',      // must contain at least one digit
+        'regex:/[@$!%*#?&]/', // must contain a special character
+        'regex:/^\S*$/u',     // cannot contain spaces
+      ],
+      'type' => ['required'],
+    ]);
+
+    $user = User::find($id);
+    $user->update([
+      'name' => $request->input('name'),
+      'username' => $request->input('username'),
+      'password' => $request->input('password') ? Hash::make($request->input('password')) : $user->password,
+      'type' => $request->input('type'),
+    ]);
+
+    return redirect()
+      ->back()
+      ->with('success', 'User updated successfully.');
+  }
+
+  // Remove the specified resource from storage.
+  public function destroy($id)
+  {
+    $user = User::find($id);
+    $user->delete();
+    return redirect()
+      ->back()
+      ->with('success', 'User deleted successfully.');
+  }
+
+  public function edit($id)
+  {
+    $user = User::find($id);
+    return view('settings.edit', compact('user'));
   }
 }

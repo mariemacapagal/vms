@@ -8,41 +8,25 @@
   <span class="text-muted fw-light">Settings /</span> User Management
 </h4>
 
+@if (session('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif
+
 <!-- Table and modals -->
 <div class="card">
   <div class="card-header pb-3">
-    <h5 class="card-title">Visit Logs</h5>
+    <h5 class="card-title">Users</h5>
     <div class="row">
-      <form action="{{ route('visitlogs.records') }}" method="GET">
+      <form action="" method="GET">
         @csrf
         <div class="row">
           <div class="col mt-3 d-flex justify-content-sm-between justify-content-md-end">
-            <!-- Dropdowns -->
-            <div class="dropdown">
-              <select name="status" class="form-select" onchange="this.form.submit()">
-                <option value="" selected>Select Status</option>
-                <option value="In" {{ request('status') === 'In' ? 'selected' : '' }}>In</option>
-                <option value="Out" {{ request('status') === 'Out' ? 'selected' : '' }}>Out</option>
-              </select>
-            </div>
-            <div class="dropdown ms-3">
-              <select name="filter" class="form-select" onchange="this.form.submit()">
-                <option value="" selected>Select Date Range</option>
-                <option value="today" {{ request('filter') === 'today' ? 'selected' : '' }}>Today</option>
-                <option value="this_week" {{ request('filter') === 'this_week' ? 'selected' : '' }}>This Week</option>
-                <option value="this_month" {{ request('filter') === 'this_month' ? 'selected' : '' }}>This Month</option>
-              </select>
-            </div>
-            <div class="export">
-              <!-- Export button -->
-              <a class="btn btn-secondary ms-3" href="{{ route('visitlogs.export', ['filter' => request('filter'), 'status' => request('status')]) }}">
-                <span>
-                  <i class='bx bx-export'></i>
-                  <span class="d-none d-sm-inline-block">Save CSV</span>
-                </span>
-              </a>
-            </div>
-
+            <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#add-user">
+              <i class="bx bx-plus me-1"></i> Add User
+            </button>
           </div>
         </div>
       </form>
@@ -52,102 +36,207 @@
   <hr class="m-0">
 
   <div class="table-responsive text-nowrap">
-    @if ($message)
-    <p class="text-center mt-3">{{ $message }}</p>
-    @else
-    <table class="table table-striped" id="table_visitlogs">
+    <table class="table table-striped" id="table_users">
       <thead>
         <tr>
           <th>#</th>
-          <th>Visitor #</th>
-          <th>Check In</th>
-          <th>Check Out</th>
-          <th>Log Date</th>
-          <th>Status</th>
+          <th>Employee Name</th>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Actions</th>
         </tr>
       </thead>
-      <tbody class="table-border-bottom-0 visitlogs-data">
-        @foreach ($visitlogs as $visitlog)
+      <tbody class="table-border-bottom-0 users-data">
+        @foreach ($users as $user)
           <tr>
-            <td>{{ $visitlog->id }}</td>
-            <td><span class="fw-medium">{{ $visitlog->visitor_id }}</span> <a href="#" data-bs-toggle="modal" data-bs-target="#view{{ $visitlog->visitor_id }}"><i class='bx bx-qr'></i></a></td>
-            <td>{{ $visitlog->check_in }}</td>
-            <td>{{ $visitlog->check_out }}</td>
-            <td>{{ $visitlog->log_date }}</td>
-            <td><span class="badge me-1 {{ $visitlog->status == 'OUT' ? 'bg-label-success' : 'bg-label-info'}}">{{ $visitlog->status }}</span></td>
+            <td>{{ $user->id }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->username }}</td>
+            <td>{{ $user->type }}</td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{ $user->id }}">
+                    <i class="bx bx-edit-alt me-1"></i> Edit
+                  </button>
+                  <form action="{{ route('settings.destroy', $user->id) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="dropdown-item"><i class="bx bx-trash me-1"></i> Delete</button>
+                  </form>
+                </div>
+              </div>
+            </td>
           </tr>
-        @foreach ($visitors as $visitor)
-          <!-- VIEW Modal -->
-          <div class="col-lg-4 col-md-6">
-            <div>
-              <!-- Modal -->
-              <div class="modal fade" id="view{{ $visitor->id }}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modalCenterTitle">Visitor Details | # {{ $visitor->id }}</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="text-center">
-                        <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
-                          alt="QRCode{{ $visitor->id }}" />
-                          <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
-                      </div>
-
-                      <div class="row mb-3">
-                        <div class="col">
-                          <label for="visitor_name" class="form-label">Visitor's Name</label>
-                          <input type="text" id="visitor_name" class="form-control capitalize-words" name="visitor_name"
-                            value="{{ $visitor->visitor_name }}" readonly/>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <div class="col">
-                          <label for="visit_purpose" class="form-label">Purpose of Visit</label>
-                          <input type="text" id="visit_purpose" class="form-control" name="visit_purpose"
-                            value="{{ $visitor->visit_purpose }}" readonly />
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <div class="col">
-                          <label for="resident_name" class="form-label">Resident's Name</label>
-                          <input type="text" id="resident_name" class="form-control" name="resident_name"
-                            value="{{ $visitor->resident_name }}" readonly />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col mb-3">
-                          <label for="license_plate" class="form-label">License Plate</label>
-                          <input type="text" id="license_plate" class="form-control" name="license_plate"
-                            value="{{ $visitor->license_plate }}" readonly />
-                        </div>
-                        <div class="col">
-                          <label for="visit_date" class="form-label">Date of Visit</label>
-                          <input type="text" id="visit_date" class="form-control" name="visit_date"
-                            value="{{ $visitor->visit_date }}" readonly />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                    </div>
+          <!-- EDIT Modal -->
+        <div class="col-lg-4 col-md-6">
+          <div>
+            <!-- Modal -->
+            <div class="modal fade" id="edit{{ $user->id }}" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalCenterTitle">Edit User Details | User # {{ $user->id }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                    <div class="modal-body">
+                      <form id="formAuthentication" action="{{ route('settings.update', $user->id) }}" method="POST">
+                        @csrf @method('PUT')
+                        <div class="mb-3">
+                          <label for="name" class="form-label">{{ __('Name') }}</label>
+                          <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="name" maxlength="60" autofocus value="{{$user->name}}">
+
+                          @error('name')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="username" class="form-label">{{ __('Username') }}</label>
+                          <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" minlength="6" maxlength="15" autocomplete="username" required value="{{$user->username}}">
+
+                          @error('username')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                          @enderror
+                        </div>
+
+                        <div class="mb-3 form-password-toggle">
+                          <label for="password" class="form-label">{{ __('New Password') }}</label>
+                          <div class="input-group input-group-merge">
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" minlength="8" autocomplete="new-password">
+                            <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+
+                            @error('password')
+                              <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                              </span>
+                            @enderror
+                          </div>
+                        </div>
+
+                        <div class="mb-3 form-password-toggle">
+                          <label for="password-confirm" class="form-label">{{ __('Confirm New Password') }}</label>
+                          <div class="input-group input-group-merge">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                          </div>
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="type" class="form-label">{{ __('User Type') }}</label>
+                          <select name="type" class="form-select">
+                            <option value="0" {{ $user->type === "User" ? "selected" : "" }}>Guard / User</option>
+                            <option value="1" {{ $user->type === "Admin" ? "selected" : "" }}>OIC / Admin</option>
+                          </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary d-grid w-100">Update</button>
+                      </form>
+                    </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         @endforeach
-        @endforeach
       </tbody>
     </table>
-    @endif
   </div>
-  <div class="pt-3 px-3">
-    {{ $visitlogs->links() }}
+  <div class="pt-3 px-3 d-flex justify-content-end">
+    {{ $users->links() }}
   </div>
 </div>
+
+<!-- Add User Modal -->
+<div class="col-lg-4 col-md-6">
+  <div class="col-4">
+    <!-- Modal -->
+    <div class="modal fade" id="add-user" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">Add a user</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+            <div class="modal-body">
+              <form id="formAuthentication" class="mb-3" action="{{ route('register') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                  <label for="name" class="form-label">{{ __('Name') }}</label>
+                  <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" maxlength="60" autofocus>
+
+                  @error('name')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+
+                <div class="mb-3">
+                  <label for="username" class="form-label">{{ __('Username') }}</label>
+                  <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" minlength="6" maxlength="15" autocomplete="username" required>
+
+                  @error('username')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+
+                <div class="mb-3 form-password-toggle">
+                  <label for="password" class="form-label">{{ __('Password') }}</label>
+                  <small class="text-muted"> (must contain lowercase and uppercase letters, a special character, and a digit)</small>
+                  <div class="input-group input-group-merge">
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" minlength="8" autocomplete="new-password" required>
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+
+                    @error('password')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+                </div>
+
+                <div class="mb-3 form-password-toggle">
+                  <label for="password-confirm" class="form-label">{{ __('Confirm Password') }}</label>
+                  <div class="input-group input-group-merge">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="type" class="form-label">{{ __('User Type') }}</label>
+                  <select name="type" class="form-select">
+                    <option value="0">Guard / User</option>
+                    <option value="1">OIC / Admin</option>
+                  </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary d-grid w-100" id="addUserBtn">Add</button>
+              </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("addUserBtn").addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the form from submitting
+
+      // You can add additional validation or processing logic here before submitting the form
+      document.getElementById("formAuthentication").submit();
+    });
+  });
+  </script>
 
 @endsection

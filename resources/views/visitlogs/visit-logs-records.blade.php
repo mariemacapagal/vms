@@ -140,7 +140,7 @@
     </table>
     @endif
   </div>
-  <div class="pt-3 px-3">
+  <div class="pt-3 px-3 d-flex justify-content-end">
     {{ $visitlogs->links() }}
   </div>
 </div>

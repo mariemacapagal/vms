@@ -24,7 +24,7 @@
     {
       "url": "/visitors-records",
       "name": "Visitors",
-      "icon": "menu-icon tf-icons bx bx-user-check",
+      "icon": "menu-icon tf-icons bx bx-group",
       "slug": "visitors.records"
     },
     {
@@ -46,7 +46,7 @@
       "url": "/settings",
       "icon": "menu-icon tf-icons bx bx-cog",
       "name": "Settings",
-      "slug": "register"
+      "slug": "settings"
     }
   ]
 }

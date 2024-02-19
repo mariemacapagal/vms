@@ -3,6 +3,12 @@
 @section('title', 'Records: Visitors')
 
 @section('content')
+@if (session('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif
 <!-- Table and modals -->
 <div class="card">
   <div class="card-header pb-3">
@@ -95,10 +101,12 @@
                 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{ $visitor->id }}">
                   <i class="bx bx-edit-alt me-1"></i> Edit
                 </button>
-                <form action="{{ route('visitors.destroy', $visitor->id) }}" method="post">
+                <form action="{{ route('visitors.delete', $visitor->id) }}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="dropdown-item"><i class="bx bx-trash me-1"></i> Delete</button>
+                  <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this visitor?')">
+                    <i class="bx bx-trash me-1"></i> Delete
+                  </button>
                 </form>
               </div>
             </div>
@@ -240,7 +248,7 @@
     </table>
     @endif
   </div>
-  <div class="pt-3 px-3">
+  <div class="pt-3 px-3 d-flex justify-content-end">
     {{ $visitors->links() }}
   </div>
 </div>
