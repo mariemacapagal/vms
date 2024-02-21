@@ -28,7 +28,7 @@ class Reports extends Controller
     return view('content.menu.reports', compact('tableSelection', 'fetchedData', 'start_date', 'end_date_full'));
   }
 
-  public function exportToCsv(Request $request)
+  public function export(Request $request)
   {
     $tableSelection = $request->input('table_selection');
     $start_date = $request->input('start_date');

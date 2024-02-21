@@ -15,7 +15,8 @@ class Dashboard extends Controller
     $visitors = Visitor::all();
     $visitLogs = VisitLog::all();
 
-    $today = Carbon::today();
+    $todayVisitors = $visitors->where('visit_date', Carbon::today()->format('Y-m-d'))->count();
+
 
     $totalVisitors =  $visitors->count();
     $totalVisitLogs = $visitLogs->count();
@@ -37,6 +38,6 @@ class Dashboard extends Controller
         return $day->count();
       });
 
-    return view('content.dashboard.dashboard', compact('visitors', 'visitLogs', 'totalVisitors', 'totalVisitLogs', 'visitPurpose', 'visitorCount'));
+    return view('content.dashboard.dashboard', compact('visitors', 'visitLogs', 'totalVisitors', 'totalVisitLogs', 'visitPurpose', 'visitorCount', 'todayVisitors'));
   }
 }

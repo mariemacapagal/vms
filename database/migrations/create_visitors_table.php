@@ -18,19 +18,33 @@ return new class extends Migration
       $table->string('visit_purpose', 30);
       $table->string('resident_name', 60);
       $table->date('visit_date');
-      $table->string('visitor_qrcode', 32);
+      $table->string('visitor_qrcode', 35)->nullable();
       $table->string('registered_date');
       $table->timestamps();
     });
 
     Schema::create('deleted_visitors', function (Blueprint $table) {
       $table->id();
+      $table->integer('visitor_id');
       $table->string('visitor_name', 60);
       $table->string('license_plate', 8);
       $table->string('visit_purpose', 30);
       $table->string('resident_name', 60);
       $table->date('visit_date');
-      $table->string('visitor_qrcode', 32);
+      $table->string('visitor_qrcode', 35);
+      $table->string('registered_date');
+      $table->timestamps();
+    });
+
+    Schema::create('visitor_histories', function (Blueprint $table) {
+      $table->id();
+      $table->integer('visitor_id');
+      $table->string('visitor_name', 60);
+      $table->string('license_plate', 8);
+      $table->string('visit_purpose', 30);
+      $table->string('resident_name', 60);
+      $table->date('visit_date');
+      $table->string('visitor_qrcode', 35);
       $table->string('registered_date');
       $table->timestamps();
     });
@@ -43,5 +57,6 @@ return new class extends Migration
   {
     Schema::dropIfExists('visitors');
     Schema::dropIfExists('deleted_visitors');
+    Schema::dropIfExists('visitors_history');
   }
 };

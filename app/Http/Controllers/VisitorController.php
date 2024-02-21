@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use App\Models\Visitor;
 use App\Models\DeletedVisitor;
+use App\Models\VisitorHistory;
 
 class VisitorController extends Controller
 {
@@ -131,17 +132,24 @@ class VisitorController extends Controller
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
     $visit_date = $request->input('visit_date');
-    $visitor_qrcode = hash('md5', $visitor_name . ' ' . $datetime);
 
-    Visitor::create([
+    $visitor = Visitor::create([
       'visitor_name' => $visitor_name,
       'license_plate' => $license_plate,
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
       'visit_date' => $visit_date,
-      'visitor_qrcode' => $visitor_qrcode,
       'registered_date' => $datetime,
     ]);
+
+    $visitor_qrcode = hash('md5', $visitor->id);
+    $visitor->update(['visitor_qrcode' => 'VMS' . $visitor_qrcode]);
+
+    // Create a new record in visitor_histories table
+    $visitorHistory = new VisitorHistory();
+    $visitorHistory->visitor_id = $visitor->id;
+    $visitorHistory->fill($visitor->toArray());
+    $visitorHistory->save();
 
     // Retrieve the last created visitor
     $lastVisitor = Visitor::latest()->first();
@@ -154,14 +162,11 @@ class VisitorController extends Controller
   // Update the specified resource in storage.
   public function update(Request $request, string $id)
   {
-    $datetime = date('Y-m-d h:i:s A');
-
     $visitor_name = $request->input('visitor_name');
     $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
     $visit_date = $request->input('visit_date');
-    $visitor_qrcode = hash('md5', $visitor_name . ' ' . '_' . $datetime);
 
     $visitor = Visitor::find($id);
     $visitor->update([
@@ -170,8 +175,13 @@ class VisitorController extends Controller
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
       'visit_date' => $visit_date,
-      'visitor_qrcode' => $visitor_qrcode,
     ]);
+
+    // Create a new record in visitor_histories table
+    $visitorHistory = new VisitorHistory();
+    $visitorHistory->visitor_id = $id;
+    $visitorHistory->fill($visitor->toArray());
+    $visitorHistory->save();
 
     return redirect()
       ->back()
@@ -181,6 +191,7 @@ class VisitorController extends Controller
   public function edit($id)
   {
     $visitor = Visitor::find($id);
+
     return view('visitors.edit', compact('visitor'));
   }
 
@@ -188,16 +199,11 @@ class VisitorController extends Controller
   {
     $visitor = Visitor::find($id);
 
-    // Create a new record in the deleted_visitors table
-    DeletedVisitor::create([
-      'visitor_name' => $visitor->visitor_name,
-      'license_plate' => $visitor->license_plate,
-      'visit_purpose' => $visitor->visit_purpose,
-      'resident_name' => $visitor->resident_name,
-      'visit_date' => $visitor->visit_date,
-      'visitor_qrcode' => $visitor->visitor_qrcode,
-      'registered_date' => $visitor->registered_date,
-    ]);
+    // Create a new record in deleted_visitors table
+    $deletedVisitor = new DeletedVisitor();
+    $deletedVisitor->visitor_id = $id;
+    $deletedVisitor->fill($visitor->toArray());
+    $deletedVisitor->save();
 
     // Delete the record from the visitors table
     $visitor->delete();
