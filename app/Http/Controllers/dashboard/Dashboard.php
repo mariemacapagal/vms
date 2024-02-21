@@ -15,8 +15,10 @@ class Dashboard extends Controller
     $visitors = Visitor::all();
     $visitLogs = VisitLog::all();
 
-    $todayVisitors = $visitors->where('visit_date', Carbon::today()->format('Y-m-d'))->count();
-
+    $todayVisitors = $visitors->whereBetween('registered_date', [
+      Carbon::today()->startOfDay(),
+      Carbon::today()->endOfDay(),
+    ])->count();
 
     $totalVisitors =  $visitors->count();
     $totalVisitLogs = $visitLogs->count();

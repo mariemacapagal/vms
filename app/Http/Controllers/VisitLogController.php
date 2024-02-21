@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\VisitLog;
 use App\Models\Visitor;
+use App\Models\VisitorHistory;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -15,6 +16,7 @@ class VisitLogController extends Controller
   public function index()
   {
     $visitors = Visitor::all();
+    $visitorHistory = VisitorHistory::all();
     $visitlogs = VisitLog::orderBy('id', 'desc')
       ->simplePaginate(5)
       ->fragment('table_visitlogs');
@@ -24,7 +26,7 @@ class VisitLogController extends Controller
     } else {
       $message = null;
     }
-    return view('visitlogs.index', compact('visitlogs', 'visitors', 'message'));
+    return view('visitlogs.index', compact('visitlogs', 'visitors', 'visitorHistory', 'message'));
   }
 
   // Filter Visit Logs
@@ -55,8 +57,10 @@ class VisitLogController extends Controller
     $filter = request('filter');
     $status = request('status');
     $visitors = Visitor::all();
+    $visitorHistory = VisitorHistory::all();
 
     $visitlogs = $this->filterVisitLogs($filter, $status,)->paginate(10);
+
 
     if ($visitlogs->isEmpty()) {
       $message = 'No data found.';
@@ -64,7 +68,7 @@ class VisitLogController extends Controller
       $message = null;
     }
 
-    return view('visitlogs.visit-logs-records', compact('visitlogs', 'visitors', 'message'));
+    return view('visitlogs.visit-logs-records', compact('visitlogs', 'visitors', 'visitorHistory', 'message'));
   }
 
   // export records
@@ -130,7 +134,6 @@ class VisitLogController extends Controller
     return response()->download($filePath, 'VisitLogs.csv')->deleteFileAfterSend();
   }
 
-
   // Store a newly created resource in storage.
   public function store(Request $request)
   {
@@ -143,24 +146,39 @@ class VisitLogController extends Controller
       // Find visitor by QR code
       $visitor = Visitor::where('visitor_qrcode', $visitor_qrcode)->first();
 
-      if ($visitor->visit_date == $date) {
+      if ($visitor && $visitor->visit_date == $date) {
         // Find visit log by the visitor ID
-        $visitlog = VisitLog::where('visitor_id', $visitor->id)->first();
+        $visitlog = VisitLog::where('visitor_id', $visitor->id)->latest()->first();
+
         if ($visitlog) {
           if ($visitlog->status == 'OUT') {
+            // Create a new visit log entry for check-in
+            VisitLog::create([
+              'visitor_id' => $visitor->id,
+              'visit_purpose' => $visitor->visit_purpose,
+              'resident_name' => $visitor->resident_name,
+              'check_in' => $datetime,
+              'log_date' => $date,
+              'status' => 'IN',
+            ]);
+
             return redirect()
               ->route('visitlogs.index')
-              ->with('error', 'QR Code has already been used and is now invalid.');
-          } else {
+              ->with('success', 'Checked in successfully!');
+          } elseif ($visitlog->status == 'IN') {
+            // Update the visit log for check-out
             $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
+
             return redirect()
               ->route('visitlogs.index')
               ->with('success', 'Checked out successfully!');
           }
         } else {
-          // Create a new visit log entry
+          // Create a new visit log entry for check-in
           VisitLog::create([
             'visitor_id' => $visitor->id,
+            'visit_purpose' => $visitor->visit_purpose,
+            'resident_name' => $visitor->resident_name,
             'check_in' => $datetime,
             'log_date' => $date,
             'status' => 'IN',
@@ -181,6 +199,9 @@ class VisitLogController extends Controller
         ->with('error', 'Please scan your QR Code.');
     }
   }
+
+
+
 
   // Display the specified resource.
   public function show(string $id)

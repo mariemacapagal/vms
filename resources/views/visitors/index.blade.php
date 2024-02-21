@@ -299,13 +299,16 @@
     {{ $visitors->links() }}
   </div>
 </div>
+
 <script>
-  // Get today's date in the format YYYY-MM-DD
-  const today = new Date().toISOString().split('T')[0];
+  // Get today's date in the local timezone (Philippines)
+
+  const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
 
   // Set the value of the date input field to today's date
   document.getElementById('visit_date').value = today;
 </script>
+
 <script>
   // Add event listeners to all input fields with class "capitalize-words"
   document.querySelectorAll('.capitalize-words').forEach(input => {

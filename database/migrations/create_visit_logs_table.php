@@ -14,6 +14,8 @@ return new class extends Migration
     Schema::create('visit_logs', function (Blueprint $table) {
       $table->id();
       $table->string('visitor_id');
+      $table->string('visit_purpose', 30);
+      $table->string('resident_name', 60);
       $table->string('check_in');
       $table->string('check_out')->nullable();
       $table->date('log_date');
