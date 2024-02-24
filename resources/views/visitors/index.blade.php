@@ -2,8 +2,11 @@
 
 @section('title', 'Visitor Registration')
 
-@section('content')
+@section('page-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/css/pages/modal-print.css')}}">
+@endsection
 
+@section('content')
 <h4 class="py-2 mb-4">Visitor Registration</h4>
 
 <!-- Visitor Form / Registration -->
@@ -159,7 +162,7 @@
           </td>
         </tr>
         <!-- VIEW Modal -->
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6" id="print-modal">
           <div>
             <!-- Modal -->
             <div class="modal fade" id="view{{ $visitor->id }}" tabindex="-1" aria-hidden="true">
@@ -175,8 +178,6 @@
                         alt="QRCode{{ $visitor->id }}" />
                         <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                     </div>
-
-
                     <div class="row mb-3">
                       <div class="col">
                         <label for="visitor_name" class="form-label">Visitor's Name</label>
@@ -213,7 +214,8 @@
                   </div>
 
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="window.print()">Print</button>
                   </div>
                 </div>
               </div>
@@ -281,7 +283,7 @@
                     </div>
 
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                   </form>
@@ -301,11 +303,8 @@
 </div>
 
 <script>
-  // Get today's date in the local timezone (Philippines)
-
+  // Get today's date
   const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
-
-  // Set the value of the date input field to today's date
   document.getElementById('visit_date').value = today;
 </script>
 
@@ -331,4 +330,5 @@
     });
   });
 </script>
+
 @endsection

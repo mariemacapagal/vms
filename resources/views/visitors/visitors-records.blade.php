@@ -2,6 +2,10 @@
 
 @section('title', 'Records: Visitors')
 
+@section('page-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/css/pages/modal-print.css')}}">
+@endsection
+
 @section('content')
 @if (session('success'))
 	<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -49,7 +53,7 @@
 
 						<div class="export">
 							<!-- Export button -->
-							<a class="btn btn-secondary ms-3"
+							<a class="btn btn-primary ms-3"
 								href="{{ route('visitors.export', ['filter' => request('filter'), 'purpose' => request('purpose'), 'search' => request('search')]) }}">
 								<span>
 									<i class='bx bx-export'></i>
@@ -122,7 +126,7 @@
 							</td>
 						</tr>
 						<!-- VIEW Modal -->
-						<div class="col-lg-4 col-md-6">
+						<div class="col-lg-4 col-md-6" id="print-modal">
 							<div>
 								<!-- Modal -->
 								<div class="modal fade" id="view{{ $visitor->id }}" tabindex="-1" aria-hidden="true">
@@ -180,8 +184,8 @@
 											</div>
 
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary"
-													data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="window.print()">Print</button>
 											</div>
 										</div>
 									</div>
@@ -264,7 +268,7 @@
 												</div>
 
 												<div class="modal-footer">
-													<button type="button" class="btn btn-outline-secondary"
+													<button type="button" class="btn btn-outline-dark"
 														data-bs-dismiss="modal">Close</button>
 													<button type="submit" class="btn btn-primary">Update</button>
 												</div>

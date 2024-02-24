@@ -36,12 +36,11 @@ $navbarDetached = ($navbarDetached ?? '');
         <!-- System Title -->
         <div class="navbar-nav align-items-center">
           <div class="nav-item d-flex align-items-center">
-            <b>Visitor Management System</b>
+            <span class="text-primary d-none d-sm-block fw-bold">Villa Teresa's Visitor Management System</span>
           </div>
         </div>
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
-
           <!-- User -->
           <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">

@@ -30,7 +30,7 @@
             </div>
             <div class="export">
               <!-- Export button -->
-              <a class="btn btn-secondary ms-3" href="{{ route('visitlogs.export', ['filter' => request('filter'), 'status' => request('status')]) }}">
+              <a class="btn btn-primary ms-3" href="{{ route('visitlogs.export', ['filter' => request('filter'), 'status' => request('status')]) }}">
                 <span>
                   <i class='bx bx-export'></i>
                   <span class="d-none d-sm-inline-block">Save CSV</span>

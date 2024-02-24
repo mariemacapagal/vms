@@ -8,7 +8,8 @@
 @endsection
 
 @section('content')
-<div class="container-xxl">
+<div class="container-fluid bg-image" style="background-image: url('assets/img/backgrounds/villa-teresa.png'); background-size: cover; background-repeat: no-repeat;">
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 1;"></div>
   <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
       <!-- Register -->
@@ -16,8 +17,8 @@
         <div class="card-body">
           <!-- Logo -->
           <div class="app-brand justify-content-center">
-            <a href="{{url('/')}}" class="app-brand-link gap-2">
-              <span class="app-brand-text text-body fw-bold">{{config('variables.systemName')}}</span>
+            <a href="{{url('/')}}" class="app-brand-link">
+              <span class="h4 text-body text-wrap fw-bold text-primary text-center mb-0">{{config('variables.systemName')}}</span>
             </a>
           </div>
           <!-- /Logo -->
@@ -42,11 +43,6 @@
               <div class="input-group input-group-merge">
                 <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-              </div>
-              <div class="text-end">
-                <a href="{{url('auth/forgot-password-basic')}}">
-                  <small>Forgot Password?</small>
-                </a>
               </div>
             </div>
             <div class="mb-3">
