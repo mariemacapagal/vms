@@ -20,25 +20,25 @@ class CreateUsersSeeder extends Seeder
         'name' => 'Angelo Cometa',
         'username' => 'admin_coms',
         'type' => 1,
-        'password' => bcrypt('12345678'),
+        'password' => bcrypt('Pass123!'),
       ],
       [
         'name' => 'Ed Marie Macapagal',
         'username' => 'admin_marie',
         'type' => 1,
-        'password' => bcrypt('12345678'),
+        'password' => bcrypt('Pass123!'),
       ],
       [
         'name' => 'Hanneka Puri',
         'username' => 'user_nika',
         'type' => 0,
-        'password' => bcrypt('12345678'),
+        'password' => bcrypt('Pass123!'),
       ],
       [
         'name' => 'Kim De Leon',
         'username' => 'user_kim',
         'type' => 0,
-        'password' => bcrypt('12345678'),
+        'password' => bcrypt('Pass123!'),
       ],
     ];
 
