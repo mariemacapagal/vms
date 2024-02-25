@@ -55,7 +55,7 @@
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->type }}</td>
                     <td>
-                        <div class="dropdown">
+                        <div class="dropdown" style="overflow: visible;">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                 data-bs-toggle="dropdown">
                                 <i class="bx bx-dots-vertical-rounded"></i>
