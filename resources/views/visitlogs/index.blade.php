@@ -10,17 +10,15 @@
     video: document.getElementById('preview')
     });
 
-    Instascan.Camera.getCameras()
-    .then(function (cameras) {
+    Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
-        scanner.start(cameras[0]);
+          scanner.start(cameras[0]);
         } else {
-        alert('No cameras found');
+          console.error('No cameras found.');
         }
-    })
-    .catch(function (e) {
+      }).catch(function (e) {
         console.error(e);
-    });
+      });
 
     scanner.addListener('scan', function (c) {
     document.getElementById('visitor_qrcode').value = c;
