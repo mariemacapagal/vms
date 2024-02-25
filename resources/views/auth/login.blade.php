@@ -8,8 +8,8 @@
 @endsection
 
 @section('content')
-<div class="container-fluid bg-image" style="background-image: url('assets/img/backgrounds/villa-teresa.png'); background-size: cover; background-repeat: no-repeat;">
-  <div style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 1; overflow: hidden;"></div>
+<div class="container-fluid bg-image" style="background-image: url('assets/img/backgrounds/villa-teresa.png'); background-size: cover; background-repeat: no-repeat; width: 100vw; height: 100vh;">
+  <div style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 1;"></div>
   <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
       <!-- Register -->
