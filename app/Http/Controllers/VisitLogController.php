@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\VisitLog;
 use App\Models\Visitor;
-use App\Models\VisitorHistory;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -16,7 +15,6 @@ class VisitLogController extends Controller
   public function index()
   {
     $visitors = Visitor::all();
-    $visitorHistory = VisitorHistory::all();
     $visitlogs = VisitLog::orderBy('id', 'desc')
       ->simplePaginate(5)
       ->fragment('table_visitlogs');
@@ -26,7 +24,7 @@ class VisitLogController extends Controller
     } else {
       $message = null;
     }
-    return view('visitlogs.index', compact('visitlogs', 'visitors', 'visitorHistory', 'message'));
+    return view('visitlogs.index', compact('visitlogs', 'visitors', 'message'));
   }
 
   // Filter Visit Logs
@@ -57,7 +55,6 @@ class VisitLogController extends Controller
     $filter = request('filter');
     $status = request('status');
     $visitors = Visitor::all();
-    $visitorHistory = VisitorHistory::all();
 
     $visitlogs = $this->filterVisitLogs($filter, $status,)->paginate(10);
 
@@ -68,7 +65,7 @@ class VisitLogController extends Controller
       $message = null;
     }
 
-    return view('visitlogs.visit-logs-records', compact('visitlogs', 'visitors', 'visitorHistory', 'message'));
+    return view('visitlogs.visit-logs-records', compact('visitlogs', 'visitors', 'message'));
   }
 
   // export records
@@ -199,9 +196,6 @@ class VisitLogController extends Controller
         ->with('error', 'Please scan your QR Code.');
     }
   }
-
-
-
 
   // Display the specified resource.
   public function show(string $id)
