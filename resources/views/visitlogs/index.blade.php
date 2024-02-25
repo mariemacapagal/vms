@@ -28,44 +28,6 @@
       document.getElementById('qrcodescanner').submit();
   });
 </script>
-<script>
-  let scanner = null;
-
-  async function startScanner() {
-      const cameras = await getCameras();
-      if (cameras.length > 0) {
-          const backCamera = cameras.find(camera => camera.label.toLowerCase().includes('back'));
-          const selectedCamera = backCamera || cameras[0];
-
-          scanner = new Instascan.Scanner({
-              video: document.getElementById('preview'),
-              mirror: false
-          });
-
-          scanner.addListener('scan', function (c) {
-              document.getElementById('visitor_qrcode').value = c;
-              document.getElementById('qrcodescanner').submit();
-          });
-
-          scanner.start(selectedCamera);
-      } else {
-          console.error('No cameras found.');
-      }
-  }
-
-  async function getCameras() {
-      try {
-          const devices = await navigator.mediaDevices.enumerateDevices();
-          const cameras = devices.filter(device => device.kind === 'videoinput');
-          return cameras;
-      } catch (error) {
-          console.error('Error getting cameras:', error);
-          return [];
-      }
-  }
-
-  startScanner();
-</script>
 @endsection
 
 @section('content')
