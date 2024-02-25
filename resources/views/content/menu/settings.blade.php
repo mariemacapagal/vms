@@ -60,7 +60,7 @@
                                 data-bs-toggle="dropdown">
                                 <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu" style="overflow: visible;">
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
                                     data-bs-target="#edit{{ $user->id }}">
                                     <i class="bx bx-edit-alt me-1"></i> Edit
