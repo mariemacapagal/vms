@@ -1,0 +1,1 @@
+@media print{body *{visibility:hidden}body{background-color:#fff}.modal-content{-o-box-shadow:0 5px 15px transparent;box-shadow:0 5px 15px transparent}.btn-close,.modal-footer{display:none}#print-modal,#print-modal *{visibility:visible}#print-modal{left:0;position:absolute;top:0}@page{size:letter;margin:0}}
