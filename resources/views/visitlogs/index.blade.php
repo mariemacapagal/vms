@@ -4,6 +4,7 @@
 
 @section('page-script')
 <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script>
     let scanner = new Instascan.Scanner({
     video: document.getElementById('preview')
@@ -32,7 +33,7 @@
 <h4 class="py-2 mb-4">Scan the Visitor's QR Code</h4>
 <div class="row">
   <div class="col-md-6 mb-3">
-      <video id="preview" width="100%"></video>
+      <video id="preview" width="100%" playsinline></video>
   </div>
   <div class="col-md-6">
       <form action="{{ route('visitlogs.store') }}" method="POST" class="form-horizontal mb-3" id="qrcodescanner">

@@ -55,12 +55,12 @@
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->type }}</td>
                     <td>
-                        <div class="dropdown" style="overflow: visible;">
+                        <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                 data-bs-toggle="dropdown">
                                 <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
-                            <div class="dropdown-menu" style="overflow: visible;">
+                            <div class="dropdown-menu">
                                 <button type="button" class="dropdown-item" data-bs-toggle="modal"
                                     data-bs-target="#edit{{ $user->id }}">
                                     <i class="bx bx-edit-alt me-1"></i> Edit
