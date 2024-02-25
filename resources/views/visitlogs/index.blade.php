@@ -6,24 +6,28 @@
 <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script>
-    let scanner = new Instascan.Scanner({
-    video: document.getElementById('preview'), mirror:false});
+  let scanner = new Instascan.Scanner({
+      video: document.getElementById('preview'),
+      mirror: false
+  });
 
-
-    Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          scanner.start(cameras[0]);
-        } else {
+  Instascan.Camera.getCameras().then(function (cameras) {
+      if (cameras.length > 0) {
+          // Choose the back camera if available, otherwise use the first camera
+          const selectedCamera = cameras.find(camera => camera.name.toLowerCase().includes('back')) || cameras[0];
+          scanner.start(selectedCamera);
+      } else {
           console.error('No cameras found.');
-        }
-      }).catch(function (e) {
-        console.error(e);
-      });
+      }
+  }).catch(function (e) {
+      console.error(e);
+  });
 
-    scanner.addListener('scan', function (c) {
-    document.getElementById('visitor_qrcode').value = c;
-    document.getElementById('qrcodescanner').submit();
-    });
+  scanner.addListener('scan', function (c) {
+      document.getElementById('visitor_qrcode').value = c;
+      document.getElementById('qrcodescanner').submit();
+  });
+</script>
 </script>
 @endsection
 
