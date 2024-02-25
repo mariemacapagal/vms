@@ -6,6 +6,34 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/modal-print.css')}}">
 @endsection
 
+@section('page-script')
+<script>
+// Get today's date
+const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
+document.getElementById('visit_date').value = today;
+
+// Add event listeners to all input fields with class "capitalize-words"
+document.querySelectorAll('.capitalize-words').forEach(input => {
+  input.addEventListener('input', function() {
+    // Split the input value into words
+    let words = this.value.split(' ');
+    // Capitalize the first letter of each word
+    words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+    // Join the words back together and set as input value
+    this.value = words.join(' ');
+  });
+});
+
+// Add event listeners to all input fields with class "capitalize"
+document.querySelectorAll('.capitalize').forEach(input => {
+  input.addEventListener('input', function() {
+    // Capitalize the input value
+    this.value = this.value.toUpperCase();
+  });
+});
+</script>
+@endsection
+
 @section('content')
 <h4 class="py-2 mb-4">Visitor Registration</h4>
 
@@ -22,7 +50,8 @@
           <div class="row mb-3">
             <label class="col-sm-3 col-form-label" for="visitor_name">Visitor's Name</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control capitalize-words" id="visitor_name" name="visitor_name" maxlength="30" required />
+              <input type="text" class="form-control capitalize-words" id="visitor_name" name="visitor_name"
+                maxlength="30" required />
             </div>
           </div>
           <div class="row mb-3">
@@ -35,7 +64,8 @@
           <div class="row mb-3">
             <label class="col-sm-3 col-form-label" for="visit_purpose">Purpose of Visit</label>
             <div class="col-sm-9">
-              <select class="form-select" id="visit_purpose" name="visit_purpose" aria-label="Select a visit purpose" required>
+              <select class="form-select" id="visit_purpose" name="visit_purpose" aria-label="Select a visit purpose"
+                required>
                 <option value="" disabled selected hidden>Select a visit purpose</option>
                 <option value="Visiting">Visiting</option>
                 <option value="Delivery">Delivery</option>
@@ -75,14 +105,15 @@
   <div class="col-md-6 mb-3">
     <div class="card">
       <div class="card-header d-flex align-items-center justify-content-between">
-        <h5 class="mb-0"><b>Visitor Successfully Added!</b> | Visitor # {{ session('lastVisitor')->id }}</h5>
+        <h5 class="mb-0"><b class="text-success">Visitor Successfully Added!</b> | Visitor #
+          {{ session('lastVisitor')->id }}</h5>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-md-6 d-flex align-items-center justify-content-between">
             <img
-            src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl={{ session('lastVisitor')->visitor_qrcode }}"
-            alt="QRCode{{ session('lastVisitor')->id }}" class="mx-auto d-block"/>
+              src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl={{ session('lastVisitor')->visitor_qrcode }}"
+              alt="QRCode{{ session('lastVisitor')->id }}" class="mx-auto d-block" />
           </div>
           <div class="col-md-6">
             <div class="col mb-3">
@@ -147,13 +178,15 @@
                 <i class="bx bx-dots-vertical-rounded"></i>
               </button>
               <div class="dropdown-menu">
-                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{ $visitor->id }}">
+                <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                  data-bs-target="#edit{{ $visitor->id }}">
                   <i class="bx bx-edit-alt me-1"></i> Edit
                 </button>
                 <form action="{{ route('visitors.delete', $visitor->id) }}" method="POST">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this visitor?')">
+                  <button type="submit" class="dropdown-item"
+                    onclick="return confirm('Are you sure you want to delete this visitor?')">
                     <i class="bx bx-trash me-1"></i> Delete
                   </button>
                 </form>
@@ -174,15 +207,16 @@
                   </div>
                   <div class="modal-body">
                     <div class="text-center">
-                      <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
+                      <img
+                        src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
                         alt="QRCode{{ $visitor->id }}" />
-                        <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
+                      <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                     </div>
                     <div class="row mb-3">
                       <div class="col">
                         <label for="visitor_name" class="form-label">Visitor's Name</label>
                         <input type="text" id="visitor_name" class="form-control capitalize-words" name="visitor_name"
-                          value="{{ $visitor->visitor_name }}" readonly/>
+                          value="{{ $visitor->visitor_name }}" readonly />
                       </div>
                     </div>
                     <div class="row mb-3">
@@ -230,14 +264,16 @@
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="modalCenterTitle">Edit Visitor Details | Visitor # {{ $visitor->id }}</h5>
+                    <h5 class="modal-title" id="modalCenterTitle">Edit Visitor Details | Visitor # {{ $visitor->id }}
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <form action="{{ route('visitors.update', $visitor->id) }}" method="post">
                     @csrf @method('PUT')
                     <div class="modal-body">
                       <div class="text-center">
-                        <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
+                        <img
+                          src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
                           alt="QRCode{{ $visitor->id }}" />
                         <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                       </div>
@@ -245,20 +281,25 @@
                       <div class="row mb-3">
                         <div class="col">
                           <label for="visitor_name" class="form-label">Visitor's Name</label>
-                          <input type="text" id="visitor_name" class="form-control capitalize-words"
-                            name="visitor_name" value="{{ $visitor->visitor_name }}" maxlength="60" />
+                          <input type="text" id="visitor_name" class="form-control capitalize-words" name="visitor_name"
+                            value="{{ $visitor->visitor_name }}" maxlength="60" />
                         </div>
                       </div>
                       <div class="row mb-3">
                         <div class="col">
                           <label for="visit_purpose" class="form-label">Purpose of Visit</label>
-                            <select class="form-select" id="visit_purpose" name="visit_purpose" aria-label="Select a visit purpose">
-                              <option value="" disabled selected hidden>Select a visit purpose</option>
-                              <option value="Visiting" {{ $visitor->visit_purpose === "Visiting" ? "selected" : "" }}>Visiting</option>
-                              <option value="Delivery" {{ $visitor->visit_purpose === "Delivery" ? "selected" : "" }}>Delivery</option>
-                              <option value="Amenities" {{ $visitor->visit_purpose === "Amenities" ? "selected" : "" }}>Amenities</option>
-                              <option value="Services" {{ $visitor->visit_purpose === "Services" ? "selected" : "" }}>Services</option>
-                            </select>
+                          <select class="form-select" id="visit_purpose" name="visit_purpose"
+                            aria-label="Select a visit purpose">
+                            <option value="" disabled selected hidden>Select a visit purpose</option>
+                            <option value="Visiting" {{ $visitor->visit_purpose === "Visiting" ? "selected" : "" }}>
+                              Visiting</option>
+                            <option value="Delivery" {{ $visitor->visit_purpose === "Delivery" ? "selected" : "" }}>
+                              Delivery</option>
+                            <option value="Amenities" {{ $visitor->visit_purpose === "Amenities" ? "selected" : "" }}>
+                              Amenities</option>
+                            <option value="Services" {{ $visitor->visit_purpose === "Services" ? "selected" : "" }}>
+                              Services</option>
+                          </select>
                         </div>
                       </div>
                       <div class="row mb-3">
@@ -301,34 +342,4 @@
     {{ $visitors->links() }}
   </div>
 </div>
-
-<script>
-  // Get today's date
-  const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
-  document.getElementById('visit_date').value = today;
-</script>
-
-<script>
-  // Add event listeners to all input fields with class "capitalize-words"
-  document.querySelectorAll('.capitalize-words').forEach(input => {
-    input.addEventListener('input', function () {
-      // Split the input value into words
-      let words = this.value.split(' ');
-      // Capitalize the first letter of each word
-      words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-      // Join the words back together and set as input value
-      this.value = words.join(' ');
-    });
-  });
-</script>
-<script>
-  // Add event listeners to all input fields with class "capitalize"
-  document.querySelectorAll('.capitalize').forEach(input => {
-    input.addEventListener('input', function () {
-      // Capitalize the input value
-      this.value = this.value.toUpperCase();
-    });
-  });
-</script>
-
 @endsection

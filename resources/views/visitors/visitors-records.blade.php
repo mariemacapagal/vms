@@ -6,6 +6,34 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/modal-print.css')}}">
 @endsection
 
+@section('page-script')
+<script>
+  // Get today's date
+  const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
+  document.getElementById('visit_date').value = today;
+
+  // Add event listeners to all input fields with class "capitalize-words"
+  document.querySelectorAll('.capitalize-words').forEach(input => {
+    input.addEventListener('input', function () {
+      // Split the input value into words
+      let words = this.value.split(' ');
+      // Capitalize the first letter of each word
+      words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+      // Join the words back together and set as input value
+      this.value = words.join(' ');
+    });
+  });
+
+  // Add event listeners to all input fields with class "capitalize"
+  document.querySelectorAll('.capitalize').forEach(input => {
+    input.addEventListener('input', function () {
+      // Capitalize the input value
+      this.value = this.value.toUpperCase();
+    });
+  });
+</script>
+@endsection
+
 @section('content')
 @if (session('success'))
 	<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -35,7 +63,7 @@
 						<!-- Dropdowns -->
 						<div class="dropdown">
 							<select name="purpose" class="form-select" onchange="this.form.submit()">
-								<option value="" selected>Select Status</option>
+								<option value="" selected>Select Purpose</option>
 								<option value="Visiting" {{ request('purpose') === 'Visiting' ? 'selected' : '' }}>Visiting</option>
 								<option value="Delivery" {{ request('purpose') === 'Delivery' ? 'selected' : '' }}>Delivery</option>
 								<option value="Amenities" {{ request('purpose') === 'Amenities' ? 'selected' : '' }}>Amenities</option>

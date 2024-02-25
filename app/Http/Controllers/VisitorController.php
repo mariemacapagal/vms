@@ -8,7 +8,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use App\Models\Visitor;
 use App\Models\DeletedVisitor;
-use App\Models\VisitorHistory;
 
 class VisitorController extends Controller
 {
@@ -145,12 +144,6 @@ class VisitorController extends Controller
     $visitor_qrcode = hash('md5', $visitor->id);
     $visitor->update(['visitor_qrcode' => 'VMS' . $visitor_qrcode]);
 
-    // Create a new record in visitor_histories table
-    $visitorHistory = new VisitorHistory();
-    $visitorHistory->visitor_id = $visitor->id;
-    $visitorHistory->fill($visitor->toArray());
-    $visitorHistory->save();
-
     // Retrieve the last created visitor
     $lastVisitor = Visitor::latest()->first();
 
@@ -176,12 +169,6 @@ class VisitorController extends Controller
       'resident_name' => $resident_name,
       'visit_date' => $visit_date,
     ]);
-
-    // Create a new record in visitor_histories table
-    $visitorHistory = new VisitorHistory();
-    $visitorHistory->visitor_id = $id;
-    $visitorHistory->fill($visitor->toArray());
-    $visitorHistory->save();
 
     return redirect()
       ->back()

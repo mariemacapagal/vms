@@ -85,7 +85,7 @@
           <td><span class="badge me-1 {{ $visitlog->status == 'OUT' ? 'bg-label-success' : 'bg-label-info'}}">{{ $visitlog->status }}</span></td>
         </tr>
 
-          <!-- VIEW Modal -->
+        <!-- VIEW Modal -->
         <div class="col-lg-4 col-md-6">
           <div>
             <!-- Modal -->
