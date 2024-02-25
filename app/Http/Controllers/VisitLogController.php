@@ -143,12 +143,17 @@ class VisitLogController extends Controller
       // Find visitor by QR code
       $visitor = Visitor::where('visitor_qrcode', $visitor_qrcode)->first();
 
-      if ($visitor && $visitor->visit_date == $date) {
+      if ($visitor) {
         // Find visit log by the visitor ID
         $visitlog = VisitLog::where('visitor_id', $visitor->id)->latest()->first();
 
-        if ($visitlog) {
-          if ($visitlog->status == 'OUT') {
+        if ($visitlog && $visitlog->status == 'IN') {
+          $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
+          return redirect()
+            ->route('visitlogs.index')
+            ->with('success', 'Checked out successfully!');
+        } elseif ($visitor->visit_date == $date) {
+          if ($visitor || $visitlog->status == 'OUT') {
             // Create a new visit log entry for check-in
             VisitLog::create([
               'visitor_id' => $visitor->id,
@@ -162,45 +167,21 @@ class VisitLogController extends Controller
             return redirect()
               ->route('visitlogs.index')
               ->with('success', 'Checked in successfully!');
-          } elseif ($visitlog->status == 'IN') {
-            // Update the visit log for check-out
-            $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
-
-            return redirect()
-              ->route('visitlogs.index')
-              ->with('success', 'Checked out successfully!');
           }
         } else {
-          // Create a new visit log entry for check-in
-          VisitLog::create([
-            'visitor_id' => $visitor->id,
-            'visit_purpose' => $visitor->visit_purpose,
-            'resident_name' => $visitor->resident_name,
-            'check_in' => $datetime,
-            'log_date' => $date,
-            'status' => 'IN',
-          ]);
-
           return redirect()
             ->route('visitlogs.index')
-            ->with('success', 'Checked in successfully!');
+            ->with('error', 'Visitor is not scheduled for visit today.');
         }
       } else {
         return redirect()
           ->route('visitlogs.index')
-          ->with('error', 'QR Code is not registered for visit today.');
+          ->with('error', 'QR Code not found.');
       }
     } else {
       return redirect()
         ->route('visitlogs.index')
         ->with('error', 'Please scan your QR Code.');
     }
-  }
-
-  // Display the specified resource.
-  public function show(string $id)
-  {
-    $visitlog = VisitLog::find($id);
-    return view('visitlogs.show', compact('visitlog'));
   }
 }
