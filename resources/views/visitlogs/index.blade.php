@@ -6,11 +6,9 @@
 <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script>
-    let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 4, mirror:false })
-                .then(handleSuccess)
-                .catch(handleError);
-             //Start scanning
-             scanner.addListener('scan', foundCode);
+    let scanner = new Instascan.Scanner({
+    video: document.getElementById('preview'), mirror:false});
+
 
     Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
