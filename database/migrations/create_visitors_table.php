@@ -23,7 +23,7 @@ return new class extends Migration
       $table->timestamps();
     });
 
-    Schema::create('deleted_visitors', function (Blueprint $table) {
+    Schema::create('blocked_visitors', function (Blueprint $table) {
       $table->id();
       $table->integer('visitor_id');
       $table->string('visitor_name', 60);
@@ -43,6 +43,6 @@ return new class extends Migration
   public function down(): void
   {
     Schema::dropIfExists('visitors');
-    Schema::dropIfExists('deleted_visitors');
+    Schema::dropIfExists('blocked_visitors');
   }
 };

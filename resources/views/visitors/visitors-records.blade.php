@@ -37,7 +37,7 @@
 @section('content')
 @if (session('success'))
 	<div class="alert alert-success alert-dismissible fade show" role="alert">
-		{{ session('success') }}
+		<p class="fw-bold m-0">{{ session('success') }}</p>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
 @endif
@@ -72,7 +72,7 @@
 						</div>
 						<div class="dropdown ms-3">
 							<select name="filter" class="form-select" onchange="this.form.submit()">
-								<option value="" selected>Select Date Range</option>
+								<option value="" selected>Visit Date Range</option>
 								<option value="today" {{ request('filter') === 'today' ? 'selected' : '' }}>Today</option>
 								<option value="this_week" {{ request('filter') === 'this_week' ? 'selected' : '' }}>This Week</option>
 								<option value="this_month" {{ request('filter') === 'this_month' ? 'selected' : '' }}>This Month</option>
@@ -145,8 +145,8 @@
 											@csrf
 											@method('DELETE')
 											<button type="submit" class="dropdown-item"
-												onclick="return confirm('Are you sure you want to delete this visitor?')">
-												<i class="bx bx-trash me-1"></i> Delete
+												onclick="return confirm('Are you sure you want to block this visitor?')">
+												<i class="bx bx-block me-1"></i> Block
 											</button>
 										</form>
 									</div>
@@ -166,7 +166,7 @@
 											</div>
 											<div class="modal-body">
 												<div class="text-center">
-													<img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
+													<img src="https://quickchart.io/qr?text={{ $visitor->visitor_qrcode }}"
 														alt="QRCode{{ $visitor->id }}" />
 													<p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
 												</div>
@@ -238,7 +238,7 @@
 												@csrf @method('PUT')
 												<div class="modal-body">
 													<div class="text-center">
-														<img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
+														<img src="https://quickchart.io/qr?text={{ $visitor->visitor_qrcode }}"
 															alt="QRCode{{ $visitor->id }}" />
 														<p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}
 														</p>

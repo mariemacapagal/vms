@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use App\Models\Visitor;
-use App\Models\DeletedVisitor;
+use App\Models\blockedVisitor;
 
 class VisitorController extends Controller
 {
@@ -175,28 +175,36 @@ class VisitorController extends Controller
       ->with('success', 'Visitor updated successfully.');
   }
 
-  public function edit($id)
+  public function blockedList()
   {
-    $visitor = Visitor::find($id);
+    $blockedVisitors = blockedVisitor::orderBy('id', 'asc')
+      ->simplePaginate(10);
 
-    return view('visitors.edit', compact('visitor'));
+    if ($blockedVisitors->isEmpty()) {
+      $message = 'No data found.';
+    } else {
+      $message = null;
+    }
+
+
+    return view('visitors.blocked-visitors', compact('blockedVisitors', 'message'));
   }
 
-  public function deleteVisitors($id)
+  public function blockVisitors($id)
   {
     $visitor = Visitor::find($id);
 
-    // Create a new record in deleted_visitors table
-    $deletedVisitor = new DeletedVisitor();
-    $deletedVisitor->visitor_id = $id;
-    $deletedVisitor->fill($visitor->toArray());
-    $deletedVisitor->save();
+    // Create a new record in blocked_visitors table
+    $blockedVisitor = new blockedVisitor();
+    $blockedVisitor->visitor_id = $id;
+    $blockedVisitor->fill($visitor->toArray());
+    $blockedVisitor->save();
 
     // Delete the record from the visitors table
     $visitor->delete();
 
     return redirect()
       ->back()
-      ->with('success', 'Visitor deleted successfully.');
+      ->with('success', 'Visitor has been blocked.');
   }
 }

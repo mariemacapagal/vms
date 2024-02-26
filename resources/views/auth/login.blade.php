@@ -12,7 +12,6 @@
   <div style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 1;"></div>
   <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
-      <!-- Register -->
       <div class="card">
         <div class="card-body">
           <!-- Logo -->
@@ -26,7 +25,7 @@
           <p class="mb-3">Please log in to your account.</p>
           @if(session('error'))
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
+            <p class="fw-bold m-0">{{ session('error') }}</p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
           @endif
@@ -52,7 +51,6 @@
         </div>
       </div>
     </div>
-    <!-- /Register -->
   </div>
 </div>
 </div>

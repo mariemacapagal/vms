@@ -112,7 +112,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
         <div class="row">
           <div class="col-md-6 d-flex align-items-center justify-content-between">
             <img
-              src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl={{ session('lastVisitor')->visitor_qrcode }}"
+              src="https://quickchart.io/qr?text={{ session('lastVisitor')->visitor_qrcode }}&size=240"
               alt="QRCode{{ session('lastVisitor')->id }}" class="mx-auto d-block" />
           </div>
           <div class="col-md-6">
@@ -186,8 +186,8 @@ document.querySelectorAll('.capitalize').forEach(input => {
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="dropdown-item"
-                    onclick="return confirm('Are you sure you want to delete this visitor?')">
-                    <i class="bx bx-trash me-1"></i> Delete
+                    onclick="return confirm('Are you sure you want to block this visitor?')">
+                    <i class="bx bx-block me-1"></i> Block
                   </button>
                 </form>
               </div>
@@ -208,7 +208,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
                   <div class="modal-body">
                     <div class="text-center">
                       <img
-                        src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
+                        src="https://quickchart.io/qr?text={{ $visitor->visitor_qrcode }}"
                         alt="QRCode{{ $visitor->id }}" />
                       <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                     </div>
@@ -268,13 +268,13 @@ document.querySelectorAll('.capitalize').forEach(input => {
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
-                  <form action="{{ route('visitors.update', $visitor->id) }}" method="post">
+                  <form action="{{ route('visitors.update', $visitor->id) }}" method="POST">
                     @csrf @method('PUT')
                     <div class="modal-body">
                       <div class="text-center">
                         <img
-                          src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ $visitor->visitor_qrcode }}"
-                          alt="QRCode{{ $visitor->id }}" />
+                          src="https://quickchart.io/qr?text={{ $visitor->visitor_qrcode }}"
+                          alt="QRCode{{ $visitor->id }}"/>
                         <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                       </div>
 

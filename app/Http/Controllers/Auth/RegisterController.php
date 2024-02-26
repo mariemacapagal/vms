@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Validation\Rule;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -60,7 +61,7 @@ class RegisterController extends Controller
   {
     return Validator::make($data, [
       'name' => ['required', 'string', 'max:50'],
-      'username' => ['required', 'string', 'max:15', 'unique:users'],
+      'username' => ['required', 'string', 'max:15', 'unique:users', 'regex:/^[a-zA-Z0-9_]+$/'],
       'password' => [
         'required', 'string', 'min:8', 'confirmed',
         'regex:/[a-z]/',      // must contain at least one lowercase letter
@@ -91,7 +92,11 @@ class RegisterController extends Controller
 
   public function register(Request $request)
   {
-    $this->validator($request->all())->validate();
+    $validator = $this->validator($request->all());
+
+    if ($validator->fails()) {
+      return redirect()->route('settings')->withErrors($validator)->withInput();
+    }
 
     event(new Registered($user = $this->create($request->all())));
 
@@ -104,12 +109,13 @@ class RegisterController extends Controller
     }
   }
 
+
   // Update the specified resource in storage.
   public function update(Request $request, string $id)
   {
     $request->validate([
       'name' => ['required', 'string', 'max:50'],
-      'username' => ['required', 'string', 'max:15',],
+      'username' => ['string', 'max:15', Rule::unique('users')->ignore($id), 'regex:/^[a-zA-Z0-9_]+$/'],
       'password' => [
         'nullable', 'string', 'min:8', 'confirmed',
         'regex:/[a-z]/',      // must contain at least one lowercase letter
@@ -134,6 +140,7 @@ class RegisterController extends Controller
       ->with('success', 'User updated successfully.');
   }
 
+
   // Remove the specified resource from storage.
   public function destroy($id)
   {
@@ -142,11 +149,5 @@ class RegisterController extends Controller
     return redirect()
       ->back()
       ->with('success', 'User deleted successfully.');
-  }
-
-  public function edit($id)
-  {
-    $user = User::find($id);
-    return view('settings.edit', compact('user'));
   }
 }

@@ -17,26 +17,14 @@ class CreateUsersSeeder extends Seeder
   {
     $users = [
       [
-        'name' => 'Angelo Cometa',
-        'username' => 'admin_coms',
+        'name' => 'Marlon Gonzales',
+        'username' => 'oic_marlon',
         'type' => 1,
         'password' => bcrypt('Pass123!'),
       ],
       [
-        'name' => 'Ed Marie Macapagal',
-        'username' => 'admin_marie',
-        'type' => 1,
-        'password' => bcrypt('Pass123!'),
-      ],
-      [
-        'name' => 'Hanneka Puri',
-        'username' => 'user_nika',
-        'type' => 0,
-        'password' => bcrypt('Pass123!'),
-      ],
-      [
-        'name' => 'Kim De Leon',
-        'username' => 'user_kim',
+        'name' => 'Jestoni Manalili',
+        'username' => 'guard_jes',
         'type' => 0,
         'password' => bcrypt('Pass123!'),
       ],

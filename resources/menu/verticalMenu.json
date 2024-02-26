@@ -13,7 +13,7 @@
       "slug": "visitlogs.index"
     },
     {
-      "url": "/visitor-registration",
+      "url": "/register",
       "name": "Visitor Registration",
       "icon": "menu-icon tf-icons bx bx-user-plus",
       "slug": "visitors.index"
@@ -32,6 +32,12 @@
       "name": "Visit Logs",
       "icon": "menu-icon tf-icons bx bx-time",
       "slug": "visitlogs.records"
+    },
+    {
+      "url": "/blocked-visitors",
+      "name": "Blocked Visitors",
+      "icon": "menu-icon tf-icons bx bx-user-x",
+      "slug": "visitors.blocked"
     },
     {
       "menuHeader": "Others"

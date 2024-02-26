@@ -10,8 +10,18 @@
 
 @if (session('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ session('success') }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <p class="fw-bold m-0">{{ session('success') }}</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif
+
+@if ($errors->any())
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <p class="fw-bold m-0">The form submission failed. Please, try again.</p>
+    @foreach ($errors->all() as $error)
+      <li>{{ $error }}</li>
+    @endforeach
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 @endif
 
@@ -98,30 +108,18 @@
                                                 <label for="name"
                                                     class="form-label">{{ __('Name') }}</label>
                                                 <input id="name" type="text"
-                                                    class="form-control @error('name') is-invalid @enderror"
+                                                    class="form-control"
                                                     name="name" required autocomplete="name" maxlength="60"
                                                     autofocus value="{{ $user->name }}">
-
-                                                @error('name')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="username"
                                                     class="form-label">{{ __('Username') }}</label>
                                                 <input id="username" type="username"
-                                                    class="form-control @error('username') is-invalid @enderror"
+                                                    class="form-control"
                                                     name="username" minlength="6" maxlength="15"
                                                     autocomplete="username" required value="{{ $user->username }}">
-
-                                                @error('username')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
                                             </div>
 
                                             <div class="mb-3 form-password-toggle">
@@ -129,16 +127,10 @@
                                                     class="form-label">{{ __('New Password') }}</label>
                                                 <div class="input-group input-group-merge">
                                                     <input id="password" type="password"
-                                                        class="form-control @error('password') is-invalid @enderror"
+                                                        class="form-control"
                                                         name="password" minlength="8" autocomplete="new-password">
                                                     <span class="input-group-text cursor-pointer"><i
                                                             class="bx bx-hide"></i></span>
-
-                                                    @error('password')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
                                                 </div>
                                             </div>
 
@@ -197,35 +189,23 @@
                   </div>
 
                   <div class="modal-body">
-                      <form id="formAuthentication" class="mb-3" action="{{ route('register') }}"
+                      <form id="formAuthentication" class="mb-3" action="{{ route('settings') }}"
                           method="POST">
                           @csrf
                           <div class="mb-3">
                               <label for="name" class="form-label">{{ __('Name') }}</label>
                               <input id="name" type="text"
-                                  class="form-control @error('name') is-invalid @enderror" name="name"
-                                  value="{{ old('name') }}" required autocomplete="name" maxlength="60"
+                                  class="form-control" name="name"
+                                   required autocomplete="name" maxlength="60"
                                   autofocus>
-
-                              @error('name')
-                                  <span class="invalid-feedback" role="alert">
-                                      <strong>{{ $message }}</strong>
-                                  </span>
-                              @enderror
                           </div>
 
                           <div class="mb-3">
                               <label for="username" class="form-label">{{ __('Username') }}</label>
                               <input id="username" type="username"
-                                  class="form-control @error('username') is-invalid @enderror" name="username"
-                                  value="{{ old('username') }}" minlength="6" maxlength="15"
+                                  class="form-control" name="username"
+                                   minlength="6" maxlength="15"
                                   autocomplete="username" required>
-
-                              @error('username')
-                                  <span class="invalid-feedback" role="alert">
-                                      <strong>{{ $message }}</strong>
-                                  </span>
-                              @enderror
                           </div>
 
                           <div class="mb-3 form-password-toggle">
@@ -234,15 +214,9 @@
                                   character, and a digit)</small>
                               <div class="input-group input-group-merge">
                                   <input id="password" type="password"
-                                      class="form-control @error('password') is-invalid @enderror" name="password"
+                                      class="form-control" name="password"
                                       minlength="8" autocomplete="new-password" required>
                                   <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-
-                                  @error('password')
-                                      <span class="invalid-feedback" role="alert">
-                                          <strong>{{ $message }}</strong>
-                                      </span>
-                                  @enderror
                               </div>
                           </div>
 
@@ -262,7 +236,7 @@
                               </select>
                           </div>
 
-                          <button type="submit" class="btn btn-primary d-grid w-100" id="addUserBtn">Add</button>
+                          <button type="submit" class="btn btn-primary d-grid w-100">Add</button>
                       </form>
                   </div>
               </div>
@@ -270,15 +244,4 @@
       </div>
   </div>
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById("addUserBtn").addEventListener("click", function(event) {
-          event.preventDefault(); // Prevent the form from submitting
-
-          // You can add additional validation or processing logic here before submitting the form
-          document.getElementById("formAuthentication").submit();
-      });
-  });
-</script>
-
 @endsection

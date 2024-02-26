@@ -23,7 +23,7 @@ class Dashboard extends Controller
     $totalVisitors =  $visitors->count();
     $totalVisitLogs = $visitLogs->count();
 
-    $visitPurpose = Visitor::select('visit_purpose', Visitor::raw('count(*) as count'))
+    $visitPurpose = VisitLog::select('visit_purpose', VisitLog::raw('count(*) as count'))
       ->groupBy('visit_purpose')
       ->get();
 

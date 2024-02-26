@@ -109,7 +109,7 @@
                       <small class="text-muted">Courts, Park, Clubhouse</small>
                     </div>
                     <div class="purpose-progress">
-                      <small class="fw-medium">{{$visitors->where('visit_purpose', 'Amenities')->count()}}</small>
+                      <small class="fw-medium">{{$visitLogs->where('visit_purpose', 'Amenities')->count()}}</small>
                     </div>
                   </div>
                 </li>
@@ -123,7 +123,7 @@
                       <small class="text-muted">Shopping, Food, Appliances</small>
                     </div>
                     <div class="purpose-progress">
-                      <small class="fw-medium">{{$visitors->where('visit_purpose', 'Delivery')->count()}}</small>
+                      <small class="fw-medium">{{$visitLogs->where('visit_purpose', 'Delivery')->count()}}</small>
                     </div>
                   </div>
                 </li>
@@ -137,7 +137,7 @@
                       <small class="text-muted">Repairs, Cleaning, Installing</small>
                     </div>
                     <div class="purpose-progress">
-                      <small class="fw-medium">{{$visitors->where('visit_purpose', 'Services')->count()}}</small>
+                      <small class="fw-medium">{{$visitLogs->where('visit_purpose', 'Services')->count()}}</small>
                     </div>
                   </div>
                 </li>
@@ -151,7 +151,7 @@
                       <small class="text-muted">Family, Friends, Relatives</small>
                     </div>
                     <div class="purpose-progress">
-                      <small class="fw-medium">{{$visitors->where('visit_purpose', 'Visiting')->count()}}</small>
+                      <small class="fw-medium">{{$visitLogs->where('visit_purpose', 'Visiting')->count()}}</small>
                     </div>
                   </div>
                 </li>
