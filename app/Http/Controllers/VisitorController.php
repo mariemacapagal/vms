@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use App\Models\Visitor;
-use App\Models\blockedVisitor;
+use App\Models\BlockedVisitor;
 
 class VisitorController extends Controller
 {
@@ -177,7 +177,7 @@ class VisitorController extends Controller
 
   public function blockedList()
   {
-    $blockedVisitors = blockedVisitor::orderBy('id', 'asc')
+    $blockedVisitors = BlockedVisitor::orderBy('id', 'asc')
       ->simplePaginate(10);
 
     if ($blockedVisitors->isEmpty()) {
@@ -195,7 +195,7 @@ class VisitorController extends Controller
     $visitor = Visitor::find($id);
 
     // Create a new record in blocked_visitors table
-    $blockedVisitor = new blockedVisitor();
+    $blockedVisitor = new BlockedVisitor();
     $blockedVisitor->visitor_id = $id;
     $blockedVisitor->fill($visitor->toArray());
     $blockedVisitor->save();
