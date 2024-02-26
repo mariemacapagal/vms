@@ -186,7 +186,6 @@ class VisitorController extends Controller
       $message = null;
     }
 
-
     return view('visitors.blocked-visitors', compact('blockedVisitors', 'message'));
   }
 

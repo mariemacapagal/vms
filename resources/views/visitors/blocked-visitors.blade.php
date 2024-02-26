@@ -12,6 +12,9 @@
   <hr class="m-0">
 
   <div class="table-responsive text-nowrap">
+    @if ($message)
+			<p class="text-center mt-3">{{ $message }}</p>
+		@else
     <table class="table table-striped" id="table_users">
         <thead>
             <tr>
@@ -40,6 +43,7 @@
             @endforeach
         </tbody>
     </table>
+    @endif
   </div>
   <div class="pt-3 px-3 d-flex justify-content-end">
       {{ $blockedVisitors->links() }}
