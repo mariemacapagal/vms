@@ -64,7 +64,7 @@
           </div>
           <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
             <div class="me-2">
-              <span class="d-block mb-1">Today's New Visitors</span>
+              <span class="d-block mb-1">Today's Visitors</span>
               <h3 class="card-title text-nowrap mb-2">{{ $todayVisitors}}</h3>
             </div>
           </div>
