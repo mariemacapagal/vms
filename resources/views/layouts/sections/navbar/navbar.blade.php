@@ -36,7 +36,7 @@ $navbarDetached = ($navbarDetached ?? '');
         <!-- System Title -->
         <div class="navbar-nav align-items-center">
           <div class="nav-item d-flex align-items-center">
-            <span class="text-primary d-none d-sm-block fw-bold">Villa Teresa's Visitor Management System</span>
+            <span class="text-primary d-none d-sm-block fw-bold">Angeles City Subdivision's Visitor Management System</span>
           </div>
         </div>
 
