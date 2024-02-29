@@ -16,7 +16,7 @@ class RegisterController extends Controller
 {
   public function index()
   {
-    $users = User::simplePaginate(5);
+    $users = User::simplePaginate(10);
 
     //return view('auth.register');
     return view('content.menu.settings', compact('users'));

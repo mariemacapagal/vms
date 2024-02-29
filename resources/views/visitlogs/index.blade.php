@@ -129,8 +129,14 @@
     </table>
     @endif
   </div>
-  <div class="pt-3 px-3 d-flex justify-content-end">
+  <!-- Display on small screens with links at the end -->
+  <div class="pt-3 px-3 d-flex justify-content-end d-sm-flex d-md-none d-lg-none d-xl-none">
     {{ $visitlogs->links() }}
   </div>
+  <!-- Hide on small screens, display on medium and larger screens -->
+  <div class="pt-3 px-3 d-none d-md-block">
+    {{ $visitlogs->onEachSide(1)->links() }}
+  </div>
+
 </div>
 @endsection

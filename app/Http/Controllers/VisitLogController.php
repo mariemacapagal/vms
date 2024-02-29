@@ -16,7 +16,7 @@ class VisitLogController extends Controller
   {
     $visitors = Visitor::all();
     $visitlogs = VisitLog::orderBy('id', 'desc')
-      ->simplePaginate(5)
+      ->paginate(5)
       ->fragment('table_visitlogs');
 
     if ($visitlogs->isEmpty()) {
@@ -99,22 +99,27 @@ class VisitLogController extends Controller
     // Add headers
     $sheet->setCellValue('A1', 'ID');
     $sheet->setCellValue('B1', 'Visitor ID');
-    $sheet->setCellValue('C1', 'Check In');
-    $sheet->setCellValue('D1', 'Check Out');
-    $sheet->setCellValue('E1', 'Log Date');
-    $sheet->setCellValue('F1', 'Status');
+    $sheet->setCellValue('C1', 'Visit Purpose');
+    $sheet->setCellValue('D1', 'Resident Name');
+    $sheet->setCellValue('E1', 'Check In');
+    $sheet->setCellValue('F1', 'Check Out');
+    $sheet->setCellValue('G1', 'Log Date');
+    $sheet->setCellValue('H1', 'Status');
 
     // Add visitor data
     $row = 2;
     foreach ($visitlogs as $visitlog) {
       $sheet->setCellValue('A' . $row, $visitlog->id);
       $sheet->setCellValue('B' . $row, $visitlog->visitor_id);
-      $sheet->setCellValue('C' . $row, $visitlog->check_in);
-      $sheet->setCellValue('D' . $row, $visitlog->check_out);
-      $sheet->setCellValue('E' . $row, $visitlog->log_date);
-      $sheet->setCellValue('F' . $row, $visitlog->status);
+      $sheet->setCellValue('C' . $row, $visitlog->visit_purpose);
+      $sheet->setCellValue('D' . $row, $visitlog->resident_name);
+      $sheet->setCellValue('E' . $row, $visitlog->check_in);
+      $sheet->setCellValue('F' . $row, $visitlog->check_out);
+      $sheet->setCellValue('G' . $row, $visitlog->log_date);
+      $sheet->setCellValue('H' . $row, $visitlog->status);
       $row++;
     }
+
 
     // Create a temporary file path
     $filePath = tempnam(sys_get_temp_dir(), 'visitlogs') . '.csv';

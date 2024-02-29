@@ -15,11 +15,11 @@ return new class extends Migration
       $table->id();
       $table->string('visitor_id');
       $table->string('visit_purpose', 30);
-      $table->string('resident_name', 60);
+      $table->string('resident_name', 80);
       $table->string('check_in');
       $table->string('check_out')->nullable();
       $table->date('log_date');
-      $table->string('status');
+      $table->string('status', 3);
       $table->timestamps();
     });
   }

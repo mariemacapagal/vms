@@ -10,7 +10,8 @@ class BlockedVisitor extends Model
   use HasFactory;
   protected $fillable = [
     'visitor_id',
-    'visitor_name',
+    'visitor_first_name',
+    'visitor_last_name',
     'license_plate',
     'visit_purpose',
     'resident_name',

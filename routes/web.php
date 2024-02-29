@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
   Route::post('/register', VisitorController::class . '@store')->name('visitors.store');
   Route::get('/visitors-records/{visitor}/edit', VisitorController::class . '@edit')->name('visitors.edit');
   Route::match(['put', 'post'], '/visitors-records/{visitor}', VisitorController::class . '@update')->name('visitors.update');
-  Route::match(['post', 'delete'], '/visitors-records/{visitor}', VisitorController::class . '@blockVisitors')->name('visitors.delete');
+  Route::match(['post', 'delete'], '/visitors-records/{visitor}', VisitorController::class . '@blockVisitors')->name('visitors.block');
 
   Route::get('/visitors-records', VisitorController::class . '@records')->name('visitors.records');
   Route::get('/visitors-records/search', VisitorController::class . '@search')->name('visitors.search');
@@ -56,4 +56,5 @@ Route::middleware(['auth'])->group(function () {
 
   // Route for Blocked Visitors
   Route::get('/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
+  Route::match(['post', 'delete'], '/blocked-visitors/{visitor}', VisitorController::class . '@unblockVisitors')->name('visitors.unblock');
 });

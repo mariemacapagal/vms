@@ -13,12 +13,13 @@ return new class extends Migration
   {
     Schema::create('visitors', function (Blueprint $table) {
       $table->id();
-      $table->string('visitor_name', 60);
+      $table->string('visitor_first_name', 40);
+      $table->string('visitor_last_name', 40);
       $table->string('license_plate', 8);
       $table->string('visit_purpose', 30);
-      $table->string('resident_name', 60);
+      $table->string('resident_name', 80);
       $table->date('visit_date');
-      $table->string('visitor_qrcode', 35)->nullable();
+      $table->string('visitor_qrcode', 36)->nullable();
       $table->string('registered_date');
       $table->timestamps();
     });
@@ -26,12 +27,13 @@ return new class extends Migration
     Schema::create('blocked_visitors', function (Blueprint $table) {
       $table->id();
       $table->integer('visitor_id');
-      $table->string('visitor_name', 60);
+      $table->string('visitor_first_name', 40);
+      $table->string('visitor_last_name', 40);
       $table->string('license_plate', 8);
       $table->string('visit_purpose', 30);
-      $table->string('resident_name', 60);
+      $table->string('resident_name', 80);
       $table->date('visit_date');
-      $table->string('visitor_qrcode', 35);
+      $table->string('visitor_qrcode', 36);
       $table->string('registered_date');
       $table->timestamps();
     });

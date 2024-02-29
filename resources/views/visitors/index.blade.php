@@ -36,7 +36,12 @@ document.querySelectorAll('.capitalize').forEach(input => {
 
 @section('content')
 <h4 class="py-2 mb-4">Visitor Registration</h4>
-
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <p class="fw-bold m-0">{{ session('error') }}</p>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 <!-- Visitor Form / Registration -->
 <div class="row">
   <div class="col-md-6 mb-3">
@@ -47,11 +52,15 @@ document.querySelectorAll('.capitalize').forEach(input => {
       <div class="card-body">
         <form id="visitorForm" action="{{ route('visitors.store') }}" method="POST">
           @csrf
-          <div class="row mb-3">
+          <div class="row">
             <label class="col-sm-3 col-form-label" for="visitor_name">Visitor's Name</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control capitalize-words" id="visitor_name" name="visitor_name"
-                maxlength="30" required />
+            <div class="col-sm-5 mb-3">
+              <input type="text" class="form-control capitalize-words" id="visitor_first_name" name="visitor_first_name"
+                maxlength="40" placeholder="First Name" required />
+            </div>
+            <div class="col-sm-4 mb-3">
+              <input type="text" class="form-control capitalize-words" id="visitor_last_name" name="visitor_last_name"
+                maxlength="40" placeholder="Last Name" required />
             </div>
           </div>
           <div class="row mb-3">
@@ -78,7 +87,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
             <label class="col-sm-3 col-form-label" for="resident_name">Resident's Name</label>
             <div class="col-sm-9">
               <input type="text" class="form-control capitalize-words" id="resident_name" name="resident_name"
-                maxlength="60" required />
+                maxlength="80" required />
             </div>
           </div>
           <div class="row mb-3">
@@ -99,7 +108,6 @@ document.querySelectorAll('.capitalize').forEach(input => {
       </div>
     </div>
   </div>
-
   <!-- Show newly added visitor -->
   @if(session('lastVisitor'))
   <div class="col-md-6 mb-3">
@@ -119,7 +127,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
             <div class="col mb-3">
               <label for="visitor_name" class="form-label">Visitor's Name</label>
               <input type="text" id="visitor_name" class="form-control" name="visitor_name"
-                value="{{ session('lastVisitor')->visitor_name }}" readonly />
+                value="{{ session('lastVisitor')->visitor_first_name }} {{ session('lastVisitor')->visitor_last_name }}" readonly />
             </div>
             <div class="col mb-3">
               <label for="license_plate" class="form-label">License Plate</label>
@@ -127,9 +135,9 @@ document.querySelectorAll('.capitalize').forEach(input => {
                 value="{{ session('lastVisitor')->license_plate }}" readonly />
             </div>
             <div class="col mb-3">
-              <label for="visit_purpose" class="form-label">Purpose of Visit</label>
-              <input type="text" id="visit_purpose" class="form-control" name="visit_purpose"
-                value="{{ session('lastVisitor')->visit_purpose }}" readonly />
+              <label for="registered_date" class="form-label">Registered Date</label>
+              <input type="text" id="registered_date" class="form-control" name="registered_date"
+                value="{{ session('lastVisitor')->registered_date }}" readonly />
             </div>
           </div>
         </div>
@@ -138,7 +146,12 @@ document.querySelectorAll('.capitalize').forEach(input => {
   </div>
   @endif
 </div>
-
+@if(session('success'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <p class="fw-bold m-0">{{ session('success') }}</p>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 <!-- Table and modals -->
 <div class="card">
   <h5 class="card-header">Registered Visitors</h5>
@@ -150,7 +163,8 @@ document.querySelectorAll('.capitalize').forEach(input => {
       <thead>
         <tr>
           <th>Visitor #</th>
-          <th>Visitor's Name</th>
+          <th>Visitor's First Name</th>
+          <th>Visitor's Last Name</th>
           <th>License Plate</th>
           <th>Purpose of Visit</th>
           <th>Resident's Name</th>
@@ -166,7 +180,8 @@ document.querySelectorAll('.capitalize').forEach(input => {
             <span class="fw-medium">{{ $visitor->id }}</span>
             <a href="#" data-bs-toggle="modal" data-bs-target="#view{{ $visitor->id }}"><i class="bx bx-qr"></i></a>
           </td>
-          <td>{{ $visitor->visitor_name }}</td>
+          <td>{{ $visitor->visitor_first_name }}</td>
+          <td>{{ $visitor->visitor_last_name }}</td>
           <td>{{ $visitor->license_plate }}</td>
           <td>{{ $visitor->visit_purpose }}</td>
           <td>{{ $visitor->resident_name }}</td>
@@ -182,7 +197,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
                   data-bs-target="#edit{{ $visitor->id }}">
                   <i class="bx bx-edit-alt me-1"></i> Edit
                 </button>
-                <form action="{{ route('visitors.delete', $visitor->id) }}" method="POST">
+                <form action="{{ route('visitors.block', $visitor->id) }}" method="POST">
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="dropdown-item"
@@ -212,37 +227,40 @@ document.querySelectorAll('.capitalize').forEach(input => {
                         alt="QRCode{{ $visitor->id }}" />
                       <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                     </div>
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label for="visitor_name" class="form-label">Visitor's Name</label>
-                        <input type="text" id="visitor_name" class="form-control capitalize-words" name="visitor_name"
-                          value="{{ $visitor->visitor_name }}" readonly />
+                    <div class="row">
+                      <div class="col-sm mb-3">
+                        <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
+                        <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
+                          value="{{ $visitor->visitor_first_name }}" readonly />
                       </div>
-                    </div>
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label for="visit_purpose" class="form-label">Purpose of Visit</label>
-                        <input type="text" id="visit_purpose" class="form-control" name="visit_purpose"
-                          value="{{ $visitor->visit_purpose }}" readonly />
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label for="resident_name" class="form-label">Resident's Name</label>
-                        <input type="text" id="resident_name" class="form-control" name="resident_name"
-                          value="{{ $visitor->resident_name }}" readonly />
+                      <div class="col-sm mb-3">
+                        <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
+                        <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
+                          value="{{ $visitor->visitor_last_name }}" readonly />
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col mb-3">
+                      <div class="col-sm mb-3">
                         <label for="license_plate" class="form-label">License Plate</label>
                         <input type="text" id="license_plate" class="form-control" name="license_plate"
                           value="{{ $visitor->license_plate }}" readonly />
                       </div>
-                      <div class="col">
+                      <div class="col-sm mb-3">
                         <label for="visit_date" class="form-label">Date of Visit</label>
                         <input type="text" id="visit_date" class="form-control" name="visit_date"
                           value="{{ $visitor->visit_date }}" readonly />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm mb-3">
+                        <label for="visit_purpose" class="form-label">Purpose of Visit</label>
+                        <input type="text" id="visit_purpose" class="form-control" name="visit_purpose"
+                          value="{{ $visitor->visit_purpose }}" readonly />
+                      </div>
+                      <div class="col-sm">
+                        <label for="resident_name" class="form-label">Resident's Name</label>
+                        <input type="text" id="resident_name" class="form-control" name="resident_name"
+                          value="{{ $visitor->resident_name }}" readonly />
                       </div>
                     </div>
                   </div>
@@ -278,15 +296,32 @@ document.querySelectorAll('.capitalize').forEach(input => {
                         <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
                       </div>
 
-                      <div class="row mb-3">
-                        <div class="col">
-                          <label for="visitor_name" class="form-label">Visitor's Name</label>
-                          <input type="text" id="visitor_name" class="form-control capitalize-words" name="visitor_name"
-                            value="{{ $visitor->visitor_name }}" maxlength="60" />
+                      <div class="row">
+                        <div class="col-sm mb-3">
+                          <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
+                          <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
+                            value="{{ $visitor->visitor_first_name }}" maxlength="60" />
+                        </div>
+                        <div class="col-sm mb-3">
+                          <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
+                          <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
+                            value="{{ $visitor->visitor_last_name }}" maxlength="60" />
                         </div>
                       </div>
-                      <div class="row mb-3">
-                        <div class="col">
+                      <div class="row">
+                        <div class="col-sm mb-3">
+                          <label for="license_plate" class="form-label">License Plate</label>
+                          <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
+                            value="{{ $visitor->license_plate }}" maxlength="8" />
+                        </div>
+                        <div class="col-sm mb-3">
+                          <label for="visit_date" class="form-label">Date of Visit</label>
+                          <input type="date" id="visit_date" class="form-control" name="visit_date"
+                            value="{{ $visitor->visit_date }}" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm mb-3">
                           <label for="visit_purpose" class="form-label">Purpose of Visit</label>
                           <select class="form-select" id="visit_purpose" name="visit_purpose"
                             aria-label="Select a visit purpose">
@@ -301,24 +336,10 @@ document.querySelectorAll('.capitalize').forEach(input => {
                               Services</option>
                           </select>
                         </div>
-                      </div>
-                      <div class="row mb-3">
-                        <div class="col">
+                        <div class="col-sm">
                           <label for="resident_name" class="form-label">Resident's Name</label>
                           <input type="text" id="resident_name" class="form-control capitalize-words"
                             name="resident_name" value="{{ $visitor->resident_name }}" maxlength="60" />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col mb-3">
-                          <label for="license_plate" class="form-label">License Plate</label>
-                          <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
-                            value="{{ $visitor->license_plate }}" maxlength="8" />
-                        </div>
-                        <div class="col">
-                          <label for="visit_date" class="form-label">Date of Visit</label>
-                          <input type="date" id="visit_date" class="form-control" name="visit_date"
-                            value="{{ $visitor->visit_date }}" />
                         </div>
                       </div>
                     </div>
@@ -338,8 +359,13 @@ document.querySelectorAll('.capitalize').forEach(input => {
     </table>
     @endif
   </div>
-  <div class="pt-3 px-3 d-flex justify-content-end">
+  <!-- Display on small screens with links at the end -->
+  <div class="pt-3 px-3 d-flex justify-content-end d-sm-flex d-md-none d-lg-none d-xl-none">
     {{ $visitors->links() }}
+  </div>
+  <!-- Hide on small screens, display on medium and larger screens -->
+  <div class="pt-3 px-3 d-none d-md-block">
+    {{ $visitors->onEachSide(1)->links() }}
   </div>
 </div>
 @endsection
