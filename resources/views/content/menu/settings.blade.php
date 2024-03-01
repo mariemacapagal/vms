@@ -51,7 +51,7 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Employee Name</th>
+                <th>Personnel's Name</th>
                 <th>Username</th>
                 <th>Role</th>
                 <th>Actions</th>

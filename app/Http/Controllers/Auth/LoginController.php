@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -60,8 +61,10 @@ class LoginController extends Controller
 
     if (auth()->attempt(['username' => $input['username'], 'password' => $input['password']])) {
       if (auth()->user()->type == 'Admin') {
+        Auth::logoutOtherDevices(request('password'));
         return redirect()->route('dashboard');
       } else {
+        Auth::logoutOtherDevices(request('password'));
         return redirect()->route('dashboard');
       }
     } else {
