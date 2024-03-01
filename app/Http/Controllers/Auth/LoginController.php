@@ -73,8 +73,4 @@ class LoginController extends Controller
         ->with('error', 'Username or Password is invalid.');
     }
   }
-  
-  protected function authenticated() {
-    Auth::logoutOtherDevices(request('password'));
-  }
 }
