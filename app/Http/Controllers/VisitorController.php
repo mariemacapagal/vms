@@ -202,6 +202,7 @@ class VisitorController extends Controller
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
     $visit_date = $request->input('visit_date');
+    $registered_date = $request->input('registered_date');
 
     $visitor = Visitor::find($id);
     $visitor->update([
@@ -211,6 +212,7 @@ class VisitorController extends Controller
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
       'visit_date' => $visit_date,
+      'registered_date' => $registered_date,
     ]);
 
     return redirect()

@@ -339,8 +339,13 @@ document.querySelectorAll('.capitalize').forEach(input => {
                         <div class="col-sm">
                           <label for="resident_name" class="form-label">Resident's Name</label>
                           <input type="text" id="resident_name" class="form-control capitalize-words"
-                            name="resident_name" value="{{ $visitor->registered_date }}" maxlength="60" />
+                            name="resident_name" value="{{ $visitor->resident_name }}" maxlength="60" />
                         </div>
+                      </div>
+                      <div class="col-sm">
+                        <label for="registered_date" class="form-label">registered_date</label>
+                        <input type="date" id="registered_date" class="form-control capitalize-words"
+                          name="registered_date" value="{{ $visitor->registered_date }}" maxlength="60" />
                       </div>
                     </div>
 
