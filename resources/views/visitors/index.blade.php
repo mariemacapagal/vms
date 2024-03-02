@@ -342,11 +342,6 @@ document.querySelectorAll('.capitalize').forEach(input => {
                             name="resident_name" value="{{ $visitor->resident_name }}" maxlength="60" />
                         </div>
                       </div>
-                      <div class="col-sm">
-                        <label for="registered_date" class="form-label">registered_date</label>
-                        <input type="date" id="registered_date" class="form-control capitalize-words"
-                          name="registered_date" value="{{ $visitor->registered_date }}" maxlength="60" />
-                      </div>
                     </div>
 
                     <div class="modal-footer">
