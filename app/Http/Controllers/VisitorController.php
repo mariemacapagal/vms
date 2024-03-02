@@ -134,7 +134,7 @@ class VisitorController extends Controller
   // Store a newly created resource in storage.
   public function store(Request $request)
   {
-    $datetime = date('Y-m-d h:i:s A');
+    $registered_date = date('Y-m-d');
     $visitor_first_name = $request->input('visitor_first_name');
     $visitor_last_name = $request->input('visitor_last_name');
     $license_plate = $request->input('license_plate');
@@ -182,7 +182,7 @@ class VisitorController extends Controller
       'resident_name' => $resident_name,
       'visit_date' => $visit_date,
       'visitor_qrcode' => 'VMS_' . hash('md5', $visitor_first_name . $visitor_last_name . $license_plate),
-      'registered_date' => $datetime,
+      'registered_date' => $registered_date,
     ]);
 
     // Retrieve the last created visitor

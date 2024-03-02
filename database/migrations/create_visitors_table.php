@@ -20,7 +20,7 @@ return new class extends Migration
       $table->string('resident_name', 80);
       $table->date('visit_date');
       $table->string('visitor_qrcode', 36)->nullable();
-      $table->string('registered_date');
+      $table->date('registered_date');
       $table->timestamps();
     });
 
@@ -34,7 +34,7 @@ return new class extends Migration
       $table->string('resident_name', 80);
       $table->date('visit_date');
       $table->string('visitor_qrcode', 36);
-      $table->string('registered_date');
+      $table->date('registered_date');
       $table->timestamps();
     });
   }
