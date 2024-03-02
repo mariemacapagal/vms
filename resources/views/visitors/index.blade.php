@@ -147,7 +147,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
   @endif
 </div>
 @if(session('success'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<div class="alert alert-success alert-dismissible fade show" role="alert">
   <p class="fw-bold m-0">{{ session('success') }}</p>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>

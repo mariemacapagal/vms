@@ -8,6 +8,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use App\Models\Visitor;
 use App\Models\BlockedVisitor;
+use Illuminate\Support\Facades\DB;
+
 
 class VisitorController extends Controller
 {
@@ -162,27 +164,33 @@ class VisitorController extends Controller
       return redirect()->back()->with('error', 'Visitor is already registered.');
     }
 
-    $visitor = Visitor::create([
+    // Get the last used ID from the visitors table
+    $lastVisitorId = Visitor::max('id');
+
+    // Get the last used ID from the blocked visitor table
+    $lastBlockedId = BlockedVisitor::max('visitor_id');
+
+    // Initialize the new ID with the higher of the two last IDs
+    $visitor_id = max($lastVisitorId, $lastBlockedId) + 1;
+
+    Visitor::create([
+      'id' => $visitor_id,
       'visitor_first_name' => $visitor_first_name,
       'visitor_last_name' => $visitor_last_name,
       'license_plate' => $license_plate,
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
       'visit_date' => $visit_date,
+      'visitor_qrcode' => 'VMS_' . hash('md5', $visitor_first_name . $visitor_last_name . $license_plate),
       'registered_date' => $datetime,
     ]);
-
-    // Generate and update the visitor_qrcode
-    $visitor_qrcode = 'VMS_' . hash('md5', $visitor->visitor_first_name . $visitor_last_name . $license_plate);
-    $visitor->update(['visitor_qrcode' => $visitor_qrcode]);
-
 
     // Retrieve the last created visitor
     $lastVisitor = Visitor::latest()->first();
 
     return redirect()
       ->route('visitors.index')
-      ->with(['success' => 'Visitor added successfully.', 'lastVisitor' => $lastVisitor]);
+      ->with(['lastVisitor' => $lastVisitor]);
   }
 
   // Update the specified resource in storage.
@@ -247,8 +255,17 @@ class VisitorController extends Controller
     $blockedVisitor = BlockedVisitor::find($id);
 
     // Create a new record in the visitors table
-    $visitor = new Visitor();
-    $visitor->fill($blockedVisitor->toArray());
+    $visitor = new Visitor([
+      'id' => $blockedVisitor->visitor_id,
+      'visitor_first_name' => $blockedVisitor->visitor_first_name,
+      'visitor_last_name' => $blockedVisitor->visitor_last_name,
+      'license_plate' => $blockedVisitor->license_plate,
+      'visit_purpose' => $blockedVisitor->visit_purpose,
+      'resident_name' => $blockedVisitor->resident_name,
+      'visit_date' => $blockedVisitor->visit_date,
+      'visitor_qrcode' => $blockedVisitor->visitor_qrcode,
+      'registered_date' => $blockedVisitor->registered_date,
+    ]);
     $visitor->save();
 
     // Delete the record from the blocked_visitors table

@@ -24,7 +24,6 @@
     <table class="table table-striped" id="table_users">
         <thead>
             <tr>
-              <th>#</th>
               <th>Visitor #</th>
               <th>Visitor's Name</th>
               <th>License Plate</th>
@@ -38,7 +37,6 @@
         <tbody class="table-border-bottom-0 users-data">
             @foreach ($blockedVisitors as $blockedVisitor)
                 <tr>
-                    <td>{{ $blockedVisitor->id }}</td>
                     <td>{{ $blockedVisitor->visitor_id }}</td>
                     <td class="text-danger">{{ $blockedVisitor->visitor_first_name }} {{ $blockedVisitor->visitor_last_name }}</td>
                     <td>{{ $blockedVisitor->license_plate }}</td>

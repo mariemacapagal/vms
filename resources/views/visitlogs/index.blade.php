@@ -68,7 +68,7 @@
     <table class="table table-striped" id="table_visitlogs">
       <thead>
         <tr>
-          <th>#</th>
+          <th>Log #</th>
           <th>Visitor #</th>
           <th>Check In</th>
           <th>Check Out</th>

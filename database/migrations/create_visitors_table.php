@@ -26,7 +26,7 @@ return new class extends Migration
 
     Schema::create('blocked_visitors', function (Blueprint $table) {
       $table->id();
-      $table->integer('visitor_id');
+      $table->unsignedBigInteger('visitor_id');
       $table->string('visitor_first_name', 40);
       $table->string('visitor_last_name', 40);
       $table->string('license_plate', 8);
