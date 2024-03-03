@@ -54,7 +54,7 @@
             <div class="input-group">
               <!-- Search -->
               <input type="search" name="fname" id="fname" placeholder="Search..."
-                class="form-control" value="{{ request('fname') }}" oninput="this.form.submit()"
+                class="form-control" value="{{ request('fname') }}"
                 aria-label="Search Visitor" aria-describedby="button-addon2">
               <button class="btn btn-outline-primary" type="button" id="button-addon2"><i
                   class='bx bx-search'></i></button>
@@ -66,7 +66,7 @@
             <div class="input-group">
               <!-- Search -->
               <input type="search" name="lname" id="lname" placeholder="Search..."
-                class="form-control" value="{{ request('lname') }}" oninput="this.form.submit()"
+                class="form-control" value="{{ request('lname') }}"
                 aria-label="Search Visitor" aria-describedby="button-addon2">
               <button class="btn btn-outline-primary" type="button" id="button-addon2"><i
                   class='bx bx-search'></i></button>
