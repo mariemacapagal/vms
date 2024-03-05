@@ -22,6 +22,12 @@
       "menuHeader": "Records"
     },
     {
+      "url": "/pre-registered",
+      "name": "Pre-registered Visitors",
+      "icon": "menu-icon tf-icons bx bx-group",
+      "slug": "visitors.preRegisteredList"
+    },
+    {
       "url": "/visitors-records",
       "name": "Visitors",
       "icon": "menu-icon tf-icons bx bx-group",

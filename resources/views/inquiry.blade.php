@@ -1,6 +1,6 @@
 @extends('layouts/blankLayout')
 
-@section('title', 'Pre-Register')
+@section('title', 'Track Status')
 
 @section('page-style')
 <!-- Page -->
@@ -9,10 +9,6 @@
 
 @section('page-script')
 <script>
-  // Get today's date
-  const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
-  document.getElementById('visit_date').value = today;
-
   // Add event listeners to all input fields with class "capitalize-words"
   document.querySelectorAll('.capitalize-words').forEach(input => {
     input.addEventListener('input', function () {
@@ -49,8 +45,8 @@
             </a>
           </div>
           <!-- /Logo -->
-          <h4 class="mb-2">Pre-registration</h4>
-          <p class="mb-3">Please fill out the form below to pre-register as a visitor.</p>
+          <h4 class="mb-2">Registration: Inquiry</h4>
+          <p class="mb-3">Complete the form to find out the status of your pre-registration or get your QR Code if you're already a registered visitor.</p>
           @if(session('error'))
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <p class="fw-bold m-0">{{ session('error') }}</p>
@@ -60,11 +56,14 @@
           @if(session('success'))
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <p class="fw-bold m-0">{{ session('success') }}</p>
-            <p class="fw-bold m-0">Check the status of your pre-registration through the link below.</p>
+            <p class="fw-bold m-0">Here's your QR Code:</p>
+            @if(session('qrCode'))
+            <img src="https://quickchart.io/qr?text={{ session('qrCode') }}&size=200" alt="QRCode" class="mx-auto d-block" />
+            @endif
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
           @endif
-          <form id="visitorForm" action="{{ route('visitors.pre-register') }}" method="POST">
+          <form id="visitorForm" action="{{ route('inquiry') }}" method="POST">
             @csrf
             <div class="col">
               <label for="visitor_name" class="form-label">Visitor's Name:</label>
@@ -86,38 +85,10 @@
                   required />
               </div>
             </div>
-            <div class="row mb-3">
-              <label class="form-label" for="visit_purpose">Purpose of Visit</label>
-              <div class="col-sm">
-                <select class="form-select" id="visit_purpose" name="visit_purpose" aria-label="Select a visit purpose"
-                  required>
-                  <option value="" disabled selected hidden>Select a visit purpose</option>
-                  <option value="Visiting">Visiting</option>
-                  <option value="Delivery">Delivery</option>
-                  <option value="Amenities">Amenities</option>
-                  <option value="Services">Services</option>
-                </select>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="form-label" for="resident_name">Resident's Name</label>
-              <div class="col-sm">
-                <input type="text" class="form-control capitalize-words" id="resident_name" name="resident_name"
-                  maxlength="80" required />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="form-label" for="visit_date">Date of Visit</label>
-              <div class="col-sm">
-                <input type="date" class="form-control" id="visit_date" name="visit_date" required />
-              </div>
-            </div>
-
             <div class="mb-3">
               <button class="btn btn-primary d-grid w-100" type="submit">Submit</button>
             </div>
           </form>
-          <p class="mb-0">Already pre-registered? <a href="{{ route('inquiry') }}">Check the status here.</a></p>
         </div>
       </div>
     </div>

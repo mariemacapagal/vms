@@ -1,0 +1,70 @@
+// * Authentication
+// *******************************************************************************
+
+@use '../_bootstrap-extended/include' as light;
+@import '../_custom-variables/pages';
+
+$authentication-1-inner-max-width: 500px !default;
+
+.authentication-wrapper {
+  display: flex;
+  flex-basis: 100%;
+  min-height: 100vh;
+  width: 100%;
+
+  .authentication-inner {
+    width: 100%;
+  }
+
+  &.authentication-basic {
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &.authentication-cover {
+    align-items: flex-start;
+    .authentication-inner {
+      height: 100vh;
+    }
+  }
+
+  &.authentication-basic .authentication-inner {
+    max-width: $authentication-1-inner-max-width;
+    position: relative;
+    .card {
+      z-index: 1;
+      .app-brand {
+        margin-bottom: 2.5rem;
+      }
+    }
+  }
+
+  // For two-steps auth
+  .auth-input-wrapper .auth-input {
+    max-width: 50px;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    font-size: light.$large-font-size;
+  }
+}
+
+// Two-steps auth responsive style
+@include light.media-breakpoint-down(sm) {
+  .authentication-wrapper {
+    .auth-input-wrapper .auth-input {
+      font-size: light.$h5-font-size;
+    }
+  }
+}
+
+// Light Layout
+@if $enable-light-style {
+  .light-style {
+    .authentication-wrapper {
+      .authentication-bg {
+        background-color: light.$white;
+      }
+    }
+  }
+}

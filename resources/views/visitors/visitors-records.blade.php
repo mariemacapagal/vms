@@ -276,7 +276,7 @@
                             <div class="col-sm mb-3">
                               <label for="license_plate" class="form-label">License Plate</label>
                               <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
-                                value="{{ $visitor->license_plate }}" maxlength="8" />
+                                value="{{ $visitor->license_plate }}" maxlength="13" />
                             </div>
                             <div class="col-sm mb-3">
                               <label for="visit_date" class="form-label">Date of Visit</label>

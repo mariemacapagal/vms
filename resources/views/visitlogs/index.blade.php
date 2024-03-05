@@ -70,6 +70,8 @@
         <tr>
           <th>Log #</th>
           <th>Visitor #</th>
+          <th>Purpose of Visit</th>
+          <th>Resident Name</th>
           <th>Check In</th>
           <th>Check Out</th>
           <th>Log Date</th>
@@ -79,51 +81,15 @@
       <tbody class="table-border-bottom-0">
         @foreach ($visitlogs as $visitlog)
         <tr>
-          <td><span class="fw-medium">{{ $visitlog->id }}</span> <a href="#" data-bs-toggle="modal" data-bs-target="#view{{ $visitlog->id }}"><i class='bx bx-notepad'></i></a></td>
+          <td><span class="fw-medium">{{ $visitlog->id }}</span></td>
           <td>{{ $visitlog->visitor_id }}</td>
+          <td>{{ $visitlog->visit_purpose }}</td>
+          <td>{{ $visitlog->resident_name }}</td>
           <td>{{ $visitlog->check_in }}</td>
           <td>{{ $visitlog->check_out }}</td>
           <td>{{ $visitlog->log_date }}</td>
           <td><span class="badge me-1 {{ $visitlog->status == 'OUT' ? 'bg-label-success' : 'bg-label-info'}}">{{ $visitlog->status }}</span></td>
         </tr>
-
-        <!-- VIEW Modal -->
-        <div class="col-lg-4 col-md-6">
-          <div>
-            <!-- Modal -->
-            <div class="modal fade" id="view{{ $visitlog->id }}" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="modalCenterTitle">Visit Details | Visitor # {{ $visitlog->visitor_id }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label for="visit_purpose" class="form-label">Purpose of Visit</label>
-                        <input type="text" id="visit_purpose" class="form-control" name="visit_purpose"
-                          value="{{ $visitlog->visit_purpose }}" readonly />
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <div class="col">
-                        <label for="resident_name" class="form-label">Resident's Name</label>
-                        <input type="text" id="resident_name" class="form-control" name="resident_name"
-                          value="{{ $visitlog->resident_name }}" readonly />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
         @endforeach
       </tbody>
     </table>
@@ -137,6 +103,5 @@
   <div class="pt-3 px-3 d-none d-md-block">
     {{ $visitlogs->onEachSide(1)->links() }}
   </div>
-
 </div>
 @endsection

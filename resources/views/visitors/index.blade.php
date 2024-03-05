@@ -66,7 +66,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
           <div class="row mb-3">
             <label class="col-sm-3 col-form-label" for="license_plate">License Plate</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control capitalize" id="license_plate" name="license_plate" maxlength="8"
+              <input type="text" class="form-control capitalize" id="license_plate" name="license_plate" maxlength="13"
                 required />
             </div>
           </div>

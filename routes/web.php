@@ -35,6 +35,10 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
   Route::get('/dashboard', Dashboard::class . '@index')->name('dashboard');
 
+  //Routes for Pre-registered Visitors
+  Route::get('/pre-registered', VisitorController::class . '@preRegisteredList')->name('visitors.preRegisteredList');
+  Route::match(['post', 'delete'], '/pre-registered/{visitor}', VisitorController::class . '@acceptVisitors')->name('visitors.accept');
+
   // Routes for Visitors
   Route::get('/register', VisitorController::class . '@index')->name('visitors.index');
   Route::post('/register', VisitorController::class . '@store')->name('visitors.store');
@@ -58,3 +62,8 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
   Route::match(['post', 'delete'], '/blocked-visitors/{visitor}', VisitorController::class . '@unblockVisitors')->name('visitors.unblock');
 });
+
+Route::get('/pre-register', VisitorController::class . '@preRegisterPage')->name('pre-register');
+Route::post('/pre-register', VisitorController::class . '@preRegister')->name('visitors.pre-register');
+Route::get('/inquiry', VisitorController::class . '@inquiryPage')->name('inquiry');
+Route::post('/inquiry', VisitorController::class . '@inquiry')->name('inquiry');
