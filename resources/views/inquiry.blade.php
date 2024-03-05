@@ -1,6 +1,6 @@
 @extends('layouts/blankLayout')
 
-@section('title', 'Track Status')
+@section('title', 'Inquiry')
 
 @section('page-style')
 <!-- Page -->
