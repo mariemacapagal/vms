@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/pre-registered', VisitorController::class . '@preRegisteredList')->name('visitors.preRegisteredList');
   Route::match(['post', 'delete'], '/pre-registered/{visitor}', VisitorController::class . '@acceptVisitors')->name('visitors.accept');
   Route::delete('/pre-registered/decline/{visitor}', VisitorController::class . '@declineVisitors')->name('visitors.decline');
+  Route::get('/pre-registered/export', VisitorController::class . '@preRegVisitorsExport')->name('preregvisitors.export');
 
   // Routes for Visitors
   Route::get('/register', VisitorController::class . '@index')->name('visitors.index');
@@ -49,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/visitors-records', VisitorController::class . '@records')->name('visitors.records');
   Route::get('/visitors-records/search', VisitorController::class . '@search')->name('visitors.search');
-  Route::get('/visitors-records/export', VisitorController::class . '@export')->name('visitors.export');
+  Route::get('/visitors-records/export', VisitorController::class . '@visitorsExport')->name('visitors.export');
 
   // Routes for Visit Logs
   Route::get('/qrcode-scanner', VisitLogController::class . '@index')->name('visitlogs.index');
@@ -62,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
   // Route for Blocked Visitors
   Route::get('/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
   Route::match(['post', 'delete'], '/blocked-visitors/{visitor}', VisitorController::class . '@unblockVisitors')->name('visitors.unblock');
+  Route::get('/blocked-visitors/export', VisitorController::class . '@blockedVisitorsExport')->name('blockedvisitors.export');
 });
 
 Route::get('/pre-register', VisitorController::class . '@preRegisterPage')->name('pre-register');

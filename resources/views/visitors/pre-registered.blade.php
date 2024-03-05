@@ -101,7 +101,7 @@
           <div class="col-auto mt-4 pt-1">
             <div class="export">
               <!-- Export button -->
-              <a class="btn btn-primary "href="{{ route('visitors.export', ['filter' => request('filter'), 'purpose' => request('purpose'), 'fname' => request('fname'), 'lname' => request('lname')]) }}">
+              <a class="btn btn-primary" href="{{ route('preregvisitors.export', ['filter' => request('filter'), 'purpose' => request('purpose'), 'fname' => request('fname'), 'lname' => request('lname')]) }}">
                 <span>
                   <i class='bx bx-export'></i>
                   <span class="d-none d-sm-inline-block">Save CSV</span>

@@ -140,7 +140,7 @@ class VisitorController extends Controller
   }
 
   // export records
-  public function visitorsExport(Request $request)
+  public function export(Request $request)
   {
     $filter = $request->input('filter');
     $purpose = $request->input('purpose');
@@ -194,118 +194,6 @@ class VisitorController extends Controller
 
     // Download the file
     return response()->download($filePath, 'Visitors.csv')->deleteFileAfterSend();
-  }
-
-  public function blockedVisitorsExport(Request $request)
-  {
-    $filter = $request->input('filter');
-    $purpose = $request->input('purpose');
-    $fname = $request->input('fname');
-    $lname = $request->input('lname');
-
-
-    $visitors = $this->filterVisitors(BlockedVisitor::class, $filter, $purpose, $fname, $lname)->get();
-
-    // Create new Spreadsheet object
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-
-    // Add headers
-    $sheet->setCellValue('A1', 'ID');
-    $sheet->setCellValue('B1', 'Visitor\'s First Name');
-    $sheet->setCellValue('C1', 'Visitor\'s Last Name');
-    $sheet->setCellValue('D1', 'License Plate');
-    $sheet->setCellValue('E1', 'Visit Purpose');
-    $sheet->setCellValue('F1', 'Resident\'s Name');
-    $sheet->setCellValue('G1', 'Visit Date');
-    $sheet->setCellValue('H1', 'Visitor QR Code');
-    $sheet->setCellValue('I1', 'Registered Date');
-
-    // Add visitor data
-    $row = 2;
-    foreach ($visitors as $visitor) {
-      $sheet->setCellValue('A' . $row, $visitor->id);
-      $sheet->setCellValue('B' . $row, $visitor->visitor_first_name);
-      $sheet->setCellValue('C' . $row, $visitor->visitor_last_name);
-      $sheet->setCellValue('D' . $row, $visitor->license_plate);
-      $sheet->setCellValue('E' . $row, $visitor->visit_purpose);
-      $sheet->setCellValue('F' . $row, $visitor->resident_name);
-      $sheet->setCellValue('G' . $row, $visitor->visit_date);
-      $sheet->setCellValue('H' . $row, $visitor->visitor_qrcode);
-      $sheet->setCellValue('I' . $row, $visitor->registered_date);
-      $row++;
-    }
-
-
-    // Create a temporary file path
-    $filePath = tempnam(sys_get_temp_dir(), 'blockedvisitors') . '.csv';
-
-    // Save the spreadsheet to a CSV file
-    $writer = new Csv($spreadsheet);
-    $writer->setDelimiter(',');
-    $writer->setEnclosure('"');
-    $writer->setLineEnding("\r\n");
-    $writer->setUseBOM(true);
-    $writer->save($filePath);
-
-    // Download the file
-    return response()->download($filePath, 'BlockedVisitors.csv')->deleteFileAfterSend();
-  }
-
-  public function preRegVisitorsExport(Request $request)
-  {
-    $filter = $request->input('filter');
-    $purpose = $request->input('purpose');
-    $fname = $request->input('fname');
-    $lname = $request->input('lname');
-
-
-    $visitors = $this->filterVisitors(PreRegisteredVisitor::class, $filter, $purpose, $fname, $lname)->get();
-
-    // Create new Spreadsheet object
-    $spreadsheet = new Spreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-
-    // Add headers
-    $sheet->setCellValue('A1', 'ID');
-    $sheet->setCellValue('B1', 'Visitor\'s First Name');
-    $sheet->setCellValue('C1', 'Visitor\'s Last Name');
-    $sheet->setCellValue('D1', 'License Plate');
-    $sheet->setCellValue('E1', 'Visit Purpose');
-    $sheet->setCellValue('F1', 'Resident\'s Name');
-    $sheet->setCellValue('G1', 'Visit Date');
-    $sheet->setCellValue('H1', 'Visitor QR Code');
-    $sheet->setCellValue('I1', 'Registered Date');
-
-    // Add visitor data
-    $row = 2;
-    foreach ($visitors as $visitor) {
-      $sheet->setCellValue('A' . $row, $visitor->id);
-      $sheet->setCellValue('B' . $row, $visitor->visitor_first_name);
-      $sheet->setCellValue('C' . $row, $visitor->visitor_last_name);
-      $sheet->setCellValue('D' . $row, $visitor->license_plate);
-      $sheet->setCellValue('E' . $row, $visitor->visit_purpose);
-      $sheet->setCellValue('F' . $row, $visitor->resident_name);
-      $sheet->setCellValue('G' . $row, $visitor->visit_date);
-      $sheet->setCellValue('H' . $row, $visitor->visitor_qrcode);
-      $sheet->setCellValue('I' . $row, $visitor->registered_date);
-      $row++;
-    }
-
-
-    // Create a temporary file path
-    $filePath = tempnam(sys_get_temp_dir(), 'preregistered') . '.csv';
-
-    // Save the spreadsheet to a CSV file
-    $writer = new Csv($spreadsheet);
-    $writer->setDelimiter(',');
-    $writer->setEnclosure('"');
-    $writer->setLineEnding("\r\n");
-    $writer->setUseBOM(true);
-    $writer->save($filePath);
-
-    // Download the file
-    return response()->download($filePath, 'Pre-registeredVisitors.csv')->deleteFileAfterSend();
   }
 
   // Update the specified resource in storage.
