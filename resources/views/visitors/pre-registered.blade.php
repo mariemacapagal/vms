@@ -158,11 +158,11 @@
 											<i class="bx bx-check me-1"></i> Accept
 										</button>
 										</form>
-										<form action="{{ route('visitors.block', $visitor->id) }}" method="POST">
+										<form action="{{ route('visitors.decline', $visitor->id) }}" method="POST">
 											@csrf
 											@method('DELETE')
 											<button type="submit" class="dropdown-item text-danger"
-												onclick="return confirm('Are you sure you want to block this visitor?')">
+												onclick="return confirm('Are you sure you want to decline this potential visitor?')">
 												<i class="bx bx-x me-1"></i> Decline
 											</button>
 										</form>

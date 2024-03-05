@@ -383,7 +383,19 @@ class VisitorController extends Controller
 
     return redirect()
       ->back()
-      ->with('success', 'Visitor has been accepted.');
+      ->with('success', 'Pre-registration has been accepted.');
+  }
+
+  public function declineVisitors($id)
+  {
+    $preVisitor = PreRegisteredVisitor::find($id);
+
+    // Delete the record from the pre-reg visitors table
+    $preVisitor->delete();
+
+    return redirect()
+      ->back()
+      ->with('success', 'Pre-registration has been declined.');
   }
 
   //pre-register

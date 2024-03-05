@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\VisitLog;
+use App\Models\PreRegisteredVisitor;
 use Carbon\Carbon;
 
 class Dashboard extends Controller
@@ -14,14 +15,11 @@ class Dashboard extends Controller
   {
     $visitors = Visitor::all();
     $visitLogs = VisitLog::all();
-
-    $todayVisitors = $visitors->whereBetween('registered_date', [
-      Carbon::today()->startOfDay(),
-      Carbon::today()->endOfDay(),
-    ])->count();
+    $preReg = PreRegisteredVisitor::all();
 
     $totalVisitors =  $visitors->count();
     $totalVisitLogs = $visitLogs->count();
+    $totalPreReg = $preReg->count();
 
     $visitPurpose = VisitLog::select('visit_purpose', VisitLog::raw('count(*) as count'))
       ->groupBy('visit_purpose')
@@ -40,6 +38,6 @@ class Dashboard extends Controller
         return $day->count();
       });
 
-    return view('content.dashboard.dashboard', compact('visitors', 'visitLogs', 'totalVisitors', 'totalVisitLogs', 'visitPurpose', 'visitorCount', 'todayVisitors'));
+    return view('content.dashboard.dashboard', compact('visitors', 'visitLogs', 'totalVisitors', 'totalVisitLogs', 'visitPurpose', 'visitorCount', 'totalPreReg'));
   }
 }

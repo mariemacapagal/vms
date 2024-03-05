@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
   //Routes for Pre-registered Visitors
   Route::get('/pre-registered', VisitorController::class . '@preRegisteredList')->name('visitors.preRegisteredList');
   Route::match(['post', 'delete'], '/pre-registered/{visitor}', VisitorController::class . '@acceptVisitors')->name('visitors.accept');
+  Route::delete('/pre-registered/decline/{visitor}', VisitorController::class . '@declineVisitors')->name('visitors.decline');
 
   // Routes for Visitors
   Route::get('/register', VisitorController::class . '@index')->name('visitors.index');
