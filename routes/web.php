@@ -69,4 +69,4 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/pre-register', VisitorController::class . '@preRegisterPage')->name('pre-register');
 Route::post('/pre-register', VisitorController::class . '@preRegister')->name('visitors.pre-register');
 Route::get('/inquiry', VisitorController::class . '@inquiryPage')->name('inquiry');
-Route::post('/inquiry', VisitorController::class . '@inquiry')->name('inquiry');
+Route::post('/inquiry', VisitorController::class . '@inquiry')->name('post.inquiry');

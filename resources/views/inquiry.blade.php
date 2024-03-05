@@ -63,7 +63,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
           @endif
-          <form id="visitorForm" action="{{ route('inquiry') }}" method="POST">
+          <form id="visitorForm" action="{{ route('post.inquiry') }}" method="POST">
             @csrf
             <div class="col">
               <label for="visitor_name" class="form-label">Visitor's Name:</label>
