@@ -69,10 +69,8 @@
               <th>Visitor #</th>
               <th>Visitor's Name</th>
               <th>License Plate</th>
-              <th>Purpose of Visit</th>
-              <th>Resident's Name</th>
-              <th>Last Date of Visit</th>
-              <th>Registered Date</th>
+              <th>Blocked Date</th>
+              <th>Remarks</th>
               <th>Action</th>
             </tr>
         </thead>
@@ -82,10 +80,8 @@
                     <td>{{ $blockedVisitor->visitor_id }}</td>
                     <td class="text-danger">{{ $blockedVisitor->visitor_first_name }} {{ $blockedVisitor->visitor_last_name }}</td>
                     <td>{{ $blockedVisitor->license_plate }}</td>
-                    <td>{{ $blockedVisitor->visit_purpose }}</td>
-                    <td>{{ $blockedVisitor->resident_name }}</td>
-                    <td>{{ $blockedVisitor->visit_date }}</td>
-                    <td>{{ $blockedVisitor->registered_date }}</td>
+                    <td>{{ $blockedVisitor->created_at }}</td>
+                    <td>remarks</td>
                     <td><form action="{{ route('visitors.unblock', $blockedVisitor->id) }}" method="POST">
 											@csrf
 											@method('DELETE')

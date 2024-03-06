@@ -246,21 +246,9 @@ document.querySelectorAll('.capitalize').forEach(input => {
                           value="{{ $visitor->license_plate }}" readonly />
                       </div>
                       <div class="col-sm mb-3">
-                        <label for="visit_date" class="form-label">Date of Visit</label>
-                        <input type="text" id="visit_date" class="form-control" name="visit_date"
-                          value="{{ $visitor->visit_date }}" readonly />
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm mb-3">
-                        <label for="visit_purpose" class="form-label">Purpose of Visit</label>
-                        <input type="text" id="visit_purpose" class="form-control" name="visit_purpose"
-                          value="{{ $visitor->visit_purpose }}" readonly />
-                      </div>
-                      <div class="col-sm">
-                        <label for="resident_name" class="form-label">Resident's Name</label>
-                        <input type="text" id="resident_name" class="form-control" name="resident_name"
-                          value="{{ $visitor->resident_name }}" readonly />
+                        <label for="registered_date" class="form-label">Registered Date</label>
+                        <input type="text" id="registered_date" class="form-control" name="registered_date"
+                          value="{{ $visitor->registered_date }}" readonly />
                       </div>
                     </div>
                   </div>
