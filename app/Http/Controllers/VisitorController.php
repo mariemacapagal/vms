@@ -215,11 +215,9 @@ class VisitorController extends Controller
     $sheet->setCellValue('B1', 'Visitor\'s First Name');
     $sheet->setCellValue('C1', 'Visitor\'s Last Name');
     $sheet->setCellValue('D1', 'License Plate');
-    $sheet->setCellValue('E1', 'Visit Purpose');
-    $sheet->setCellValue('F1', 'Resident\'s Name');
-    $sheet->setCellValue('G1', 'Visit Date');
-    $sheet->setCellValue('H1', 'Visitor QR Code');
-    $sheet->setCellValue('I1', 'Registered Date');
+    $sheet->setCellValue('E1', 'Registered Date');
+    $sheet->setCellValue('F1', 'Blocked Date');
+    $sheet->setCellValue('G1', 'Remarks');
 
     // Add visitor data
     $row = 2;
@@ -228,11 +226,9 @@ class VisitorController extends Controller
       $sheet->setCellValue('B' . $row, $visitor->visitor_first_name);
       $sheet->setCellValue('C' . $row, $visitor->visitor_last_name);
       $sheet->setCellValue('D' . $row, $visitor->license_plate);
-      $sheet->setCellValue('E' . $row, $visitor->visit_purpose);
-      $sheet->setCellValue('F' . $row, $visitor->resident_name);
-      $sheet->setCellValue('G' . $row, $visitor->visit_date);
-      $sheet->setCellValue('H' . $row, $visitor->visitor_qrcode);
-      $sheet->setCellValue('I' . $row, $visitor->registered_date);
+      $sheet->setCellValue('E' . $row, $visitor->registered_date);
+      $sheet->setCellValue('F' . $row, $visitor->blocked_date);
+      $sheet->setCellValue('G' . $row, $visitor->remarks);
       $row++;
     }
 
@@ -354,11 +350,18 @@ class VisitorController extends Controller
   public function blockVisitors($id)
   {
     $visitor = Visitor::find($id);
+    $blocked_date = date('Y-m-d');
 
     // Create a new record in blocked_visitors table
-    $blockedVisitor = new BlockedVisitor();
-    $blockedVisitor->visitor_id = $id;
-    $blockedVisitor->fill($visitor->toArray());
+    $blockedVisitor = new BlockedVisitor([
+      'visitor_id' => $id,
+      'visitor_first_name' => $visitor->visitor_first_name,
+      'visitor_last_name' => $visitor->visitor_last_name,
+      'license_plate' => $visitor->license_plate,
+      'registered_date' => $visitor->registered_date,
+      'blocked_date' => $blocked_date
+    ]);
+
     $blockedVisitor->save();
 
     // Delete the record from the visitors table
@@ -379,10 +382,7 @@ class VisitorController extends Controller
       'visitor_first_name' => $blockedVisitor->visitor_first_name,
       'visitor_last_name' => $blockedVisitor->visitor_last_name,
       'license_plate' => $blockedVisitor->license_plate,
-      'visit_purpose' => $blockedVisitor->visit_purpose,
-      'resident_name' => $blockedVisitor->resident_name,
-      'visit_date' => $blockedVisitor->visit_date,
-      'visitor_qrcode' => $blockedVisitor->visitor_qrcode,
+      'visitor_qrcode' => 'VMS_' . hash('md5', $blockedVisitor->visitor_first_name . $blockedVisitor->visitor_last_name . $blockedVisitor->license_plate),
       'registered_date' => $blockedVisitor->registered_date,
     ]);
 

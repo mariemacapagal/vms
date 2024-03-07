@@ -13,10 +13,8 @@ class BlockedVisitor extends Model
     'visitor_first_name',
     'visitor_last_name',
     'license_plate',
-    'visit_purpose',
-    'resident_name',
-    'visit_date',
-    'visitor_qrcode',
     'registered_date',
+    'blocked_date',
+    'remarks'
   ];
 }

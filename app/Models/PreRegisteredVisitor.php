@@ -10,14 +10,12 @@ class PreRegisteredVisitor extends Model
   use HasFactory;
   protected $fillable = [
     'id',
-    'tracking_number',
     'visitor_first_name',
     'visitor_last_name',
     'license_plate',
     'visit_purpose',
     'resident_name',
     'visit_date',
-    'visitor_qrcode',
     'registered_date',
   ];
 }

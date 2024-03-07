@@ -16,10 +16,10 @@ return new class extends Migration
       $table->string('visitor_first_name', 40);
       $table->string('visitor_last_name', 40);
       $table->string('license_plate', 13);
-      $table->string('visit_purpose', 30);
-      $table->string('resident_name', 80);
-      $table->date('visit_date');
-      $table->string('visitor_qrcode', 36)->nullable();
+      $table->string('visit_purpose', 30)->nullable();
+      $table->string('resident_name', 80)->nullable();
+      $table->date('visit_date')->nullable();
+      $table->string('visitor_qrcode', 36);
       $table->date('registered_date');
       $table->timestamps();
     });
@@ -30,8 +30,9 @@ return new class extends Migration
       $table->string('visitor_first_name', 40);
       $table->string('visitor_last_name', 40);
       $table->string('license_plate', 13);
+      $table->date('registered_date');
       $table->date('blocked_date');
-      $table->string('remarks');
+      $table->string('remarks')->nullable();
       $table->timestamps();
     });
   }
