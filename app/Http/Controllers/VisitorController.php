@@ -222,7 +222,7 @@ class VisitorController extends Controller
     // Add visitor data
     $row = 2;
     foreach ($visitors as $visitor) {
-      $sheet->setCellValue('A' . $row, $visitor->id);
+      $sheet->setCellValue('A' . $row, $visitor->visitor_id);
       $sheet->setCellValue('B' . $row, $visitor->visitor_first_name);
       $sheet->setCellValue('C' . $row, $visitor->visitor_last_name);
       $sheet->setCellValue('D' . $row, $visitor->license_plate);
