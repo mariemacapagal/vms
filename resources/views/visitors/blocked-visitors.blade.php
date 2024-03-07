@@ -69,6 +69,7 @@
               <th>Visitor #</th>
               <th>Visitor's Name</th>
               <th>License Plate</th>
+              <th>Registered Date</th>
               <th>Blocked Date</th>
               <th>Remarks</th>
               <th>Action</th>
