@@ -147,6 +147,16 @@ class VisitorsSeeder extends Seeder
         'registered_date' => '2024-03-03',
       ],
       [
+        'visitor_first_name' => 'Karen',
+        'visitor_last_name' => 'Test',
+        'license_plate' => 'KCM123',
+        'visit_purpose' => 'Delivery',
+        'resident_name' => 'Rafa David',
+        'visit_date' => '2024-03-03',
+        'visitor_qrcode' => 'VMS_8747753a700ae99549c2744d75278a54',
+        'registered_date' => '2024-03-03',
+      ],
+      [
         'visitor_first_name' => 'Jomar',
         'visitor_last_name' => 'Santos',
         'license_plate' => 'RBF7955',
