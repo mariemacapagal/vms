@@ -80,8 +80,8 @@
                     <td>{{ $blockedVisitor->visitor_id }}</td>
                     <td class="text-danger">{{ $blockedVisitor->visitor_first_name }} {{ $blockedVisitor->visitor_last_name }}</td>
                     <td>{{ $blockedVisitor->license_plate }}</td>
-                    <td>{{ $blockedVisitor->created_at }}</td>
-                    <td>remarks</td>
+                    <td>{{ $blockedVisitor->blocked_date }}</td>
+                    <td>{{ $blockedVisitor->remarks }}</td>
                     <td><form action="{{ route('visitors.unblock', $blockedVisitor->id) }}" method="POST">
 											@csrf
 											@method('DELETE')

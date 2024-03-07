@@ -347,9 +347,10 @@ class VisitorController extends Controller
     return view('visitors.blocked-visitors', compact('blockedVisitors', 'message'));
   }
 
-  public function blockVisitors($id)
+  public function blockVisitors($id, Request $request)
   {
     $visitor = Visitor::find($id);
+    $remarks = $request->input('remarks');
     $blocked_date = date('Y-m-d');
 
     // Create a new record in blocked_visitors table
@@ -359,7 +360,8 @@ class VisitorController extends Controller
       'visitor_last_name' => $visitor->visitor_last_name,
       'license_plate' => $visitor->license_plate,
       'registered_date' => $visitor->registered_date,
-      'blocked_date' => $blocked_date
+      'blocked_date' => $blocked_date,
+      'remarks' => $remarks
     ]);
 
     $blockedVisitor->save();

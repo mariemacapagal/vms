@@ -161,14 +161,10 @@
 											data-bs-target="#edit{{ $visitor->id }}">
 											<i class="bx bx-edit-alt me-1"></i> Edit
 										</button>
-										<form action="{{ route('visitors.block', $visitor->id) }}" method="POST">
-											@csrf
-											@method('DELETE')
-											<button type="submit" class="dropdown-item"
-												onclick="return confirm('Are you sure you want to block this visitor?')">
-												<i class="bx bx-block me-1"></i> Block
-											</button>
-										</form>
+                    <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                    data-bs-target="#block{{ $visitor->id }}">
+                      <i class="bx bx-block me-1"></i> Block
+                    </button>
 									</div>
 								</div>
 							</td>
@@ -299,6 +295,37 @@
                         <div class="modal-footer">
                           <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
                           <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- BLOCK REMARKS Modal -->
+            <div class="col-lg-4 col-md-6">
+              <div>
+                <!-- Modal -->
+                <div class="modal fade" id="block{{ $visitor->id }}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalCenterTitle">Are you sure you want to block {{ $visitor->visitor_first_name }} {{ $visitor->visitor_last_name }}?
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form action="{{ route('visitors.block', $visitor->id) }}" method="POST">
+                        @csrf @method('DELETE')
+                        <div class="modal-body">
+                          <div class="col-sm mb-3">
+                            <label for="remarks" class="form-label">Remarks</label>
+                            <input type="text" id="remarks" class="form-control" name="remarks" placeholder="Enter the reason" required/>
+                          </div>
+                        </div>
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary">Block</button>
                         </div>
                       </form>
                     </div>

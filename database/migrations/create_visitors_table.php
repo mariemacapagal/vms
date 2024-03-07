@@ -32,7 +32,7 @@ return new class extends Migration
       $table->string('license_plate', 13);
       $table->date('registered_date');
       $table->date('blocked_date');
-      $table->string('remarks')->nullable();
+      $table->string('remarks');
       $table->timestamps();
     });
   }
