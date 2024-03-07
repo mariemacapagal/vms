@@ -19,7 +19,6 @@ return new class extends Migration
       $table->string('visit_purpose', 30);
       $table->string('resident_name', 80);
       $table->date('visit_date');
-      $table->string('visitor_qrcode', 36)->nullable();
       $table->date('registered_date');
       $table->timestamps();
     });

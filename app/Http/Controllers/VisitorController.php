@@ -274,7 +274,6 @@ class VisitorController extends Controller
     $sheet->setCellValue('E1', 'Visit Purpose');
     $sheet->setCellValue('F1', 'Resident\'s Name');
     $sheet->setCellValue('G1', 'Visit Date');
-    $sheet->setCellValue('H1', 'Visitor QR Code');
     $sheet->setCellValue('I1', 'Registered Date');
 
     // Add visitor data
@@ -287,7 +286,6 @@ class VisitorController extends Controller
       $sheet->setCellValue('E' . $row, $visitor->visit_purpose);
       $sheet->setCellValue('F' . $row, $visitor->resident_name);
       $sheet->setCellValue('G' . $row, $visitor->visit_date);
-      $sheet->setCellValue('H' . $row, $visitor->visitor_qrcode);
       $sheet->setCellValue('I' . $row, $visitor->registered_date);
       $row++;
     }
@@ -305,7 +303,7 @@ class VisitorController extends Controller
     $writer->save($filePath);
 
     // Download the file
-    return response()->download($filePath, 'Pre-registeredVisitors.csv')->deleteFileAfterSend();
+    return response()->download($filePath, 'Pre-registered_Visitors.csv')->deleteFileAfterSend();
   }
 
   // Update the specified resource in storage.
@@ -454,6 +452,17 @@ class VisitorController extends Controller
       return redirect()->back()->with('error', 'Visitor is already registered.');
     }
 
+    // Check if the visitor is already existing in the Visitor model
+    $preVisitor = PreRegisteredVisitor::where([
+      'visitor_first_name' => $visitor_first_name,
+      'visitor_last_name' => $visitor_last_name,
+      'license_plate' => $license_plate,
+    ])->first();
+
+    if ($preVisitor) {
+      return redirect()->back()->with('error', 'Visitor has already pre-registered.');
+    }
+
     PreRegisteredVisitor::create([
       'visitor_first_name' => $visitor_first_name,
       'visitor_last_name' => $visitor_last_name,
@@ -461,7 +470,6 @@ class VisitorController extends Controller
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
       'visit_date' => $visit_date,
-      'visitor_qrcode' => 'VMS_' . hash('md5', $visitor_first_name . $visitor_last_name . $license_plate),
       'registered_date' => $registered_date,
     ]);
 
@@ -492,7 +500,7 @@ class VisitorController extends Controller
       'visit_purpose' => $preVisitor->visit_purpose,
       'resident_name' => $preVisitor->resident_name,
       'visit_date' => $preVisitor->visit_date,
-      'visitor_qrcode' => $preVisitor->visitor_qrcode,
+      'visitor_qrcode' => 'VMS_' . hash('md5', $preVisitor->visitor_first_name . $preVisitor->visitor_last_name . $preVisitor->license_plate),
       'registered_date' => $preVisitor->registered_date,
     ]);
     $visitor->save();
