@@ -217,7 +217,7 @@
                   '#ddf1e1', //amenities
                   '#fff2d6', //delivery
                   '#e1e8f8', //services
-                  '#f9dfe1' //visiting
+                  '#f9dfe1' //visitin
               ],
               borderColor: [
                   '#38ad52',
