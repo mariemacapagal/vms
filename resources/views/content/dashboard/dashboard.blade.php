@@ -35,7 +35,6 @@
   // Sort labels alphabetically
   labels.sort();
   data.sort();
-  counts.sort();
 
   var ctx = document.getElementById('purposeChart').getContext('2d');
   var purposeChart = new Chart(ctx, {
