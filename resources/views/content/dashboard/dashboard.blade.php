@@ -2,6 +2,70 @@
 
 @section('title', 'Dashboard')
 
+@section('page-script')
+<script>
+  var ctx = document.getElementById('visitorChart').getContext('2d');
+  var visitorCount = <?php echo json_encode($visitorCount); ?>;
+
+  var chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: Object.keys(visitorCount),
+          datasets: [{
+              label: 'Visitors',
+              data: Object.values(visitorCount),
+              backgroundColor: '#e1e8f8',
+              borderColor: '#5b83da',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+
+  var data = @json($visitPurpose);
+  var labels = data.map(item => item.visit_purpose);
+  var counts = data.map(item => item.count);
+
+  // Sort labels alphabetically
+  labels.sort();
+  data.sort();
+  counts.sort();
+
+  var ctx = document.getElementById('purposeChart').getContext('2d');
+  var purposeChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: labels,
+          datasets: [{
+              data: counts,
+              backgroundColor: [
+                  '#ddf1e1', //amenities
+                  '#fff2d6', //delivery
+                  '#e1e8f8', //services
+                  '#f9dfe1', //visiting
+              ],
+              borderColor: [
+                  '#38ad52', //amenities
+                  '#ffab00', //delivery
+                  '#5b83da', //services
+                  '#dc3545', //visiting
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true
+      }
+  });
+</script>
+@endsection
+
 @section('content')
 <div class="row">
   <div class="col-md-3 col-sm-3 mb-4">
@@ -172,68 +236,4 @@
     </div>
   </div>
 </div>
-
-
-
-
-<script>
-  var ctx = document.getElementById('visitorChart').getContext('2d');
-  var visitorCount = <?php echo json_encode($visitorCount); ?>;
-
-  var chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-          labels: Object.keys(visitorCount),
-          datasets: [{
-              label: 'Visitors',
-              data: Object.values(visitorCount),
-              backgroundColor: '#e1e8f8',
-              borderColor: '#5b83da',
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
-      }
-  });
-</script>
-<script>
-  var data = @json($visitPurpose);
-  var labels = data.map(item => item.visit_purpose);
-  var counts = data.map(item => item.count);
-
-  // Sort labels alphabetically
-  labels.sort();
-
-  var ctx = document.getElementById('purposeChart').getContext('2d');
-  var purposeChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-          labels: labels,
-          datasets: [{
-              data: counts,
-              backgroundColor: [
-                  '#ddf1e1', //amenities
-                  '#fff2d6', //delivery
-                  '#e1e8f8', //services
-                  '#f9dfe1', //visiting
-              ],
-              borderColor: [
-                  '#38ad52', //amenities
-                  '#ffab00', //delivery
-                  '#5b83da', //services
-                  '#dc3545', //visiting
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          responsive: true
-      }
-  });
-</script>
 @endsection
