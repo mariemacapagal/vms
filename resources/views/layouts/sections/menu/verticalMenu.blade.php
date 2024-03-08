@@ -4,7 +4,7 @@
   <div class="app-brand demo">
     <a href="{{url('/')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
-        <img src="./assets/img/favicon/favicon.png" style="width: 50px;">
+        <img src="{{ asset('assets/img/favicon/favicon.png') }}" style="width: 50px;">
       </span>
       <span class="app-brand-text demo menu-text fw-bold ms-2">{{config('variables.templateName')}}</span>
     </a>
