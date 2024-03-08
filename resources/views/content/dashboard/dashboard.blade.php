@@ -208,6 +208,7 @@
 
   // Sort labels alphabetically
   labels.sort();
+  counts.sort();
 
   var ctx = document.getElementById('purposeChart').getContext('2d');
   var purposeChart = new Chart(ctx, {
