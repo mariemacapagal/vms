@@ -36,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/dashboard', Dashboard::class . '@index')->name('dashboard');
 
   //Routes for Pre-registered Visitors
-  Route::get('/pre-registered', VisitorController::class . '@preRegisteredList')->name('visitors.preRegisteredList');
+  Route::get('records/pre-registered', VisitorController::class . '@preRegisteredList')->name('visitors.preRegisteredList');
   Route::match(['post', 'delete'], '/pre-registered/{visitor}', VisitorController::class . '@acceptVisitors')->name('visitors.accept');
   Route::delete('/pre-registered/decline/{visitor}', VisitorController::class . '@declineVisitors')->name('visitors.decline');
   Route::get('/pre-registered/export', VisitorController::class . '@preRegVisitorsExport')->name('preregvisitors.export');
@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
   Route::match(['put', 'post'], '/visitors-records/{visitor}', VisitorController::class . '@update')->name('visitors.update');
   Route::match(['post', 'delete'], '/visitors-records/{visitor}', VisitorController::class . '@blockVisitors')->name('visitors.block');
 
-  Route::get('/visitors-records', VisitorController::class . '@records')->name('visitors.records');
+  Route::get('/records/visitors', VisitorController::class . '@records')->name('visitors.records');
   Route::get('/visitors-records/search', VisitorController::class . '@search')->name('visitors.search');
   Route::get('/visitors-records/export', VisitorController::class . '@visitorsExport')->name('visitors.export');
 
@@ -56,12 +56,12 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/qrcode-scanner', VisitLogController::class . '@index')->name('visitlogs.index');
   Route::post('/visitlogs', VisitLogController::class . '@store')->name('visitlogs.store');
 
-  Route::get('/visitlogs-records', VisitLogController::class . '@records')->name('visitlogs.records');
+  Route::get('records/visitlogs', VisitLogController::class . '@records')->name('visitlogs.records');
   Route::get('/visitlogs-records/search', VisitLogController::class .  '@search')->name('visitlogs.search');
   Route::get('/visitlogs-records/export', VisitLogController::class . '@export')->name('visitlogs.export');
 
   // Route for Blocked Visitors
-  Route::get('/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
+  Route::get('records/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
   Route::match(['post', 'delete'], '/blocked-visitors/{visitor}', VisitorController::class . '@unblockVisitors')->name('visitors.unblock');
   Route::get('/blocked-visitors/export', VisitorController::class . '@blockedVisitorsExport')->name('blockedvisitors.export');
 });
