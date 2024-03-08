@@ -206,6 +206,9 @@
   var labels = data.map(item => item.visit_purpose);
   var counts = data.map(item => item.count);
 
+  // Sort labels alphabetically
+  labels.sort();
+
   var ctx = document.getElementById('purposeChart').getContext('2d');
   var purposeChart = new Chart(ctx, {
       type: 'doughnut',
@@ -215,15 +218,15 @@
               data: counts,
               backgroundColor: [
                   'green', //amenities
-                  'yellow', //delivery
                   'blue', //services
-                  'red' //visitin
+                  'red', //visiting
+                  'yellow', //delivery
               ],
               borderColor: [
-                  '#38ad52',
-                  '#ffab00',
-                  '#5b83da',
-                  '#dc3545'
+                  '#38ad52', //amenities
+                  '#5b83da', //services
+                  '#dc3545', //visiting
+                  '#ffab00', //delivery
               ],
               borderWidth: 1
           }]
