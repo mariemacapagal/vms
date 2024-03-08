@@ -32,9 +32,22 @@
   var labels = data.map(item => item.visit_purpose);
   var counts = data.map(item => item.count);
 
-  // Sort labels alphabetically
-  labels.sort();
-  data.sort();
+  // Combine labels and counts into an array of objects
+var datasets = labels.map((label, index) => ({
+    label: label,
+    count: counts[index]
+}));
+
+// Sort the datasets array based on the label
+datasets.sort((a, b) => {
+    if (a.label < b.label) return -1;
+    if (a.label > b.label) return 1;
+    return 0;
+});
+
+// Update labels and counts arrays based on the sorted datasets
+labels = datasets.map(item => item.label);
+counts = datasets.map(item => item.count);
 
   var ctx = document.getElementById('purposeChart').getContext('2d');
   var purposeChart = new Chart(ctx, {
