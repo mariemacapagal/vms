@@ -214,10 +214,10 @@
           datasets: [{
               data: counts,
               backgroundColor: [
-                  '#ddf1e1', //amenities
-                  '#fff2d6', //delivery
-                  '#e1e8f8', //services
-                  '#f9dfe1' //visitin
+                  'green', //amenities
+                  'yellow', //delivery
+                  'blue', //services
+                  'red' //visitin
               ],
               borderColor: [
                   '#38ad52',
