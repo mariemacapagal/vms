@@ -37,6 +37,11 @@
 
 @section('content')
 <div class="container-fluid bg-image" style="background-image: url('assets/img/backgrounds/villa-teresa.png'); background-size: cover; background-repeat: no-repeat; min-width: 100vw; min-height: 100vh;">
+  <div class="row text-end">
+    <div class="col mt-3" style="z-index: 10;">
+      <a href="{{ route('login') }}" class="link-light link-opacity-75-hover">Security Personnel Login</a>
+    </div>
+  </div>
   <div style="position: fixed; top: 0; left: 0; min-width: 100vw; min-height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 1;"></div>
   <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
@@ -67,7 +72,7 @@
           <form id="visitorForm" action="{{ route('visitors.pre-register') }}" method="POST">
             @csrf
             <div class="col">
-              <label for="visitor_name" class="form-label">Visitor's Name:</label>
+              <label for="visitor_name" class="form-label">Visitor's Name</label>
               <div class="row">
                 <div class="col-sm mb-3">
                   <input type="text" class="form-control capitalize-words" id="visitor_first_name" name="visitor_first_name"
@@ -122,6 +127,5 @@
       </div>
     </div>
   </div>
-</div>
 </div>
 @endsection

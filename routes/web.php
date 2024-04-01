@@ -13,7 +13,7 @@ Route::get('/', function () {
   if (Auth::check()) {
     return redirect()->route('dashboard');
   } else {
-    return redirect()->route('login');
+    return redirect()->route('pre-register');
   }
 });
 

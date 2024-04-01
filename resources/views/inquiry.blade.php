@@ -66,7 +66,7 @@
           <form id="visitorForm" action="{{ route('post.inquiry') }}" method="POST">
             @csrf
             <div class="col">
-              <label for="visitor_name" class="form-label">Visitor's Name:</label>
+              <label for="visitor_name" class="form-label">Visitor's Name</label>
               <div class="row">
                 <div class="col-sm mb-3">
                   <input type="text" class="form-control capitalize-words" id="visitor_first_name" name="visitor_first_name"
