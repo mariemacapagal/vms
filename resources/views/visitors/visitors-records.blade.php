@@ -251,19 +251,19 @@
                 <div class="col-sm mb-3">
                   <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
                   <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
-                    value="{{ $visitor->visitor_first_name }}" maxlength="60" />
+                    value="{{ $visitor->visitor_first_name }}" maxlength="60" readonly/>
                 </div>
                 <div class="col-sm mb-3">
                   <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
                   <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
-                    value="{{ $visitor->visitor_last_name }}" maxlength="60" />
+                    value="{{ $visitor->visitor_last_name }}" maxlength="60" readonly/>
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm mb-3">
                   <label for="license_plate" class="form-label">License Plate</label>
                   <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
-                    value="{{ $visitor->license_plate }}" maxlength="13" />
+                    value="{{ $visitor->license_plate }}" maxlength="13" readonly/>
                 </div>
                 <div class="col-sm mb-3">
                   <label for="visit_date" class="form-label">Date of Visit</label>

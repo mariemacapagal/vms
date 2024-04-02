@@ -87,89 +87,91 @@
                         </div>
                     </td>
                 </tr>
-                <!-- EDIT Modal -->
-                <div class="col-lg-4 col-md-6">
-                    <div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="edit{{ $user->id }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalCenterTitle">Edit User Details | User #
-                                            {{ $user->id }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="formAuthentication"
-                                            action="{{ route('settings.update', $user->id) }}" method="POST">
-                                            @csrf @method('PUT')
-                                            <div class="mb-3">
-                                                <label for="name"
-                                                    class="form-label">{{ __('Name') }}</label>
-                                                <input id="name" type="text"
-                                                    class="form-control"
-                                                    name="name" required autocomplete="name" maxlength="60"
-                                                    autofocus value="{{ $user->name }}">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="username"
-                                                    class="form-label">{{ __('Username') }}</label>
-                                                <input id="username" type="username"
-                                                    class="form-control"
-                                                    name="username" minlength="6" maxlength="15"
-                                                    autocomplete="username" required value="{{ $user->username }}">
-                                            </div>
-
-                                            <div class="mb-3 form-password-toggle">
-                                                <label for="password"
-                                                    class="form-label">{{ __('New Password') }}</label>
-                                                <div class="input-group input-group-merge">
-                                                    <input id="password" type="password"
-                                                        class="form-control"
-                                                        name="password" minlength="8" autocomplete="new-password">
-                                                    <span class="input-group-text cursor-pointer"><i
-                                                            class="bx bx-hide"></i></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3 form-password-toggle">
-                                                <label for="password-confirm"
-                                                    class="form-label">{{ __('Confirm New Password') }}</label>
-                                                <div class="input-group input-group-merge">
-                                                    <input id="password-confirm" type="password"
-                                                        class="form-control" name="password_confirmation"
-                                                        autocomplete="new-password">
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="type"
-                                                    class="form-label">{{ __('User Type') }}</label>
-                                                <select name="type" class="form-select">
-                                                    <option value="0"
-                                                        {{ $user->type === 'User' ? 'selected' : '' }}>Guard / User
-                                                    </option>
-                                                    <option value="1"
-                                                        {{ $user->type === 'Admin' ? 'selected' : '' }}>OIC / Admin
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <button type="submit"
-                                                class="btn btn-primary d-grid w-100">Update</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             @endforeach
         </tbody>
     </table>
   </div>
+  @foreach ($users as $user)
+    <!-- EDIT Modal -->
+    <div class="col-lg-4 col-md-6">
+      <div>
+          <!-- Modal -->
+          <div class="modal fade" id="edit{{ $user->id }}" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="modalCenterTitle">Edit User Details | User #
+                              {{ $user->id }}</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                              aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form id="formAuthentication"
+                              action="{{ route('settings.update', $user->id) }}" method="POST">
+                              @csrf @method('PUT')
+                              <div class="mb-3">
+                                  <label for="name"
+                                      class="form-label">{{ __('Name') }}</label>
+                                  <input id="name" type="text"
+                                      class="form-control"
+                                      name="name" required autocomplete="name" maxlength="60"
+                                      autofocus value="{{ $user->name }}">
+                              </div>
+
+                              <div class="mb-3">
+                                  <label for="username"
+                                      class="form-label">{{ __('Username') }}</label>
+                                  <input id="username" type="username"
+                                      class="form-control"
+                                      name="username" minlength="6" maxlength="15"
+                                      autocomplete="username" required value="{{ $user->username }}">
+                              </div>
+
+                              <div class="mb-3 form-password-toggle">
+                                  <label for="password"
+                                      class="form-label">{{ __('New Password') }}</label>
+                                  <div class="input-group input-group-merge">
+                                      <input id="password" type="password"
+                                          class="form-control"
+                                          name="password" minlength="8" autocomplete="new-password">
+                                      <span class="input-group-text cursor-pointer"><i
+                                              class="bx bx-hide"></i></span>
+                                  </div>
+                              </div>
+
+                              <div class="mb-3 form-password-toggle">
+                                  <label for="password-confirm"
+                                      class="form-label">{{ __('Confirm New Password') }}</label>
+                                  <div class="input-group input-group-merge">
+                                      <input id="password-confirm" type="password"
+                                          class="form-control" name="password_confirmation"
+                                          autocomplete="new-password">
+                                  </div>
+                              </div>
+
+                              <div class="mb-3">
+                                  <label for="type"
+                                      class="form-label">{{ __('User Type') }}</label>
+                                  <select name="type" class="form-select">
+                                      <option value="0"
+                                          {{ $user->type === 'User' ? 'selected' : '' }}>Guard / User
+                                      </option>
+                                      <option value="1"
+                                          {{ $user->type === 'Admin' ? 'selected' : '' }}>OIC / Admin
+                                      </option>
+                                  </select>
+                              </div>
+
+                              <button type="submit"
+                                  class="btn btn-primary d-grid w-100">Update</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  @endforeach
   <div class="pt-3 px-3 d-flex justify-content-end">
       {{ $users->links() }}
   </div>

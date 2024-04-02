@@ -37,11 +37,6 @@
 
 @section('content')
 <div class="container-fluid bg-image" style="background-image: url('assets/img/backgrounds/villa-teresa.png'); background-size: cover; background-repeat: no-repeat; min-width: 100vw; min-height: 100vh;">
-  <div class="row text-end">
-    <div class="col mt-3" style="z-index: 10;">
-      <a href="{{ route('login') }}" class="link-light link-opacity-75-hover">Security Personnel Login</a>
-    </div>
-  </div>
   <div style="position: fixed; top: 0; left: 0; min-width: 100vw; min-height: 100vh; background-color: rgba(0, 0, 0, 0.6); z-index: 1;"></div>
   <div class="authentication-wrapper authentication-basic container-p-y">
     <div class="authentication-inner">
@@ -123,6 +118,8 @@
             </div>
           </form>
           <p class="mb-0">Already pre-registered? <a href="{{ route('inquiry') }}">Check the status here.</a></p>
+          <hr>
+          <i class="bx bx-user-pin me-1 bx-sm"></i><a href="{{ route('login') }}" class="text-center">Security Personnel Login</a>
         </div>
       </div>
     </div>
