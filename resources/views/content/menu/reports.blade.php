@@ -71,7 +71,8 @@
                       <tr>
                           @if ($tableSelection === 'visitors')
                               <th>#</th>
-                              <th>Visitor's Name</th>
+                              <th>Visitor's First Name</th>
+                              <th>Visitor's Last Name</th>
                               <th>License Plate</th>
                               <th>Purpose of Visit</th>
                               <th>Resident's Name</th>

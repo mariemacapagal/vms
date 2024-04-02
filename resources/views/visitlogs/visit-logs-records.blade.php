@@ -7,12 +7,12 @@
 <div class="card">
   <div class="card-header pb-3">
     <h5 class="card-title">Visit Logs</h5>
-    <div class="row">
+    <div class="row pt-3">
       <form action="{{ route('visitlogs.records') }}" method="GET">
         @csrf
         <div class="row">
-          <div class="col mt-3 d-flex justify-content-sm-between justify-content-md-end">
-            <!-- Dropdowns -->
+          <div class="col-auto mb-3">
+            <label for="visit_status" class="form-label">Visit Status:</label>
             <div class="dropdown">
               <select name="status" class="form-select" onchange="this.form.submit()">
                 <option value="" selected>Select Status</option>
@@ -20,7 +20,10 @@
                 <option value="Out" {{ request('status') === 'Out' ? 'selected' : '' }}>Out</option>
               </select>
             </div>
-            <div class="dropdown ms-3">
+          </div>
+          <div class="col-auto mb-3">
+            <label for="visit_date" class="form-label">Visit Date Range:</label>
+            <div class="dropdown">
               <select name="filter" class="form-select" onchange="this.form.submit()">
                 <option value="" selected>Select Date Range</option>
                 <option value="today" {{ request('filter') === 'today' ? 'selected' : '' }}>Today</option>
@@ -28,9 +31,11 @@
                 <option value="this_month" {{ request('filter') === 'this_month' ? 'selected' : '' }}>This Month</option>
               </select>
             </div>
+          </div>
+          <div class="col mt-4 pt-1">
             <div class="export">
               <!-- Export button -->
-              <a class="btn btn-primary ms-3" href="{{ route('visitlogs.export', ['filter' => request('filter'), 'status' => request('status')]) }}">
+              <a class="btn btn-primary" href="{{ route('visitlogs.export', ['filter' => request('filter'), 'status' => request('status')]) }}">
                 <span>
                   <i class='bx bx-export'></i>
                   <span class="d-none d-sm-inline-block">Save CSV</span>
