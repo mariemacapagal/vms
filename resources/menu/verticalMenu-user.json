@@ -38,27 +38,6 @@
       "name": "Visit Logs",
       "icon": "menu-icon tf-icons bx bx-time",
       "slug": "visitlogs.records"
-    },
-    {
-      "menuHeader": "Others"
-    },
-    {
-      "url": "records/blocked-visitors",
-      "name": "Blocked Visitors",
-      "icon": "menu-icon tf-icons bx bx-user-x",
-      "slug": "visitors.blocked"
-    },
-    {
-      "url": "/reports",
-      "name": "Reports",
-      "icon": "menu-icon tf-icons bx bx-file",
-      "slug": "reports"
-    },
-    {
-      "url": "/settings",
-      "icon": "menu-icon tf-icons bx bx-cog",
-      "name": "Settings",
-      "slug": "settings"
     }
   ]
 }

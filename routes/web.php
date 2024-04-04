@@ -29,6 +29,11 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
   Route::post('/settings', RegisterController::class . '@register')->name('settings.register');
   Route::put('/settings/{user}', RegisterController::class . '@update')->name('settings.update');
   Route::delete('/settings/{user}', RegisterController::class . '@destroy')->name('settings.destroy');
+
+  // Route for Blocked Visitors
+  Route::get('records/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
+  Route::match(['post', 'delete'], '/blocked-visitors/{visitor}', VisitorController::class . '@unblockVisitors')->name('visitors.unblock');
+  Route::get('/blocked-visitors/export', VisitorController::class . '@blockedVisitorsExport')->name('blockedvisitors.export');
 });
 
 // All Users Route List - Accessible to all user types
@@ -59,11 +64,6 @@ Route::middleware(['auth'])->group(function () {
   Route::get('records/visitlogs', VisitLogController::class . '@records')->name('visitlogs.records');
   Route::get('/visitlogs-records/search', VisitLogController::class .  '@search')->name('visitlogs.search');
   Route::get('/visitlogs-records/export', VisitLogController::class . '@export')->name('visitlogs.export');
-
-  // Route for Blocked Visitors
-  Route::get('records/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
-  Route::match(['post', 'delete'], '/blocked-visitors/{visitor}', VisitorController::class . '@unblockVisitors')->name('visitors.unblock');
-  Route::get('/blocked-visitors/export', VisitorController::class . '@blockedVisitorsExport')->name('blockedvisitors.export');
 });
 
 Route::get('/pre-register', VisitorController::class . '@preRegisterPage')->name('pre-register');
