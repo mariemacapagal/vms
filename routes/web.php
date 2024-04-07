@@ -32,7 +32,7 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
 
   // Route for Blocked Visitors
   Route::get('/records/blocked-visitors', VisitorController::class . '@blockedList')->name('visitors.blocked');
-  Route::get('/records/blocked-visitors/history', VisitorController::class . '@blockedListHistory')->name('visitors.blocked');
+  Route::get('/records/blocked-visitors/history', VisitorController::class . '@blockedListHistory')->name('visitors.blockedHistory');
   Route::match(['post', 'delete'], '/blocked-visitors/{visitor}', VisitorController::class . '@unblockVisitors')->name('visitors.unblock');
   Route::get('/blocked-visitors/export', VisitorController::class . '@blockedVisitorsExport')->name('blockedvisitors.export');
 });
