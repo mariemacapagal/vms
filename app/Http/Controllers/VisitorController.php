@@ -221,6 +221,7 @@ class VisitorController extends Controller
     $sheet->setCellValue('E1', 'Registered Date');
     $sheet->setCellValue('F1', 'Blocked Date');
     $sheet->setCellValue('G1', 'Remarks');
+    $sheet->setCellValue('H1', 'Blocked By');
 
     // Add visitor data
     $row = 2;
@@ -232,6 +233,7 @@ class VisitorController extends Controller
       $sheet->setCellValue('E' . $row, $visitor->registered_date);
       $sheet->setCellValue('F' . $row, $visitor->blocked_date);
       $sheet->setCellValue('G' . $row, $visitor->remarks);
+      $sheet->setCellValue('H' . $row, $visitor->user);
       $row++;
     }
 
@@ -248,8 +250,65 @@ class VisitorController extends Controller
     $writer->save($filePath);
 
     // Download the file
-    return response()->download($filePath, 'BlockedVisitors.csv')->deleteFileAfterSend();
+    return response()->download($filePath, 'CurrentBlockedVisitors' . '_' . date('Ymd') . '.csv')->deleteFileAfterSend();
   }
+
+  public function blockedVisitorsHistoryExport(Request $request)
+  {
+    $filter = $request->input('filter');
+    $purpose = $request->input('purpose');
+    $fname = $request->input('fname');
+    $lname = $request->input('lname');
+
+
+    $visitors = $this->filterVisitors(BlockedList::class, $filter, $purpose, $fname, $lname)->get();
+
+    // Create new Spreadsheet object
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Add headers
+    $sheet->setCellValue('A1', 'ID');
+    $sheet->setCellValue('B1', 'Visitor\'s First Name');
+    $sheet->setCellValue('C1', 'Visitor\'s Last Name');
+    $sheet->setCellValue('D1', 'License Plate');
+    $sheet->setCellValue('E1', 'Registered Date');
+    $sheet->setCellValue('F1', 'Blocked Date');
+    $sheet->setCellValue('G1', 'Remarks');
+    $sheet->setCellValue('H1', 'Blocked By');
+
+    // Add visitor data
+    $row = 2;
+    foreach ($visitors as $visitor) {
+      $sheet->setCellValue('A' . $row, $visitor->visitor_id);
+      $sheet->setCellValue('B' . $row, $visitor->visitor_first_name);
+      $sheet->setCellValue('C' . $row, $visitor->visitor_last_name);
+      $sheet->setCellValue('D' . $row, $visitor->license_plate);
+      $sheet->setCellValue('E' . $row, $visitor->registered_date);
+      $sheet->setCellValue('F' . $row, $visitor->blocked_date);
+      $sheet->setCellValue('G' . $row, $visitor->remarks);
+      $sheet->setCellValue('H' . $row, $visitor->user);
+      $row++;
+    }
+
+
+    // Create a temporary file path
+    $filePath = tempnam(sys_get_temp_dir(), 'blockedvisitors') . '.csv';
+
+    // Save the spreadsheet to a CSV file
+    $writer = new Csv($spreadsheet);
+    $writer->setDelimiter(',');
+    $writer->setEnclosure('"');
+    $writer->setLineEnding("\r\n");
+    $writer->setUseBOM(true);
+    $writer->save($filePath);
+
+    // Download the file
+    return response()->download($filePath, 'BlockedVisitors_History' . '_' . date('Ymd') . '.csv')->deleteFileAfterSend();
+  }
+
+
+
 
   public function preRegVisitorsExport(Request $request)
   {

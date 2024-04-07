@@ -20,9 +20,9 @@
 <!-- Table -->
 <div class="card">
   <div class="card-header pb-3">
-    <h5 class="card-title">Blocked Visitors</h5>
+    <h5 class="card-title">History: Blocked Visitors</h5>
     <div class="row pt-3">
-			<form action="{{ route('visitors.blocked') }}" method="GET">
+			<form action="{{ route('visitors.blockedHistory') }}" method="GET">
 				@csrf
 				<div class="row">
           <div class="col-md-4 col-lg-3 mb-3">
@@ -52,7 +52,7 @@
           <div class="col-auto mt-4 pt-1">
             <div class="export">
               <!-- Export button -->
-              <a class="btn btn-primary" href="{{ route('blockedvisitors.export', ['fname' => request('fname'), 'lname' => request('lname')]) }}">
+              <a class="btn btn-primary" href="{{ route('blockedvisitorshistory.export', ['fname' => request('fname'), 'lname' => request('lname')]) }}">
                 <span>
                   <i class='bx bx-export'></i>
                   <span class="d-none d-sm-inline-block">Save CSV</span>
