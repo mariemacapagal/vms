@@ -11,10 +11,10 @@
 @endif
 <ul class="nav nav-pills mb-3" role="tablist">
   <li class="nav-item" role="presentation">
-    <a href="/records/blocked-visitors" class="nav-link">Current Blocked Visitors</a>
+    <a href="{{ route('visitors.blocked') }}" class="nav-link">Current Blocked Visitors</a>
   </li>
   <li class="nav-item" role="presentation">
-    <a href="/records/blocked-visitors/history" class="nav-link active">History of Blocked Visitors</a>
+    <a href="{{ route('visitors.blockedHistory') }}" class="nav-link active">History of Blocked Visitors</a>
   </li>
 </ul>
 <!-- Table -->
