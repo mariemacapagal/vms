@@ -33,6 +33,20 @@ return new class extends Migration
       $table->date('registered_date');
       $table->date('blocked_date');
       $table->string('remarks');
+      $table->string('user');
+      $table->timestamps();
+    });
+
+    Schema::create('blocked_lists', function (Blueprint $table) {
+      $table->id();
+      $table->unsignedBigInteger('visitor_id');
+      $table->string('visitor_first_name', 40);
+      $table->string('visitor_last_name', 40);
+      $table->string('license_plate', 13);
+      $table->date('registered_date');
+      $table->date('blocked_date');
+      $table->string('remarks');
+      $table->string('user');
       $table->timestamps();
     });
   }

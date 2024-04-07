@@ -8,8 +8,11 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use App\Models\Visitor;
 use App\Models\BlockedVisitor;
+use App\Models\BlockedList;
 use App\Models\PreRegisteredVisitor;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class VisitorController extends Controller
 {
@@ -335,7 +338,6 @@ class VisitorController extends Controller
     $fname = $request->input('fname');
     $lname = $request->input('lname');
 
-
     $blockedVisitors = $this->filterVisitors(BlockedVisitor::class, $filter, $purpose, $fname, $lname)->paginate(10);
 
     if ($blockedVisitors->isEmpty()) {
@@ -347,8 +349,28 @@ class VisitorController extends Controller
     return view('visitors.blocked-visitors', compact('blockedVisitors', 'message'));
   }
 
+  public function blockedListHistory(Request $request)
+  {
+    $filter = $request->input('filter');
+    $purpose = $request->input('purpose');
+    $fname = $request->input('fname');
+    $lname = $request->input('lname');
+
+    $blockedLists = $this->filterVisitors(BlockedList::class, $filter, $purpose, $fname, $lname)->paginate(10);
+
+    if ($blockedLists->isEmpty()) {
+      $message = 'No data found.';
+    } else {
+      $message = null;
+    }
+
+    return view('visitors.blocked-visitors-history', compact('blockedLists', 'message'));
+  }
+
+
   public function blockVisitors($id, Request $request)
   {
+    $user = Auth::user();
     $visitor = Visitor::find($id);
     $remarks = $request->input('remarks');
     $blocked_date = date('Y-m-d');
@@ -361,10 +383,26 @@ class VisitorController extends Controller
       'license_plate' => $visitor->license_plate,
       'registered_date' => $visitor->registered_date,
       'blocked_date' => $blocked_date,
+      'user' => $user->name,
       'remarks' => $remarks
     ]);
 
     $blockedVisitor->save();
+
+    // Create a new record in blocked_list table
+    $blockedList = new BlockedList([
+      'visitor_id' => $id,
+      'visitor_first_name' => $visitor->visitor_first_name,
+      'visitor_last_name' => $visitor->visitor_last_name,
+      'license_plate' => $visitor->license_plate,
+      'registered_date' => $visitor->registered_date,
+      'blocked_date' => $blocked_date,
+      'user' => $user->name,
+      'remarks' => $remarks
+    ]);
+
+    $blockedList->save();
+
 
     // Delete the record from the visitors table
     $visitor->delete();

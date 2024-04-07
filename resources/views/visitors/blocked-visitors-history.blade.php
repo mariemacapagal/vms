@@ -11,10 +11,10 @@
 @endif
 <ul class="nav nav-pills mb-3" role="tablist">
   <li class="nav-item" role="presentation">
-    <a href="/records/blocked-visitors" class="nav-link active">Current Blocked Visitors</a>
+    <a href="/records/blocked-visitors" class="nav-link">Current Blocked Visitors</a>
   </li>
   <li class="nav-item" role="presentation">
-    <a href="/records/blocked-visitors/history" class="nav-link">History of Blocked Visitors</a>
+    <a href="/records/blocked-visitors/history" class="nav-link active">History of Blocked Visitors</a>
   </li>
 </ul>
 <!-- Table -->
@@ -81,11 +81,10 @@
               <th>Blocked Date</th>
               <th>Remarks</th>
               <th>Blocked By</th>
-              <th>Action</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0 users-data">
-            @foreach ($blockedVisitors as $blockedVisitor)
+            @foreach ($blockedLists as $blockedVisitor)
                 <tr>
                     <td>{{ $blockedVisitor->visitor_id }}</td>
                     <td class="text-danger">{{ $blockedVisitor->visitor_first_name }} {{ $blockedVisitor->visitor_last_name }}</td>
@@ -94,14 +93,6 @@
                     <td>{{ $blockedVisitor->blocked_date }}</td>
                     <td>{{ $blockedVisitor->remarks }}</td>
                     <td>{{ $blockedVisitor->user }}</td>
-                    <td><form action="{{ route('visitors.unblock', $blockedVisitor->id) }}" method="POST">
-											@csrf
-											@method('DELETE')
-											<button type="submit" class="btn btn-primary"
-												onclick="return confirm('Are you sure you want to unblock this visitor?')">
-												<i class="bx bx-block me-1"></i> Unblock
-											</button>
-										</form></td>
                 </tr>
             @endforeach
         </tbody>
@@ -110,11 +101,11 @@
   </div>
   <!-- Display on small screens with links at the end -->
   <div class="pt-3 px-3 d-flex justify-content-end d-sm-flex d-md-none d-lg-none d-xl-none">
-    {{ $blockedVisitors->links() }}
+    {{ $blockedLists->links() }}
   </div>
   <!-- Hide on small screens, display on medium and larger screens -->
   <div class="pt-3 px-3 d-none d-md-block">
-    {{ $blockedVisitors->onEachSide(1)->links() }}
+    {{ $blockedLists->onEachSide(1)->links() }}
   </div>
 </div>
 @endsection
