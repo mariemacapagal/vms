@@ -65,9 +65,9 @@ document.querySelectorAll('.capitalize').forEach(input => {
             </div>
           </div>
           <div class="row mb-3">
-            <label class="col-sm-3 col-form-label" for="license_plate">Mode of Transportation</label>
+            <label class="col-sm-3 col-form-label" for="license_plate">License Plate</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control capitalize" id="license_plate" name="license_plate" maxlength="13" placeholder="Enter LICENSE PLATE NUMBER or WALK-IN"
+              <input type="text" class="form-control capitalize" id="license_plate" name="license_plate" maxlength="13" placeholder="Indicate if WALK-IN"
                 required />
             </div>
           </div>
