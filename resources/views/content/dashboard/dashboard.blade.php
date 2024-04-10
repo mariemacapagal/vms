@@ -76,6 +76,18 @@ counts = datasets.map(item => item.count);
       }
   });
 </script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth'
+    });
+    calendar.render();
+  });
+
+</script>
 @endsection
 
 @section('content')
@@ -149,7 +161,7 @@ counts = datasets.map(item => item.count);
     </div>
   </div>
 </div>
-<!-- Purpose of Visit -->
+// Purpose of Visit
 <div class="row">
   <div class="col-sm-12 col-md-4 order-2 order-md-3 order-lg-2 mb-4">
     <div class="card">
@@ -248,4 +260,6 @@ counts = datasets.map(item => item.count);
     </div>
   </div>
 </div>
+
+<div id="calendar" class="bg-white p-3"></div>
 @endsection
