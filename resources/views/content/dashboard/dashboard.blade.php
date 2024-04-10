@@ -162,7 +162,7 @@
     </div>
   </div>
 </div>
-// Purpose of Visit
+
 <div class="row">
   <div class="col-sm-12 col-md-4 order-2 order-md-3 order-lg-2 mb-4">
     <div class="card">
