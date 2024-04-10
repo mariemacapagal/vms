@@ -26,56 +26,57 @@
               }
           }
       }
-  });
+    });
 
   var data = @json($visitPurpose);
   var labels = data.map(item => item.visit_purpose);
   var counts = data.map(item => item.count);
 
   // Combine labels and counts into an array of objects
-var datasets = labels.map((label, index) => ({
-    label: label,
-    count: counts[index]
-}));
+  var datasets = labels.map((label, index) => ({
+      label: label,
+      count: counts[index]
+  }));
 
-// Sort the datasets array based on the label
-datasets.sort((a, b) => {
-    if (a.label < b.label) return -1;
-    if (a.label > b.label) return 1;
-    return 0;
-});
-
-// Update labels and counts arrays based on the sorted datasets
-labels = datasets.map(item => item.label);
-counts = datasets.map(item => item.count);
-
-  var ctx = document.getElementById('purposeChart').getContext('2d');
-  var purposeChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-          labels: labels,
-          datasets: [{
-              data: counts,
-              backgroundColor: [
-                  '#ddf1e1', //amenities
-                  '#fff2d6', //delivery
-                  '#e1e8f8', //services
-                  '#f9dfe1', //visiting
-              ],
-              borderColor: [
-                  '#38ad52', //amenities
-                  '#ffab00', //delivery
-                  '#5b83da', //services
-                  '#dc3545', //visiting
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          responsive: true
-      }
+  // Sort the datasets array based on the label
+  datasets.sort((a, b) => {
+      if (a.label < b.label) return -1;
+      if (a.label > b.label) return 1;
+      return 0;
   });
+
+  // Update labels and counts arrays based on the sorted datasets
+  labels = datasets.map(item => item.label);
+  counts = datasets.map(item => item.count);
+
+    var ctx = document.getElementById('purposeChart').getContext('2d');
+    var purposeChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: counts,
+                backgroundColor: [
+                    '#ddf1e1', //amenities
+                    '#fff2d6', //delivery
+                    '#e1e8f8', //services
+                    '#f9dfe1', //visiting
+                ],
+                borderColor: [
+                    '#38ad52', //amenities
+                    '#ffab00', //delivery
+                    '#5b83da', //services
+                    '#dc3545', //visiting
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
 </script>
+
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 <script>
 
