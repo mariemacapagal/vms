@@ -159,6 +159,17 @@ class VisitLogController extends Controller
           if ($visitlog->status == 'IN') {
             $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
             $action = 'Checked out';
+          } elseif ($today >= $visitor->from_visit_date && $today <= $visitor->to_visit_date) {
+            VisitLog::create([
+              'visitor_id' => $visitor->id,
+              'visit_purpose' => $visitor->visit_purpose,
+              'resident_name' => $visitor->resident_name,
+              'check_in' => $datetime,
+              'log_date' => $today,
+              'status' => 'IN',
+              'user' => $user->name
+            ]);
+            $action = 'Checked in';
           } else {
             return redirect()
               ->route('visitlogs.index')
