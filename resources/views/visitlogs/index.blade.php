@@ -57,7 +57,7 @@
 
       @if(session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <p class="fw-bold">{{ session('error') }}</p>
+          <p class="fw-bold m-0">{{ session('error') }}</p>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       @endif
