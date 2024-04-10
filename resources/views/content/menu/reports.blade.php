@@ -15,9 +15,13 @@
                               <label for="table_selection" class="form-label">Select Table:</label>
                               <select name="table_selection" id="table_selection" class="form-select" required>
                                   <option value="visitors"
-                                      {{ request('table_selection') === 'visitors' ? 'selected' : '' }}>Visitors</option>
+                                      {{ request('table_selection') === 'visitors' ? 'selected' : '' }}>Visitors
+                                  </option>
                                   <option value="visit_logs"
                                       {{ request('table_selection') === 'visit_logs' ? 'selected' : '' }}>Visit Logs
+                                  </option>
+                                  <option value="blocked_lists"
+                                      {{ request('table_selection') === 'blocked_lists' ? 'selected' : '' }}>Blocked Visitors
                                   </option>
                               </select>
                           </div>
@@ -61,8 +65,10 @@
           <h5 class="card-header">
               @if ($tableSelection === 'visitors')
                   Visitors Report
-              @else
+              @elseif ($tableSelection === 'visit_logs')
                   Visit Logs Report
+              @else
+                  History: Blocked Visitors
               @endif
           </h5>
           <div class="table-responsive text-nowrap">
@@ -77,13 +83,25 @@
                               <th>Purpose of Visit</th>
                               <th>Resident's Name</th>
                               <th>Date of Visit</th>
-                          @else
+                              <th>Registered Date</th>
+                              <th>Security Personnel</th>
+                          @elseif ($tableSelection === 'visit_logs')
                               <th>#</th>
                               <th>Visitor #</th>
                               <th>Check In</th>
                               <th>Check Out</th>
                               <th>Log Date</th>
                               <th>Status</th>
+                              <th>Security Personnel</th>
+                          @else
+                            <th>Visitor #</th>
+                            <th>Visitor's First Name</th>
+                            <th>Visitor's Last Name</th>
+                            <th>License Plate</th>
+                            <th>Registered Date</th>
+                            <th>Blocked Date</th>
+                            <th>Remarks</th>
+                            <th>Security Personnel</th>
                           @endif
                       </tr>
                   </thead>
@@ -97,8 +115,10 @@
                                   <td>{{ $data->license_plate }}</td>
                                   <td>{{ $data->visit_purpose }}</td>
                                   <td>{{ $data->resident_name }}</td>
-                                  <td>{{ $data->visit_date }}</td>
-                              @else
+                                  <td>{{ $data->from_visit_date }} to {{ $data->to_visit_date }}</td>
+                                  <td>{{ $data->registered_date }}</td>
+                                  <td>{{ $data->user }}</td>
+                              @elseif ($tableSelection === 'visit_logs')
                                   <td>{{ $data->visitor_id }}</td>
                                   <td>{{ $data->check_in }}</td>
                                   <td>{{ $data->check_out }}</td>
@@ -106,6 +126,15 @@
                                   <td><span
                                           class="badge me-1 {{ $data->status == 'OUT' ? 'bg-label-success' : 'bg-label-info' }}">{{ $data->status }}</span>
                                   </td>
+                                  <td>{{ $data->user }}</td>
+                              @else
+                                  <td>{{ $data->visitor_first_name }}</td>
+                                  <td>{{ $data->visitor_last_name }}</td>
+                                  <td>{{ $data->license_plate }}</td>
+                                  <td>{{ $data->registered_date }}</td>
+                                  <td>{{ $data->blocked_date }}</td>
+                                  <td>{{ $data->remarks }}</td>
+                                  <td>{{ $data->user }}</td>
                               @endif
                           </tr>
                       @endforeach

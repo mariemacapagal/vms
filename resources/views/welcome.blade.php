@@ -11,7 +11,8 @@
 <script>
   // Get today's date
   const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
-  document.getElementById('visit_date').value = today;
+  document.getElementById('from_visit_date').value = today;
+  document.getElementById('to_visit_date').value = today;
 
   // Add event listeners to all input fields with class "capitalize-words"
   document.querySelectorAll('.capitalize-words').forEach(input => {
@@ -64,7 +65,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
           @endif
-          <form id="visitorForm" action="{{ route('visitors.pre-register') }}" method="POST">
+          <form id="visitorForm" action="{{ route('visitors.pre-register') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="col">
               <label for="visitor_name" class="form-label">Visitor's Name</label>
@@ -109,7 +110,18 @@
             <div class="row mb-3">
               <label class="form-label" for="visit_date">Date of Visit</label>
               <div class="col-sm">
-                <input type="date" class="form-control" id="visit_date" name="visit_date" required />
+                <label class="form-label" for="from_visit_date">From:</label>
+                <input type="date" class="form-control" id="from_visit_date" name="from_visit_date" required />
+              </div>
+              <div class="col-sm">
+                <label class="form-label" for="to_visit_date">To:</label>
+                <input type="date" class="form-control" id="to_visit_date" name="to_visit_date" required />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-sm">
+                <label for="valid_id" class="form-label">Valid ID</label>
+                <input class="form-control" type="file" id="valid_id" name="valid_id" required>
               </div>
             </div>
 

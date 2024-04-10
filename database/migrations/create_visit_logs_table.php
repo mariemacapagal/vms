@@ -20,6 +20,7 @@ return new class extends Migration
       $table->string('check_out')->nullable();
       $table->date('log_date');
       $table->string('status', 3);
+      $table->string('user');
       $table->timestamps();
     });
   }

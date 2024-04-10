@@ -18,7 +18,9 @@ return new class extends Migration
       $table->string('license_plate', 13);
       $table->string('visit_purpose', 30);
       $table->string('resident_name', 80);
-      $table->date('visit_date');
+      $table->date('from_visit_date');
+      $table->date('to_visit_date');
+      $table->string('valid_id');
       $table->date('registered_date');
       $table->timestamps();
     });

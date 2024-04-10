@@ -10,7 +10,8 @@
 <script>
 // Get today's date
 const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
-document.getElementById('visit_date').value = today;
+document.getElementById('from_visit_date').value = today;
+document.getElementById('to_visit_date').value = today;
 
 // Add event listeners to all input fields with class "capitalize-words"
 document.querySelectorAll('.capitalize-words').forEach(input => {
@@ -50,7 +51,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
         <h5 class="mb-0">Add a new visitor</h5>
       </div>
       <div class="card-body">
-        <form id="visitorForm" action="{{ route('visitors.store') }}" method="POST">
+        <form id="visitorForm" action="{{ route('visitors.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
           <div class="row">
             <label class="col-sm-3 col-form-label" for="visitor_name">Visitor's Name</label>
@@ -64,9 +65,9 @@ document.querySelectorAll('.capitalize').forEach(input => {
             </div>
           </div>
           <div class="row mb-3">
-            <label class="col-sm-3 col-form-label" for="license_plate">License Plate</label>
+            <label class="col-sm-3 col-form-label" for="license_plate">Mode of Transportation</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control capitalize" id="license_plate" name="license_plate" maxlength="13"
+              <input type="text" class="form-control capitalize" id="license_plate" name="license_plate" maxlength="13" placeholder="Enter LICENSE PLATE NUMBER or WALK-IN"
                 required />
             </div>
           </div>
@@ -92,8 +93,19 @@ document.querySelectorAll('.capitalize').forEach(input => {
           </div>
           <div class="row mb-3">
             <label class="col-sm-3 col-form-label" for="visit_date">Date of Visit</label>
+            <div class="col-sm-5">
+              <label class="col col-form-label" for="from_visit_date">From: </label>
+              <input type="date" class="form-control" id="from_visit_date" name="from_visit_date" required />
+            </div>
+            <div class="col-sm-4">
+              <label class="col col-form-label" for="to_visit_date">To: </label>
+              <input type="date" class="form-control" id="to_visit_date" name="to_visit_date" required />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="valid_id" class="col-sm-3 form-label">Valid ID</label>
             <div class="col-sm-9">
-              <input type="date" class="form-control" id="visit_date" name="visit_date" required />
+              <input class="form-control" type="file" id="valid_id" name="valid_id" required>
             </div>
           </div>
 
@@ -170,6 +182,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
           <th>Resident's Name</th>
           <th>Date of Visit</th>
           <th>Registered Date</th>
+          <th>Security Personnel</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -185,8 +198,9 @@ document.querySelectorAll('.capitalize').forEach(input => {
           <td>{{ $visitor->license_plate }}</td>
           <td>{{ $visitor->visit_purpose }}</td>
           <td>{{ $visitor->resident_name }}</td>
-          <td>{{ $visitor->visit_date }}</td>
+          <td>{{ $visitor->from_visit_date }} to {{ $visitor->to_visit_date }}</td>
           <td>{{ $visitor->registered_date }}</td>
+          <td>{{ $visitor->user }}</td>
           <td>
             <div class="dropdown">
               <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -227,6 +241,7 @@ document.querySelectorAll('.capitalize').forEach(input => {
                 src="https://quickchart.io/qr?text={{ $visitor->visitor_qrcode }}"
                 alt="QRCode{{ $visitor->id }}" />
               <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
+              <img src="./images/{{ $visitor->valid_id }}" class="col-6 mb-3" alt="ValidID_{{ $visitor->valid_id }}">
             </div>
             <div class="row">
               <div class="col-sm mb-3">
@@ -285,26 +300,26 @@ document.querySelectorAll('.capitalize').forEach(input => {
 
               <div class="row">
                 <div class="col-sm mb-3">
-                  <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
-                  <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
-                    value="{{ $visitor->visitor_first_name }}" maxlength="60" readonly/>
+                  <label for="visitor_full_name" class="form-label">Visitor's Full Name</label>
+                  <input type="text" id="visitor_full_name" class="form-control capitalize-words" name="visitor_full_name"
+                    value="{{ $visitor->visitor_first_name }} {{ $visitor->visitor_last_name }}" readonly/>
                 </div>
                 <div class="col-sm mb-3">
-                  <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
-                  <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
-                    value="{{ $visitor->visitor_last_name }}" maxlength="60" readonly/>
+                  <label for="license_plate" class="form-label">License Plate</label>
+                  <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
+                    value="{{ $visitor->license_plate }}" readonly/>
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm mb-3">
-                  <label for="license_plate" class="form-label">License Plate</label>
-                  <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
-                    value="{{ $visitor->license_plate }}" maxlength="13" readonly/>
+                  <label for="from_visit_date" class="form-label">Date of Visit: From</label>
+                  <input type="date" id="from_visit_date" class="form-control" name="from_visit_date"
+                    value="{{ $visitor->from_visit_date }}" />
                 </div>
                 <div class="col-sm mb-3">
-                  <label for="visit_date" class="form-label">Date of Visit</label>
-                  <input type="date" id="visit_date" class="form-control" name="visit_date"
-                    value="{{ $visitor->visit_date }}" />
+                  <label for="to_visit_date" class="form-label">Date of Visit: To</label>
+                  <input type="date" id="to_visit_date" class="form-control" name="to_visit_date"
+                    value="{{ $visitor->to_visit_date }}" />
                 </div>
               </div>
               <div class="row">

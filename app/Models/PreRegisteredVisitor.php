@@ -15,7 +15,10 @@ class PreRegisteredVisitor extends Model
     'license_plate',
     'visit_purpose',
     'resident_name',
-    'visit_date',
+    'from_visit_date',
+    'to_visit_date',
+    'valid_id',
     'registered_date',
+    'user'
   ];
 }

@@ -13,6 +13,7 @@ class BlockedVisitor extends Model
     'visitor_first_name',
     'visitor_last_name',
     'license_plate',
+    'valid_id',
     'registered_date',
     'blocked_date',
     'remarks',

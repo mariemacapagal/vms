@@ -26,13 +26,13 @@ class Dashboard extends Controller
       ->get();
 
     // Fetch visitor count for each day of the current week
-    $visitorCount = Visitor::whereBetween('visit_date', [
+    $visitorCount = Visitor::whereBetween('from_visit_date', [
       now()->startOfWeek(),
       now()->endOfWeek(),
-    ])->orderBy('visit_date')
+    ])->orderBy('from_visit_date')
       ->get()
       ->groupBy(function ($date) {
-        return Carbon::parse($date->visit_date)->format('D'); // Group by day name
+        return Carbon::parse($date->from_visit_date)->format('D'); // Group by day name
       })
       ->map(function ($day) {
         return $day->count();

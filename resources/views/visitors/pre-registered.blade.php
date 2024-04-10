@@ -143,7 +143,7 @@
 							<td>{{ $visitor->license_plate }}</td>
 							<td>{{ $visitor->visit_purpose }}</td>
 							<td>{{ $visitor->resident_name }}</td>
-							<td>{{ $visitor->visit_date }}</td>
+							<td>{{ $visitor->from_visit_date }} to {{ $visitor->to_visit_date }}</td>
 							<td>{{ $visitor->registered_date }}</td>
 							<td>
 								<div class="dropdown">

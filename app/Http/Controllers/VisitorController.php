@@ -10,8 +10,6 @@ use App\Models\Visitor;
 use App\Models\BlockedVisitor;
 use App\Models\BlockedList;
 use App\Models\PreRegisteredVisitor;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class VisitorController extends Controller
@@ -40,7 +38,17 @@ class VisitorController extends Controller
     $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
-    $visit_date = $request->input('visit_date');
+    $from_visit_date = $request->input('from_visit_date');
+    $to_visit_date = $request->input('to_visit_date');
+
+    $request->validate([
+      'valid_id' => 'required|mimes:png,jpg,jpeg|max:2048'
+    ]);
+
+    $imageName = time() . '.' . $request->valid_id->extension();
+    $request->valid_id->move(public_path('images'), $imageName);
+    //$request->image->storeAs('public/images', $imageName);
+
 
     // Validate if the visitor is in the blocked list
     $blockedVisitor = BlockedVisitor::where([
@@ -73,6 +81,8 @@ class VisitorController extends Controller
     // Initialize the new ID with the higher of the two last IDs
     $visitor_id = max($lastVisitorId, $lastBlockedId) + 1;
 
+    $user = Auth::user();
+
     Visitor::create([
       'id' => $visitor_id,
       'visitor_first_name' => $visitor_first_name,
@@ -80,9 +90,12 @@ class VisitorController extends Controller
       'license_plate' => $license_plate,
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
-      'visit_date' => $visit_date,
+      'from_visit_date' => $from_visit_date,
+      'to_visit_date' => $to_visit_date,
       'visitor_qrcode' => 'VMS_' . hash('md5', $visitor_first_name . $visitor_last_name . $license_plate),
+      'valid_id' => $imageName,
       'registered_date' => $registered_date,
+      'user' => $user->name
     ]);
 
     // Retrieve the last created visitor
@@ -93,6 +106,7 @@ class VisitorController extends Controller
       ->with(['lastVisitor' => $lastVisitor]);
   }
 
+
   // Filter Visitors
   private function filterVisitors($modelClass, $filter, $purpose, $fname, $lname)
   {
@@ -100,13 +114,13 @@ class VisitorController extends Controller
 
     $entities = $entities
       ->when($filter == 'today', function ($query) {
-        return $query->wherebetween('visit_date', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()]);
+        return $query->wherebetween('from_visit_date', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()]);
       })
       ->when($filter == 'this_week', function ($query) {
-        return $query->wherebetween('visit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+        return $query->wherebetween('from_visit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
       })
       ->when($filter == 'this_month', function ($query) {
-        return $query->wherebetween('visit_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
+        return $query->wherebetween('from_visit_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
       })
       ->when(!empty($purpose), function ($query) use ($purpose) {
         return $query->where('visit_purpose', $purpose);
@@ -164,9 +178,11 @@ class VisitorController extends Controller
     $sheet->setCellValue('D1', 'License Plate');
     $sheet->setCellValue('E1', 'Visit Purpose');
     $sheet->setCellValue('F1', 'Resident\'s Name');
-    $sheet->setCellValue('G1', 'Visit Date');
-    $sheet->setCellValue('H1', 'Visitor QR Code');
-    $sheet->setCellValue('I1', 'Registered Date');
+    $sheet->setCellValue('G1', 'Visit Date: FROM');
+    $sheet->setCellValue('H1', 'Visit Date: TO');
+    $sheet->setCellValue('I1', 'Visitor QR Code');
+    $sheet->setCellValue('J1', 'Registered Date');
+    $sheet->setCellValue('K1', 'Security Personnel');
 
     // Add visitor data
     $row = 2;
@@ -177,9 +193,11 @@ class VisitorController extends Controller
       $sheet->setCellValue('D' . $row, $visitor->license_plate);
       $sheet->setCellValue('E' . $row, $visitor->visit_purpose);
       $sheet->setCellValue('F' . $row, $visitor->resident_name);
-      $sheet->setCellValue('G' . $row, $visitor->visit_date);
-      $sheet->setCellValue('H' . $row, $visitor->visitor_qrcode);
-      $sheet->setCellValue('I' . $row, $visitor->registered_date);
+      $sheet->setCellValue('G' . $row, $visitor->from_visit_date);
+      $sheet->setCellValue('H' . $row, $visitor->to_visit_date);
+      $sheet->setCellValue('I' . $row, $visitor->visitor_qrcode);
+      $sheet->setCellValue('J' . $row, $visitor->registered_date);
+      $sheet->setCellValue('K' . $row, $visitor->user);
       $row++;
     }
 
@@ -307,9 +325,6 @@ class VisitorController extends Controller
     return response()->download($filePath, 'BlockedVisitors_History' . '_' . date('Ymd') . '.csv')->deleteFileAfterSend();
   }
 
-
-
-
   public function preRegVisitorsExport(Request $request)
   {
     $filter = $request->input('filter');
@@ -343,7 +358,7 @@ class VisitorController extends Controller
       $sheet->setCellValue('D' . $row, $visitor->license_plate);
       $sheet->setCellValue('E' . $row, $visitor->visit_purpose);
       $sheet->setCellValue('F' . $row, $visitor->resident_name);
-      $sheet->setCellValue('G' . $row, $visitor->visit_date);
+      $sheet->setCellValue('G' . $row, $visitor->from_visit_date);
       $sheet->setCellValue('I' . $row, $visitor->registered_date);
       $row++;
     }
@@ -367,21 +382,17 @@ class VisitorController extends Controller
   // Update the specified resource in storage.
   public function update(Request $request, string $id)
   {
-    $visitor_first_name = $request->input('visitor_first_name');
-    $visitor_last_name = $request->input('visitor_last_name');
-    $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
-    $visit_date = $request->input('visit_date');
+    $from_visit_date = $request->input('from_visit_date');
+    $to_visit_date = $request->input('to_visit_date');
 
     $visitor = Visitor::find($id);
     $visitor->update([
-      'visitor_first_name' => $visitor_first_name,
-      'visitor_last_name' => $visitor_last_name,
-      'license_plate' => $license_plate,
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
-      'visit_date' => $visit_date,
+      'from_visit_date' => $from_visit_date,
+      'to_visit_date' => $to_visit_date,
     ]);
 
     return redirect()
@@ -425,8 +436,6 @@ class VisitorController extends Controller
 
     return view('visitors.blocked-visitors-history', compact('blockedLists', 'message'));
   }
-
-
   public function blockVisitors($id, Request $request)
   {
     $user = Auth::user();
@@ -440,6 +449,7 @@ class VisitorController extends Controller
       'visitor_first_name' => $visitor->visitor_first_name,
       'visitor_last_name' => $visitor->visitor_last_name,
       'license_plate' => $visitor->license_plate,
+      'valid_id' => $visitor->valid_id,
       'registered_date' => $visitor->registered_date,
       'blocked_date' => $blocked_date,
       'user' => $user->name,
@@ -454,6 +464,7 @@ class VisitorController extends Controller
       'visitor_first_name' => $visitor->visitor_first_name,
       'visitor_last_name' => $visitor->visitor_last_name,
       'license_plate' => $visitor->license_plate,
+      'valid_id' => $visitor->valid_id,
       'registered_date' => $visitor->registered_date,
       'blocked_date' => $blocked_date,
       'user' => $user->name,
@@ -470,9 +481,9 @@ class VisitorController extends Controller
       ->back()
       ->with('success', 'Visitor has been blocked.');
   }
-
   public function unblockVisitors($id)
   {
+    $user = Auth::user();
     $blockedVisitor = BlockedVisitor::find($id);
 
     // Create a new record in the visitors table
@@ -482,7 +493,9 @@ class VisitorController extends Controller
       'visitor_last_name' => $blockedVisitor->visitor_last_name,
       'license_plate' => $blockedVisitor->license_plate,
       'visitor_qrcode' => 'VMS_' . hash('md5', $blockedVisitor->visitor_first_name . $blockedVisitor->visitor_last_name . $blockedVisitor->license_plate),
+      'valid_id' => $blockedVisitor->valid_id,
       'registered_date' => $blockedVisitor->registered_date,
+      'user' => $user->name
     ]);
 
     $visitor->save();
@@ -494,6 +507,7 @@ class VisitorController extends Controller
     return redirect()->back()->with('success', 'Visitor has been unblocked.');
   }
 
+  // PRE-REGISTERED VISITORS
   public function preRegisteredList(Request $request)
   {
     $filter = request('filter');
@@ -527,7 +541,15 @@ class VisitorController extends Controller
     $license_plate = $request->input('license_plate');
     $visit_purpose = $request->input('visit_purpose');
     $resident_name = $request->input('resident_name');
-    $visit_date = $request->input('visit_date');
+    $from_visit_date = $request->input('from_visit_date');
+    $to_visit_date = $request->input('to_visit_date');
+    $request->validate([
+      'valid_id' => 'required|mimes:png,jpg,jpeg|max:2048'
+    ]);
+
+    $imageName = time() . '.' . $request->valid_id->extension();
+    $request->valid_id->move(public_path('images'), $imageName);
+    //$request->image->storeAs('public/images', $imageName);
 
     // Validate if the visitor is in the blocked list
     $blockedVisitor = BlockedVisitor::where([
@@ -568,7 +590,9 @@ class VisitorController extends Controller
       'license_plate' => $license_plate,
       'visit_purpose' => $visit_purpose,
       'resident_name' => $resident_name,
-      'visit_date' => $visit_date,
+      'from_visit_date' => $from_visit_date,
+      'to_visit_date' => $to_visit_date,
+      'valid_id' => $imageName,
       'registered_date' => $registered_date,
     ]);
 
@@ -579,6 +603,7 @@ class VisitorController extends Controller
 
   public function acceptVisitors($id)
   {
+    $user = Auth::user();
     $preVisitor = PreRegisteredVisitor::find($id);
 
     // Get the last used ID from the visitors table
@@ -598,9 +623,12 @@ class VisitorController extends Controller
       'license_plate' => $preVisitor->license_plate,
       'visit_purpose' => $preVisitor->visit_purpose,
       'resident_name' => $preVisitor->resident_name,
-      'visit_date' => $preVisitor->visit_date,
+      'from_visit_date' => $preVisitor->from_visit_date,
+      'to_visit_date' => $preVisitor->to_visit_date,
       'visitor_qrcode' => 'VMS_' . hash('md5', $preVisitor->visitor_first_name . $preVisitor->visitor_last_name . $preVisitor->license_plate),
+      'valid_id' => $preVisitor->valid_id,
       'registered_date' => $preVisitor->registered_date,
+      'user' => $user->name
     ]);
     $visitor->save();
 

@@ -131,6 +131,7 @@
 						<th>Resident's Name</th>
 						<th>Date of Visit</th>
 						<th>Registered Date</th>
+            <th>Security Personnel</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -148,8 +149,9 @@
 							<td>{{ $visitor->license_plate }}</td>
 							<td>{{ $visitor->visit_purpose }}</td>
 							<td>{{ $visitor->resident_name }}</td>
-							<td>{{ $visitor->visit_date }}</td>
+							<td>{{ $visitor->from_visit_date }} to {{ $visitor->to_visit_date }}</td>
 							<td>{{ $visitor->registered_date }}</td>
+              <td>{{ $visitor->user }}</td>
 							<td>
 								<div class="dropdown">
 									<button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -191,6 +193,7 @@
                 src="https://quickchart.io/qr?text={{ $visitor->visitor_qrcode }}"
                 alt="QRCode{{ $visitor->id }}" />
               <p class="text-wrap">QR Code: {{ $visitor->visitor_qrcode }}</p>
+              <img src="../images/{{ $visitor->valid_id }}" class="col-6 mb-3" alt="ValidID_{{ $visitor->valid_id }}">
             </div>
             <div class="row">
               <div class="col-sm mb-3">
@@ -249,26 +252,26 @@
 
               <div class="row">
                 <div class="col-sm mb-3">
-                  <label for="visitor_first_name" class="form-label">Visitor's First Name</label>
-                  <input type="text" id="visitor_first_name" class="form-control capitalize-words" name="visitor_first_name"
-                    value="{{ $visitor->visitor_first_name }}" maxlength="60" readonly/>
+                  <label for="visitor_full_name" class="form-label">Visitor's Full Name</label>
+                  <input type="text" id="visitor_full_name" class="form-control capitalize-words" name="visitor_full_name"
+                    value="{{ $visitor->visitor_first_name }} {{ $visitor->visitor_last_name }}" readonly/>
                 </div>
                 <div class="col-sm mb-3">
-                  <label for="visitor_last_name" class="form-label">Visitor's Last Name</label>
-                  <input type="text" id="visitor_last_name" class="form-control capitalize-words" name="visitor_last_name"
-                    value="{{ $visitor->visitor_last_name }}" maxlength="60" readonly/>
+                  <label for="license_plate" class="form-label">License Plate</label>
+                  <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
+                    value="{{ $visitor->license_plate }}" readonly/>
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm mb-3">
-                  <label for="license_plate" class="form-label">License Plate</label>
-                  <input type="text" id="license_plate" class="form-control capitalize" name="license_plate"
-                    value="{{ $visitor->license_plate }}" maxlength="13" readonly/>
+                  <label for="from_visit_date" class="form-label">Date of Visit: From</label>
+                  <input type="date" id="from_visit_date" class="form-control" name="from_visit_date"
+                    value="{{ $visitor->from_visit_date }}" />
                 </div>
                 <div class="col-sm mb-3">
-                  <label for="visit_date" class="form-label">Date of Visit</label>
-                  <input type="date" id="visit_date" class="form-control" name="visit_date"
-                    value="{{ $visitor->visit_date }}" />
+                  <label for="to_visit_date" class="form-label">Date of Visit: To</label>
+                  <input type="date" id="to_visit_date" class="form-control" name="to_visit_date"
+                    value="{{ $visitor->to_visit_date }}" />
                 </div>
               </div>
               <div class="row">

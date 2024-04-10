@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Visitor;
 use App\Models\VisitLog;
+use App\Models\BlockedList;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
@@ -19,9 +20,13 @@ class Reports extends Controller
     // Convert the end date to include the full timestamp (end of the day)
     $end_date_full = date('Y-m-d 23:59:59', strtotime($end_date));
 
-    // Choose the model based on the selected table
-    $model = ($tableSelection === 'visitors') ? new Visitor : new VisitLog;
-
+    if ($tableSelection === 'visitors') {
+      $model = new Visitor;
+    } elseif ($tableSelection === 'visit_logs') {
+      $model = new VisitLog;
+    } else {
+      $model = new BlockedList;
+    }
 
     // Fetch data from the database based on the date range
     $fetchedData = $model->whereBetween('created_at', [$start_date, $end_date_full])->paginate(10);
@@ -35,12 +40,23 @@ class Reports extends Controller
     $end_date = $request->input('end_date');
     $end_date_full = date('Y-m-d 23:59:59', strtotime($end_date));
 
-    $model = ($tableSelection === 'visitors') ? new Visitor : new VisitLog;
+    if ($tableSelection === 'visitors') {
+      $model = new Visitor;
+    } elseif ($tableSelection === 'visit_logs') {
+      $model = new VisitLog;
+    } else {
+      $model = new BlockedList;
+    }
 
     $fetchedData = $model->whereBetween('created_at', [$start_date, $end_date_full])->get();
 
-    // Determine the type for the filename
-    $type = ($tableSelection === 'visitors') ? 'Visitors' : 'Visit Logs';
+    if ($tableSelection === 'visitors') {
+      $type = 'Visitors';
+    } elseif ($tableSelection === 'visit_logs') {
+      $type = 'Visit Logs';
+    } else {
+      $type = 'Blocked List';
+    }
 
     // Create a new Spreadsheet
     $spreadsheet = new Spreadsheet();

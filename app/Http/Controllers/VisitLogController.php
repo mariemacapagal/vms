@@ -8,6 +8,7 @@ use App\Models\Visitor;
 use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use Illuminate\Support\Facades\Auth;
 
 class VisitLogController extends Controller
 {
@@ -24,6 +25,7 @@ class VisitLogController extends Controller
     } else {
       $message = null;
     }
+
     return view('visitlogs.index', compact('visitlogs', 'visitors', 'message'));
   }
 
@@ -139,7 +141,8 @@ class VisitLogController extends Controller
   // Store a newly created resource in storage.
   public function store(Request $request)
   {
-    $date = date('Y-m-d');
+    $user = Auth::user();
+    $today = date('Y-m-d');
     $datetime = date('Y-m-d h:i:s A');
 
     if ($request->has('visitor_qrcode')) {
@@ -152,36 +155,50 @@ class VisitLogController extends Controller
         // Find visit log by the visitor ID
         $visitlog = VisitLog::where('visitor_id', $visitor->id)->latest()->first();
 
-        if ($visitlog && $visitlog->status == 'IN') {
-          $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
-          return redirect()
-            ->route('visitlogs.index')
-            ->with('success', 'Checked out successfully!');
-        } elseif ($visitor->visit_date == $date) {
-          if ($visitor || $visitlog->status == 'OUT') {
-            // Create a new visit log entry for check-in
+        if ($visitlog) {
+          if ($visitlog->status == 'IN') {
+            $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
+            $action = 'Checked out';
+          } elseif ($today >= $visitor->from_visit_date && $today <= $visitor->to_visit_date) {
             VisitLog::create([
               'visitor_id' => $visitor->id,
               'visit_purpose' => $visitor->visit_purpose,
               'resident_name' => $visitor->resident_name,
               'check_in' => $datetime,
-              'log_date' => $date,
+              'log_date' => $today,
               'status' => 'IN',
+              'user' => $user->name
             ]);
-
+            $action = 'Checked in';
+          } else {
             return redirect()
               ->route('visitlogs.index')
-              ->with('success', 'Checked in successfully!');
+              ->with('error', 'Visitor is not scheduled for visit today.');
           }
         } else {
-          return redirect()
-            ->route('visitlogs.index')
-            ->with('error', 'Visitor is not scheduled for visit today.');
+          // No visit log found, create a new one
+          VisitLog::create([
+            'visitor_id' => $visitor->id,
+            'visit_purpose' => $visitor->visit_purpose,
+            'resident_name' => $visitor->resident_name,
+            'check_in' => $datetime,
+            'log_date' => $today,
+            'status' => 'IN',
+            'user' => $user->name
+          ]);
+          $action = 'Checked in';
         }
+
+        // Retrieve the last created log's visitor
+        $lastLogVisitor = Visitor::find($visitor->id);
+
+        return redirect()
+          ->route('visitlogs.index')
+          ->with(['success' => $action . ' successfully!', 'lastLog' => $lastLogVisitor]);
       } else {
         return redirect()
           ->route('visitlogs.index')
-          ->with('error', 'QR Code not found.');
+          ->with('error', 'QR Code does not match our records.');
       }
     } else {
       return redirect()

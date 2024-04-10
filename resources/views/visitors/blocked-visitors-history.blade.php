@@ -80,7 +80,7 @@
               <th>Registered Date</th>
               <th>Blocked Date</th>
               <th>Remarks</th>
-              <th>Blocked By</th>
+              <th>Security Personnel</th>
             </tr>
         </thead>
         <tbody class="table-border-bottom-0 users-data">

@@ -15,8 +15,11 @@ class Visitor extends Model
     'license_plate',
     'visit_purpose',
     'resident_name',
-    'visit_date',
+    'from_visit_date',
+    'to_visit_date',
     'visitor_qrcode',
+    'valid_id',
     'registered_date',
+    'user'
   ];
 }
