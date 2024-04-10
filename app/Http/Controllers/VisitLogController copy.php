@@ -138,7 +138,6 @@ class VisitLogController extends Controller
     return response()->download($filePath, 'VisitLogs.csv')->deleteFileAfterSend();
   }
 
-
   // Store a newly created resource in storage.
   public function store(Request $request)
   {
@@ -156,17 +155,11 @@ class VisitLogController extends Controller
         // Find visit log by the visitor ID
         $visitlog = VisitLog::where('visitor_id', $visitor->id)->latest()->first();
 
-        if ($visitlog && $visitlog->status == 'IN') {
-          $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
-          // Retrieve the last created log's visitor
-          $lastLogVisitor = Visitor::find($visitor->id);
-
-          return redirect()
-            ->route('visitlogs.index')
-            ->with(['success' => 'Checked out successfully!', 'lastLog' => $lastLogVisitor]);
-        } elseif ($today >= $visitor->from_visit_date && $today <= $visitor->to_visit_date) {
-          if ($visitor || $visitlog->status == 'OUT') {
-            // Create a new visit log entry for check-in
+        if ($visitlog) {
+          if ($visitlog->status == 'IN') {
+            $visitlog->update(['check_out' => $datetime, 'status' => 'OUT']);
+            $action = 'Checked out';
+          } elseif ($today >= $visitor->from_visit_date && $today <= $visitor->to_visit_date) {
             VisitLog::create([
               'visitor_id' => $visitor->id,
               'visit_purpose' => $visitor->visit_purpose,
@@ -176,23 +169,36 @@ class VisitLogController extends Controller
               'status' => 'IN',
               'user' => $user->name
             ]);
-
-            // Retrieve the last created log's visitor
-            $lastLogVisitor = Visitor::find($visitor->id);
-
+            $action = 'Checked in';
+          } else {
             return redirect()
               ->route('visitlogs.index')
-              ->with(['success' => 'Checked in successfully!', 'lastLog' => $lastLogVisitor]);
+              ->with('error', 'Visitor is not scheduled for visit today.');
           }
         } else {
-          return redirect()
-            ->route('visitlogs.index')
-            ->with('error', 'Visitor is not scheduled for visit today.');
+          // No visit log found, create a new one
+          VisitLog::create([
+            'visitor_id' => $visitor->id,
+            'visit_purpose' => $visitor->visit_purpose,
+            'resident_name' => $visitor->resident_name,
+            'check_in' => $datetime,
+            'log_date' => $today,
+            'status' => 'IN',
+            'user' => $user->name
+          ]);
+          $action = 'Checked in';
         }
+
+        // Retrieve the last created log's visitor
+        $lastLogVisitor = Visitor::find($visitor->id);
+
+        return redirect()
+          ->route('visitlogs.index')
+          ->with(['success' => $action . ' successfully!', 'lastLog' => $lastLogVisitor]);
       } else {
         return redirect()
           ->route('visitlogs.index')
-          ->with('error', 'QR Code not found.');
+          ->with('error', 'QR Code does not match our records.');
       }
     } else {
       return redirect()
